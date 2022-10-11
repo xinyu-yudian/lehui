@@ -1,0 +1,117 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #dispatchDetail {
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        color: #444;
+        font-weight: 500;
+    }
+
+    .demo-dispatchForm {
+        height: calc(100vh - 110px);
+        overflow-y: auto;
+        padding-right: 25px;
+    }
+
+    .demo-dispatchForm::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .demo-dispatchForm::-webkit-scrollbar-thumb {
+        width: 6px;
+        background: #e6e6e6;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .pagination,
+    .el-pagination {
+        margin: 0;
+    }
+
+    .el-pagination__sizes {
+        display: none !important;
+    }
+
+    .question-tip {
+        font-size: 24px;
+        color: #ccc;
+        margin-left: 18px;
+        margin-top: 10px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="dispatchDetail" v-cloak>
+    <el-form :model="dispatchForm" ref="dispatchForm" :rules="rules" label-width="100px" class="demo-dispatchForm">
+        <el-form-item label="模板名称：" prop="name">
+            <el-input v-model="dispatchForm.name" placeholder="请输入模板名称"></el-input>
+        </el-form-item>
+        <el-form-item label="有效时间：" prop="expire_type">
+            <div class="display-flex" style="height: 40px;">
+                <el-radio-group v-model="dispatchForm.expire_type">
+                    <el-radio label="day">有效天数</el-radio>
+                    <el-radio label="time">截止日期</el-radio>
+                </el-radio-group>
+                <el-popover placement="bottom" width="230" trigger="hover">
+                    <div class="popover-container">
+                        <p>有效天数：购买日起有效的天数</p>
+                        <p>截止日期：截止使用日期</p>
+                    </div>
+                    <i class="question-tip el-icon-question" slot="reference"></i>
+                </el-popover>
+            </div>
+        </el-form-item>
+        <el-form-item label="有效天数：" prop="expire_day" v-if="dispatchForm.expire_type=='day'">
+            <el-input v-model="dispatchForm.expire_day" placeholder="请输入有效天数"></el-input>
+        </el-form-item>
+        <el-form-item label="截止日期：" prop="expire_time" v-if="dispatchForm.expire_type=='time'">
+            <el-date-picker value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss"
+                v-model="dispatchForm.expire_time" type="datetime" placeholder="选择日期时间">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item label="自提门店：">
+            <div class="display-flex" style="justify-content: space-between;">
+                <el-radio-group v-model="self_user_type">
+                    <el-radio label="all">所有门店</el-radio>
+                    <el-radio label="part">部分门店</el-radio>
+                </el-radio-group>
+                <div class="form-tip theme-color cursor-pointer" @click="createStore">新增门店</div>
+            </div>
+            <div style="flex: 1;" v-if="self_user_type=='part'">
+                <el-select style="position: relative;width: 100%;" v-model="dispatchForm.store_ids" multiple filterable
+                    placeholder="" :filter-method="dataFilter">
+                    <el-option v-for="item in storeOptions" :key="item.name" :label="item.name" :value="item.id">
+                        <div class="display-flex" style="justify-content: space-around;">
+                            <span>{{ item.id }}</span>
+                            <div class="ellipsis-1" style="width: 80px;">{{ item.name }}</div>
+                            <div class="ellipsis-1" style="width: 280px;">
+                                {{item.province_name}}{{item.city_name}}{{item.area_name}}{{item.address}}
+                            </div>
+                        </div>
+                    </el-option>
+                    <div class="text-center display-flex"
+                        style="position: sticky;background: #fff;height:32px;top:0;z-index:1;justify-content: center;">
+                        <el-pagination class="pagination" :page-sizes="[6]" :current-page="currentPage"
+                            :total="totalPage" layout="total, sizes, prev, pager,next, jumper" pager-count="5"
+                            @size-change.stop="pageSizeChange" @current-change="pageCurrentChange" />
+                        </el-pagination>
+                        <div class="theme-color cursor-pointer" style="margin-left: 8px;" @click="getstoreOptions">
+                            跳转
+                        </div>
+                    </div>
+                </el-select>
+            </div>
+        </el-form-item>
+    </el-form>
+    <div class="dialog-footer display-flex">
+        <div @click="dispatchSub" class="dialog-cancel-btn display-flex-c cursor-pointer">取消</div>
+        <div @click="dispatchSub('yes','dispatchForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定</div>
+    </div>
+</div>

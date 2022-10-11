@@ -1,0 +1,133 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #categoryDetail {
+        color: #444;
+        background: #fff;
+        padding: 0 20px 20px;
+    }
+
+    .category-image {
+        width: 90px;
+        height: 100px;
+        border: 1px solid #E6E6E6;
+        border-radius: 4px;
+        margin-right: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .el-popover {
+        padding: 0;
+    }
+
+    .image-selected {
+        border-color: #7438D5;
+    }
+
+    .category-style-title {
+        padding-right: 20px;
+        flex-direction: column;
+    }
+
+    .dialog-cancel-btn {
+        color: #FF5959
+    }
+
+    img {
+        width: 100%;
+        /* height: 100%; */
+    }
+
+    .category-style-title-container {
+        position: relative;
+    }
+
+    .category-style-tip {
+        /* margin-left: 6px; */
+        /* color: #DDDDDD;
+        position: absolute;
+        left: 6px; */
+        color: #DDDDDD;
+        position: absolute;
+        right: -20px;
+        top: 3px;
+    }
+
+    .popover-img {
+        width: 180px;
+        height: 294px;
+        border-radius: 1px;
+    }
+
+    .popover-img img {
+        height: 100%;
+    }
+
+    .selected-image-show {
+        position: absolute;
+        right: -2px;
+        bottom: -2px;
+        width: 20px;
+        height: 20px;
+    }
+    .category-tip{
+        margin-bottom: 20px;
+        border-radius: 5px;
+        background-color: #F1EBFA;
+        padding: 16px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="categoryDetail" v-cloak>
+    <el-form :model="detailForm" :rules="rulesForm" ref="detailForm" label-width="108px" class="detail-form">
+        <div class="category-tip">
+            完善分类后，请在店铺装修中重新选择您的分类入口～
+        </div>
+        <el-form-item label="分类样式：" prop="type">
+            <div class="display-flex">
+                <div class="category-style" v-for="img in 4" @click="selectType(img)">
+                    <div class="category-image" :class="detailForm.type==img?'image-selected':''">
+                        <img :src="'/assets/addons/shopro/img/category/img-'+img+'.png'">
+                        <img v-if="detailForm.type==img" class="selected-image-show"
+                            src="/assets/addons/shopro/img/category/selected.png">
+                    </div>
+                    <div class="category-style-title display-flex-c">
+                        <div class="category-style-title-container" style="height: 20px;line-height: 20px;margin: 10px 0 5px;">
+                            <span>样式{{img}}</span>
+                            <el-popover placement="right" title="" width="130" trigger="hover">
+                                <div class="popover-img">
+                                    <img :src="'/assets/addons/shopro/img/category/img-'+img+'.png'">
+                                </div>
+                                <i class="category-style-tip el-icon-question" slot="reference"></i>
+                            </el-popover>
+                        </div>
+                    <span style="height: 20px;line-height: 20px;"><span v-if="img==1 || img==2">(一级分类)</span><span v-if="img==3">(二级分类)</span><span v-if="img==4">(三级分类)</span></span>
+                    </div>
+                </div>
+            </div>
+        </el-form-item>
+        <el-form-item label="分类名称：" prop="name">
+            <el-input type="input" maxlength="5" v-model="detailForm.name" placeholder="请输入分类名称" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="分类权重：" prop="weigh">
+            <el-input type="number" v-model="detailForm.weigh" placeholder="请输入分类权重" size="small"></el-input>
+        </el-form-item>
+        <!-- <el-form-item label="分类名称：">
+            <el-radio-group v-model="detailForm.status">
+                <el-radio label="normal">显示</el-radio>
+                <el-radio label="hidden">隐藏</el-radio>
+            </el-radio-group>
+        </el-form-item> -->
+    </el-form>
+    <div class="dialog-footer display-flex">
+        <!-- <div @click="deletecategory" class="dialog-cancel-btn display-flex-c cursor-pointer">删除</div> -->
+        <div @click="submitForm('detailForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定</div>
+    </div>
+</div>

@@ -1,0 +1,415 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #categoryIndex {
+        color: #444;
+        background: #fff;
+        padding: 0 0 20px;
+    }
+
+    /* .el-tree-node__expand-icon.is-leaf,.el-tree-node,.el-tree-node__content{
+        cursor: move;
+    } */
+
+    .el-tree-node__content {
+        height: 44px;
+    }
+
+    .expanded.el-tree-node__expand-icon.el-icon-caret-right,
+    .el-tree-node__expand-icon.el-icon-caret-right {
+        display: none;
+    }
+
+    .el-tabs__item {
+        height: 50px;
+        line-height: 50px;
+        /* width: 100px;
+        padding-right: 0; */
+        width: auto;
+        padding: 0 20px;
+    }
+
+    .el-tabs__active-bar {
+        /* bottom: -3px; */
+        left: 4px;
+        /*width: 60px !important; */
+    }
+
+    .el-tabs__header {
+        margin-bottom: 0px;
+    }
+
+    .el-tabs__nav-wrap::after {
+        height: 0;
+    }
+
+    .custom-tabs-header {
+        /* border-bottom: 1px solid #e6e6e6; */
+        margin-bottom: 20px;
+        /* padding: 0 20px; */
+        overflow-x: auto;
+        height: 56px;
+    }
+
+    .custom-tabs-header::-webkit-scrollbar {
+        width: 6px;
+        height: 4px;
+    }
+
+    .custom-tabs-header::-webkit-scrollbar-thumb {
+        width: 6px;
+        background: #e6e6e6;
+        height: 1px;
+        border-radius: 3px;
+    }
+
+    .custom-tabs-body {
+        padding: 0 20px;
+    }
+
+    .custom-tree-header {
+        height: 40px;
+        background: #F9F9F9;
+        border-bottom: 1px solid #e6e6e6;
+    }
+
+    .expanded-icon {
+        width: 40px;
+        color: #7438D5;
+    }
+
+    .expanded-width-input {
+        width: 405px;
+        padding-left: 14px;
+    }
+
+    .expanded-width-operation {
+        padding-left: 14px;
+        min-width: 100px;
+    }
+
+    .expanded-label {
+        width: 180px;
+        margin-right: 14px;
+    }
+
+    .expanded-add {
+        color: #7438D5;
+        cursor: pointer;
+        width: 91px;
+    }
+
+    .expanded-add-1 {
+        margin-right: 80px;
+    }
+
+    .expanded-add-2 {
+        margin-right: 40px;
+    }
+
+    .expanded-add-3 {
+        margin-right: 0px;
+        color: rgba(0, 0, 0, 0);
+    }
+
+    .expanded-width-image,
+    .expanded-width-sort {
+        width: 100px;
+    }
+
+    .expanded-image {
+        width: 32px;
+        height: 32px;
+        border: 1px dashed #E6E6E6;
+        box-sizing: border-box;
+        border-radius: 2px;
+        font-size: 13px;
+        color: #E6E6E6;
+        position: relative;
+    }
+
+    .el-image {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* .el-image-hover{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: none;
+    }
+    .el-image:hover .el-image-hover{
+        display: block;
+        color: #f00;
+    } */
+
+    .operation-text {
+        margin-left: 14px;
+    }
+
+    .common-button {
+        width: 88px;
+        height: 32px;
+        border: 1px solid #999999;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .update-button {
+        margin-left: 14px;
+        background: #7438D5;
+        border: none;
+        color: #fff;
+    }
+
+    .add-category {
+        margin-left: 14px;
+        color: #7438D5;
+        cursor: pointer;
+        min-width: 60px;
+        height: 50px;
+    }
+
+    .add-category i {
+        margin-right: 4px;
+    }
+
+    .tab-icons {
+        margin-left: 6px;
+        width: 12px;
+        height: 12px;
+    }
+
+    .expanded-width-id {
+        width: 80px;
+    }
+
+    .el-tree-node__content {
+        padding-left: 0 !important;
+    }
+
+    .level-2 {
+        padding-left: 40px;
+    }
+
+    .level-3 {
+        padding-left: 80px;
+    }
+
+    .process-item {
+        border-top: #7438D5 2px solid;
+    }
+
+    .drag-item {
+        width: 100%;
+        height: 100%;
+        border-bottom: 1px solid #e6e6e6;
+        /* cursor: move; */
+    }
+
+    .custom-tabs-line {
+        height: 1px;
+        background: #e6e6e6;
+        width: 100%
+    }
+
+    .custom-tabs-items {
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        width: 100%;
+        height: 50px;
+    }
+
+    .expanded-weigh {
+        width: 70px;
+    }
+
+    .expanded-weigh .el-input__inner {
+        text-align: center;
+        /* padding: 0 0 0 10px; */
+    }
+
+    .table-delete-operation {
+        color: #7438D5;
+    }
+
+    .style-button {
+        color: #7438D5;
+        border-color: #7438D5;
+    }
+
+    .category-style-tip {
+        margin-left: 6px;
+        color: #DDDDDD;
+    }
+
+    .image-slot {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .expanded-width-id,
+    .expanded-width-input,
+    .expanded-width-image,
+    .expanded-width-sort {
+        flex-shrink: 0;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="categoryIndex" v-cloak v-loading="isAjax">
+    <div class="custom-tabs-header display-flex" style="flex-direction: column;">
+        <div class="custom-tabs-items">
+            <el-tabs v-if="tabsData.length>0" v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane :name="tab.name" v-for="tab in tabsData">
+                    <span slot="label">{{tab.name}}
+                        <img v-if="tab.id==activeId" class="tab-icons" src="/assets/addons/shopro/img/category/edit.png"
+                            @click.stop="operation('editCategory',tab.id)">
+                    </span>
+                </el-tab-pane>
+            </el-tabs>
+            <div class="add-category flex-1 display-flex">
+                <div class="display-flex" @click="operation('addCategory')" style="width: 60px;">
+                    <i class="el-icon-plus"></i>
+                    <span style="line-height: 13px;">添加</span>
+                </div>
+            </div>
+        </div>
+        <div class="custom-tabs-line"></div>
+    </div>
+    <div class="custom-tabs-body">
+        <div class="custom-button-container">
+            <div class="display-flex">
+                <div class="custom-refresh display-flex" @click="getData(activeId)">
+                    <i class="el-icon-refresh"></i>
+                </div>
+                <div class="common-button style-button" @click="operation('add')">
+                    <i class="el-icon-plus"></i>
+                    <span>追加分类</span>
+                </div>
+            </div>
+            <div class="display-flex">
+                <div class="common-button reset-button" @click="operation('reset')">
+                    重置
+                </div>
+                <div class="common-button update-button" @click="operation('update')">
+                    <span>保存&更新</span>
+                </div>
+            </div>
+        </div>
+        <div style="overflow:auto;border: 1px solid #e6e6e6;">
+            <div class="custom-tree-header display-flex">
+                <div class="expanded-width-id display-flex-c">ID</div>
+                <div class="expanded-width-input">分类名称</div>
+                <div class="expanded-width-image display-flex-c">分类图片</div>
+                <div class="expanded-width-sort display-flex-c">描述</div>
+                <div class="expanded-width-sort display-flex-c">排序
+                    <el-popover placement="bottom" title="" width="190" trigger="hover">
+                        <div class="popover-container">
+                            权重以倒序排列，默认值为0，相同权重则以ID优先
+                        </div>
+                        <i class="category-style-tip el-icon-question" slot="reference"></i>
+                    </el-popover>
+                </div>
+                <div class="flex-1 expanded-width-operation">操作</div>
+            </div>
+            <el-tree :data="data[activeIndex]" node-key="id" default-expand-all :expand-on-click-node="false"
+                :props="defaultProps" empty-text="无分类，快去添加吧">
+                <!-- :draggable="true"
+                :allow-drop="isdrag"
+                @node-drag-start="handleDragStart"
+                @node-drag-enter="handleDragEnter"
+                @node-drag-end="handleDragEnd" -->
+                <div class="display-flex drag-item" slot-scope="{ node, data }"
+                    v-if="!(data.deleted && data.deleted==1)"
+                    :class="(processId !='' && processId !=null && processId==data.id)?'process-item':''">
+                    <div class="expanded-width-id display-flex-c">
+                        <span v-if="(data.id+'').indexOf('add')==-1">{{data.id}}</span>
+                    </div>
+                    <div class="display-flex" :class="operation('filter',node.level)">
+                        <div class="expanded-icon display-flex-c" v-if="">
+                            <div v-if="data.children && data.children.length>0">
+                                <i class="el-icon-minus" v-if="node.expanded && level>node.level "
+                                    @click="() => isexpanded(node)"></i>
+                                <i class="el-icon-plus" v-if="!node.expanded && level>node.level"
+                                    @click="() => isexpanded(node)"></i>
+                            </div>
+                        </div>
+                        <div class="display-flex">
+                            <el-input class="expanded-label" v-model="data.name" placeholder="请输入内容" size="small">
+                            </el-input>
+                            <!-- {{node.level==1}}
+                            {{level}} -->
+                            <span class="expanded-add expanded-add-1" v-if="node.level==1">
+                                <span v-if="level>=2" @click="() => addTemplate(data)"><i
+                                        class="el-icon-plus"></i>添加二级分类</span>
+                            </span>
+                            <span class="expanded-add expanded-add-2" v-if="node.level==2">
+                                <span v-if="level==3" @click="() => addTemplate(data)"><i
+                                        class="el-icon-plus"></i>添加三级分类</span>
+                            </span>
+                            <span class="expanded-add expanded-add-3" v-if="node.level==3">
+                                <!-- <i class="el-icon-plus"></i>添加三级分类 -->
+                            </span>
+                        </div>
+                    </div>
+                    <div class="expanded-width-image display-flex-c">
+                        <el-popover placement="bottom" width="200" trigger="hover">
+                            <div>
+                                <div v-if="node.level==1">建议尺寸：广告图504X150</div>
+                                <div v-if="node.level!=1">建议尺寸：缩略图150X150</div>
+                            </div>
+                            <!-- <el-button>hover 激活</el-button> -->
+                            <div v-if="!(level==3 && node.level==2)" slot="reference"
+                                class="expanded-image display-flex-c" @click="()=>addImage(data)">
+                                <el-image v-if="data.image" :src="Fast.api.cdnurl(data.image)" fit="contain">
+                                    <div slot="error" class="image-slot">
+                                        <i class="el-icon-picture-outline"></i>
+                                    </div>
+                                </el-image>
+                                <i v-if="!data.image" class="el-icon-plus"></i>
+                            </div>
+                        </el-popover>
+
+                        <!-- :preview-src-list="srcList" -->
+                    </div>
+                    <div class="expanded-width-sort display-flex-c">
+                        <el-input class="expanded-weigh" v-model="data.description" placeholder="描述" size="small">
+                        </el-input>
+                        <!-- {{data.weigh}} -->
+                    </div>
+                    <div class="expanded-width-sort display-flex-c">
+                        <el-input class="expanded-weigh" type="number" v-model="data.weigh" placeholder="权重"
+                            size="small">
+                        </el-input>
+                        <!-- {{data.weigh}} -->
+                    </div>
+                    <div class="display-flex" style="min-width: 100px;">
+                        <span class="operation-text table-delete-operation" @click="() => hiddenShow(node, data)">
+                            <span v-if="data.status=='normal'" style="color: #999;">隐藏</span>
+                            <span v-else>显示</span>
+                        </span>
+                        <span class="operation-text table-delete-text" @click="() => remove(node, data)">删除</span>
+                        <!-- <span class="operation-text"><img src="/assets/addons/shopro/img/goods/move.png" alt="" srcset=""></span> -->
+                    </div>
+                </div>
+            </el-tree>
+        </div>
+    </div>
+
+</div>

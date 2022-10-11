@@ -1,0 +1,308 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+
+<style>
+    #goodsSelect {
+        background: #fff;
+        overflow: auto;
+        color: #444;
+        margin: -15px;
+    }
+
+    .dialog-left {
+        width: 200px;
+        border-right: 1px solid #e6e6e6;
+        height: 100vh;
+        padding: 9px 20px 0;
+        overflow: auto;
+        flex-shrink: 0;
+    }
+
+    .dialog-left::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .dialog-left::-webkit-scrollbar-thumb {
+        width: 6px;
+        background: #e6e6e6;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .dialog-right {
+        height: 100vh;
+        flex: 1;
+    }
+
+    .dialog-search {
+        padding: 9px 0;
+        justify-content: space-between;
+    }
+
+    .dialog-search .el-input {
+        width: 240px;
+    }
+
+    .dialog-search .el-input__inner {
+        background: #F9F9F9;
+        border: none;
+    }
+
+    .dialog-right-body {
+        padding: 0 14px;
+        height: calc(100vh - 62px);
+        overflow: auto;
+    }
+
+    .dialog-footer {
+        padding: 15px 20px;
+        justify-content: space-between;
+    }
+
+    .operation-button {
+        width: 60px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        font-size: 12px;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    .define-button {
+        background: #6E3DC8;
+        color: #fff;
+    }
+
+    .goods-image {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #E6E6E6;
+        border-radius: 2px;
+        margin-right: 8px;
+        flex-shrink: 0;
+    }
+
+    .el-pagination.is-background .el-pager li:not(.disabled).active {
+        background: #7438D5;
+    }
+
+    .el-image {
+        height: 100%;
+        width: 100%;
+    }
+
+    .image-slot {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .level-item-1,
+    .level-item-2,
+    .level-item-3,
+    .level-item-4 {
+        height: 26px;
+        line-height: 26px;
+        display: flex;
+        align-items: center;
+    }
+
+    .level-item-2 {
+        padding-left: 20px;
+    }
+
+    .level-item-3 {
+        padding-left: 40px;
+    }
+
+    .level-item-4 {
+        padding-left: 73px;
+    }
+
+    .el-icon-arrow-down {
+        color: #666;
+    }
+
+    .arrow-open {
+        transform: rotateZ(90deg);
+        transition: transform .25s linear;
+    }
+
+    .arrow-selected {
+        color: #7438D5;
+        background: rgba(116, 56, 213, 0.14);
+        border-radius: 4px;
+    }
+
+    .item-name {
+        cursor: pointer;
+        flex: 1;
+    }
+
+    .el-icon-caret-right {
+        color: #666;
+    }
+
+    .i-container {
+        margin-right: 6px;
+    }
+
+    .el-table td,
+    .el-table th {
+        padding: 5px 0 6px;
+    }
+
+    .activity-text {
+        margin-right: 8px;
+    }
+
+    .activity-text:last-child {
+        margin-right: 0;
+    }
+
+    .score-activity {
+        color: #FF760D;
+    }
+
+    .groupon-activity {
+        color: #7438D5;
+    }
+
+    .seckill-activity {
+        color: #FF4F39;
+    }
+
+    .full-activity {
+        color: #F5AE6B;
+    }
+
+    .single-select-table thead .el-table-column--selection .cell {
+        display: none;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<div id="goodsSelect" v-cloak>
+    <div class="dialog-body display-flex">
+        <div class="dialog-left">
+            <div v-for="(level1,p) in categoryData" :key="p">
+                <div class="level-item-1" :class="level1.selected?'arrow-selected':''">
+                    <div class="i-container">
+                        <i v-if="level1.children && level1.children.length>0" class="el-icon-caret-right"
+                            :class="level1.show?'arrow-open':''" @click="showLeft(p, null, null,null)"></i>
+                    </div>
+                    <span class="item-name" @click="selectCategoryLeft(p, null, null,null)">{{level1.name}}</span>
+                </div>
+                <el-collapse-transition v-for="(level2,c) in level1.children">
+                    <div :key="c" v-show="level1.show">
+                        <div class="level-item-2" :class="level2.selected?'arrow-selected':''">
+                            <div class="i-container">
+                                <i v-if="level2.children && level2.children.length>0" class="el-icon-caret-right"
+                                    :class="level2.show?'arrow-open':''" @click="showLeft(p, c, null,null)"></i>
+                            </div>
+                            <span class="item-name" @click="selectCategoryLeft(p, c, null,null)">{{level2.name}}</span>
+                        </div>
+                        <el-collapse-transition v-for="(level3,a) in level2.children">
+                            <div :key="a" v-show="level2.show">
+                                <div class="level-item-3" :class="level3.selected?'arrow-selected':''">
+                                    <div class="i-container">
+                                        <i v-if="level3.children && level3.children.length>0"
+                                            class="el-icon-caret-right" :class="level3.show?'arrow-open':''"
+                                            @click="showLeft(p, c, a,null)"></i>
+                                    </div>
+                                    <span class="item-name"
+                                        @click="selectCategoryLeft(p, c, a,null)">{{level3.name}}</span>
+                                </div>
+                                <el-collapse-transition v-for="(level4,s) in level3.children">
+                                    <div :key="s" v-show="level3.show">
+                                        <div class="level-item-4" :class="level4.selected?'arrow-selected':''">
+                                            <span class="item-name"
+                                                @click="selectCategoryLeft(p, c, a,s)">{{level4.name}}</span>
+                                        </div>
+                                    </div>
+                                </el-collapse-transition>
+                            </div>
+                        </el-collapse-transition>
+                    </div>
+                </el-collapse-transition>
+            </div>
+        </div>
+        <div class="dialog-right">
+            <div class="dialog-right-body">
+                <div class="dialog-search display-flex">
+                    <el-input size="small" placeholder="请输入搜索内容" v-model="searchWhere">
+                        <i slot="prefix" class="el-input__icon el-icon-search"></i>
+                    </el-input>
+                </div>
+                <div :class="multiple=='false'?'single-select-table':''">
+                    <el-table :data="goodsList" border @selection-change="multipleSelectionChange"
+                        ref="multipleTable" @select="SelectionChange">
+                        <el-table-column type="selection" width="40" v-if="multiple=='true'">
+                        </el-table-column>
+                        <el-table-column type="selection" width="40" v-if="multiple=='false'">
+                            <template slot-scope="scope">
+                                <el-checkbox v-model="scope.row.checked" @change="singleSelectionChange(scope.row)">
+                                </el-checkbox>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="id" label="ID" min-width="70">
+                        </el-table-column>
+                        <el-table-column label="商品名称" min-width="100" align="left">
+                            <template slot-scope="scope">
+                                <div class="goods-image">
+                                    <el-image :src="Fast.api.cdnurl(scope.row.image)" fit="contain">
+                                        <div slot="error" class="image-slot">
+                                            <i class="el-icon-picture-outline"></i>
+                                        </div>
+                                    </el-image>
+                                </div>
+                                <div class="goods-title ellipsis-item">{{scope.row.title}}</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="参与活动" width="210">
+                            <template slot-scope="scope">
+                                <div v-if="scope.row.activity_type || scope.row.app_type" class="display-flex">
+                                    <div class="activity-text score-activity" v-if="scope.row.app_type">
+                                        {{scope.row.app_type_text}}
+                                    </div>
+                                    <template v-for="(b,a) in scope.row.activity_type_text_arr">
+                                        <template v-if="a=='groupon'">
+                                            <div class="activity-text groupon-activity">
+                                                拼团
+                                            </div>
+                                        </template>
+                                        <div v-if="a=='seckill'" class="activity-text seckill-activity">{{b}}</div>
+                                        <div v-if="a=='full_reduce' || a=='full_discount' || a=='free_shipping'"
+                                            class="activity-text full-activity">{{b}}</div>
+                                    </template>
+                                </div>
+                                <div class="display-flex" v-else>-</div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="stock" label="库存" width="80">
+                        </el-table-column>
+                    </el-table>
+                </div>
+            </div>
+            <div class="dialog-footer display-flex">
+                <div>
+                    <el-pagination background layout="prev, pager, next" :total="totalPage" @prev-click="changeClick"
+                        @next-click="changeClick" @current-change="changeClick" :current-page="currentPage">
+                    </el-pagination>
+                </div>
+                <div class="display-flex">
+                    <div @click="operation()" class="operation-button define-button">确定</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

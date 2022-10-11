@@ -1,0 +1,89 @@
+<meta name="referrer" content="never">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #replyDetail {
+        background: #fff;
+        border-radius: 6px;
+        font-size: 14px;
+        padding: 0 20px 20px;
+        color: #444;
+    }
+    .pagination{
+        margin: 0;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+
+<div id="replyDetail" v-cloak>
+    <el-form :model="detailForm" ref="detailForm" :rules="ruleForm" label-width="100px" class="demo-detailForm">
+        <el-form-item label="标题：" prop="name">
+            <el-input v-model="detailForm.name" placeholder="请输入标题"></el-input>
+        </el-form-item>
+        <el-form-item label="关键字：" prop="rules">
+            <div class="display-flex">
+                <div v-for="(item,index) in detailForm.rules" style="    padding: 5px;
+                border: 1px solid #e6e6e6;
+                line-height: 20px;
+                border-radius: 4px;margin-right: 10px;"><span>{{item}}</span><i @click="delKey(index)"
+                        class="el-icon-close"></i></div>
+            </div>
+            <el-input v-model="keys" placeholder="请输入关键字、空格确认" @keyup.space.native="searchFile(keys)"
+                style="border: none;background: none;"></el-input>
+        </el-form-item>
+        <el-form-item label="类型：" prop="type">
+            <el-radio-group v-model="detailForm.type" @change="typeChange">
+                <el-radio label="news">图文消息</el-radio>
+                <el-radio label="image">图片</el-radio>
+                <el-radio label="video">视频</el-radio>
+                <el-radio label="voice">音频</el-radio>
+                <el-radio label="text">文本</el-radio>
+                <el-radio label="link">链接</el-radio>
+              </el-radio-group>
+        </el-form-item>
+        <el-form-item label="回复内容：" prop="content_title" v-if="detailForm.type">
+            <div class="display-flex">
+                <div style="flex: 1;">
+                    <el-select style="position: relative;" v-model="detailForm.content_title" @change="selectChange">
+                        <el-option v-for="item in options" :key="item.media_id" :label="item.title" :value="item.media_id">
+                            <div class="display-flex">
+                                <img style="width: 30px;
+                                height: 30px;margin-right:20px" :src="Fast.api.cdnurl(item.thumb_url)" v-if="detailForm.type!='voice' && detailForm.type!='text' && detailForm.type!='link'">
+                                <img style="width: 30px;
+                                height: 30px;margin-right:20px" :src="Fast.api.cdnurl(item.image)"
+                                    v-if="detailForm.type=='link'">
+                                <div class="ellipsis-1" style="width: 60px;" v-if="detailForm.type=='text' || detailForm.type=='link'">{{ item.media_id }}</div>
+                                <div class="ellipsis-1" style="width: 100px;">{{ item.title }}</div>
+                                <div class="ellipsis-1" style="flex: 1;" v-if="detailForm.type!='text' && detailForm.type!='link'">{{ item.media_id }}</div>
+                                <div class="ellipsis-1" style="flex: 1;" v-if="detailForm.type=='text'">{{ item.thumb_url }}</div>
+                            </div>
+                        </el-option>
+                        
+                        <div class="text-center display-flex"
+                            style="position: sticky;background: #fff;height:32px;top:0;z-index:1;justify-content: center;">
+                            <el-pagination class="pagination" :page-sizes="[6]" :current-page="currentPage"
+                                :total="totalPage" layout="total, prev, pager,next, jumper"
+                                pager-count="5" @size-change.stop="pageSizeChange"
+                                @current-change="pageCurrentChange" />
+                            </el-pagination>
+                            <div class="theme-color cursor-pointer" style="margin-left: 8px;" @click="getoptions">
+                                跳转
+                            </div>
+                        </div>
+                    </el-select>
+                </div>
+                <div class="create-store theme-color cursor-pointer" @click="createTemplate"
+                    v-if="detailForm.type=='text' || detailForm.type=='link'">新建</div>
+            </div>
+        </el-form-item>
+    </el-form>
+    <div class="dialog-footer display-flex">
+        <div @click="dispatchSub" class="dialog-cancel-btn display-flex-c cursor-pointer">取消</div>
+        <div @click="dispatchSub('yes','detailForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定</div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #materialDetail {
+        background: #fff;
+        border-radius: 6px;
+        font-size: 14px;
+        padding: 0 20px 20px;
+        color: #444;
+    }
+    .del-image-btn {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: 600;
+        background: #7438D5;
+        color: #fff;
+        top: -7px;
+        right: -7px;
+    }
+
+    .goods-images {
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+        position: relative;
+        border: 1px solid #7438D5;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .label-auto {
+        width: 100%;
+        height: 100%;
+    }
+    .add-img {
+        width: 60px;
+        height: 60px;
+        border: 1px dashed #E6E6E6;
+        border-radius: 4px;
+        justify-content: center;
+    }
+    .el-textarea{
+        height: 54px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+
+<div id="materialDetail" v-cloak>
+    <div v-if="sourceType=='text'">
+        <el-form :model="detailForm" ref="detailForm" :rules="rules" label-width="100px" class="demo-detailForm">
+        <el-form-item label="标题：" prop="name">
+            <el-input v-model="detailForm.name" placeholder="请输入内容"></el-input>
+        </el-form-item>
+        <el-form-item label="内容：" prop="content">
+            <el-input type="textarea" v-model="detailForm.content" placeholder="请输入内容"></el-input>
+        </el-form-item>
+    </el-form>
+    </div>
+    <div v-if="sourceType=='link'">
+        <el-form :model="detailForm" ref="detailForm" :rules="rules" label-width="100px" class="demo-detailForm">
+        <el-form-item label="标题：" prop="name">
+            <el-input v-model="detailForm.name" placeholder="请输入内容"></el-input>
+        </el-form-item>
+        <el-form-item label="描述：" prop="description">
+            <el-input type="textarea" v-model="detailForm.description" placeholder="请输入内容"></el-input>
+        </el-form-item>
+        <el-form-item label="图片：" prop="image">
+            <div class="display-flex">
+                <div class="goods-image-box display-flex" v-if="detailForm.image">
+                    <div class="goods-images" style="margin-right: 0;">
+                        <img class="label-auto" :src="Fast.api.cdnurl(detailForm.image)"
+                            style="border-radius: 4px;">
+                        <div class="del-image-btn" @click="delImg('image',null)">
+                            <img class="label-auto" src="/assets/addons/shopro/img/goods/close.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="add-img display-flex" @click="addImg('image',null,false)"
+                    v-if="!detailForm.image">
+                    <i class="el-icon-plus"></i>
+                </div>
+                <!-- <div class="msg-tip"></div> -->
+            </div>
+        </el-form-item>
+        <el-form-item label="链接地址：" prop="url">
+            <el-input v-model="detailForm.url" placeholder="http(s)://"></el-input>
+        </el-form-item>
+    </el-form>
+    </div>
+    
+    <div class="dialog-footer" style="justify-content: space-between;">
+        <el-popover placement="top" width="270" v-model="visible">
+            <div class="popover-container">
+                <p>文本内容</p>
+                <p>
+                    <el-input v-model="hrefMsg"></el-input>
+                </p>
+                <p>链接地址</p>
+                <p>
+                    <el-input v-model="hrefA" placeholder="http(s)://"></el-input>
+                </p>
+            </div>
+            <div style="text-align: right; margin: 0">
+                <el-button size="mini" @click="addHref()">取消</el-button>
+                <el-button type="primary" size="mini" @click="addHref('yes')">确定</el-button>
+            </div>
+            <div style="margin-left: 100px;" v-if="sourceType=='text'" class="theme-color cursor-pointer" slot="reference">插入超链接</div>
+        </el-popover>
+        <div class="display-flex">
+            <div @click="dispatchSub" class="dialog-cancel-btn display-flex-c cursor-pointer">取消</div>
+            <div @click="dispatchSub('yes','detailForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定
+            </div>
+        </div>
+
+    </div>
+</div>

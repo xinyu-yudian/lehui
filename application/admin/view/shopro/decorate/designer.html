@@ -1,0 +1,307 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<style>
+    #decorate-designer {
+        font-family: Source Han Sans SC;
+        color: #fff;
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        padding-bottom: 40px;
+    }
+
+    .btn-common {
+        width: 100px;
+        height: 36px;
+        line-height: 36px;
+        text-align: center;
+        border: 1px solid #fff;
+        border-radius: 4px;
+        font-size: 12px;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .title {
+        color: #444;
+        height: 48px;
+        line-height: 48px;
+        padding: 0 22px;
+        font-weight: 600;
+        font-style: 14px;
+    }
+
+    .temp-item {
+        /* height: 510px; */
+        background: #F7F7FA;
+        border-radius: 10px;
+        padding: 0px 0 20px 18px;
+        margin: 0 12px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .foreach-item {
+        min-width: 260px;
+        height: 450px;
+        background: #fff;
+        border-radius: 4px;
+        padding: 0 12px;
+        position: relative;
+    }
+
+    .foreach-item-designer {
+        padding: 0
+    }
+
+    .temp-item-margin {
+        margin-right: 18px;
+        margin-top: 20px;
+        overflow: hidden;
+    }
+
+    .item-mask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-width: 260px;
+        height: 450px;
+        background:rgba(0, 0, 0, 0.5);
+        border-radius: 4px;
+        display: none;
+        padding: 122px 80px;
+    }
+
+    .item-mask-designer {
+        padding: 184px 80px;
+    }
+
+    .foreach-item-title {
+
+        font-size: 14px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .item-title-left {
+
+        color: #444;
+    }
+
+    .status-release {
+        color: #7438D5;
+    }
+
+    .status-cancel {
+        color: #FF6017;
+    }
+
+    .status-norelease {
+        color: #666;
+    }
+
+    .item-hover:hover .item-mask {
+        display: block;
+    }
+
+    .item-mask-item {
+        margin-bottom: 20px;
+    }
+    .item-mask-item:hover{
+        background: #7438D5;
+        border-color: #7438D5;
+    }
+
+    .item-mask-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .temp-item-img {
+        width: 236px;
+        height: 340px;
+    }
+
+    .temp-item-img-designer {
+        width: 260px;
+        /* height: 450px; */
+        position: relative;
+    }
+
+    .temp-item-img-designer img {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .designer-bottom {
+        color: #999;
+        padding: 14px;
+        font-size: 12px;
+        position: absolute;
+        width: 100%;
+        bottom: 0px;
+        background: #fff;
+        height: 72px;
+    }
+
+    .designer-bottom-title {
+        margin-bottom: 8px;
+        color: #444;
+        font-size: 16px;
+    }
+
+    /* 预览弹框 */
+    .el-dialog {
+        width: 700px;
+        height: 740px;
+        border-radius: 10px;
+        margin-top: 4vh !important;
+    }
+
+    .el-dialog__header {
+        border-radius: 10px 10px 0 0;
+    }
+
+    .el-dialog__body {
+        padding: 50px 40px 50px 75px;
+    }
+
+    .preview-body {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .web-preview {
+        height: 594px;
+        width: 300px;
+        background: url('/assets/addons/shopro/img/decorate/preview_bg.png');
+        padding: 18px;
+    }
+
+    #preview {
+        border: none;
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+        border-radius: 26px;
+    }
+
+    .code-preview {
+        width: 200px;
+        height: 594px;
+        padding-top: 28px;
+    }
+
+    .template-title {
+        font-size: 18px;
+        color: #444;
+        margin-bottom: 14px;
+    }
+
+    .template-company {
+        color: #999;
+        font-size: 12px;
+        margin-bottom: 14px;
+    }
+
+    .template-platform {
+        color: #FF5306;
+        font-size: 14px;
+        display: flex;
+    }
+
+    .template-platform img {
+        margin-right: 5px;
+    }
+
+    .wechart-code {
+        margin-top: 64px;
+    }
+
+    .code-title {
+        margin-top: 18px;
+        font-size: 12px;
+        color: #999;
+    }
+
+    .code-item {
+        width: 132px;
+        height: 132px;
+    }
+
+    .code-item-img {
+        width: 100%;
+        height: 100%;
+    }
+    .el-dialog__title{
+        font-size: 16px;
+    }
+    .el-dialog__headerbtn .el-dialog__close{
+        font-size: 18px;
+    }
+    .el-dialog__headerbtn .el-dialog__close:hover{
+        color: #7438D5;
+    }
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<div id="decorate-designer" v-cloak>
+    <div class="designer-template">
+        <div class="title">
+            设计师模板
+        </div>
+        <div class="temp-item">
+            <div class="foreach-item foreach-item-designer temp-item-margin item-hover"
+                v-for="(item,index) in decorateList">
+                <div class="temp-item-img-designer">
+                    <img v-if="item.image" :src="Fast.api.cdnurl(item.image)">
+                </div>
+                <div class="designer-bottom">
+                    <div class="designer-bottom-title">
+                        {{item.name}}
+                    </div>
+                    <div>
+                        备注：<span>{{item.memo}}</span>
+                    </div>
+                </div>
+                <div class="item-mask item-mask-designer">
+                    <!-- <div class="btn-common item-mask-item" @click="operation('preview',index,item.id)">
+                        预览模板
+                    </div> -->
+                    <div class="btn-common item-mask-item" @click="operation('use',index,item.id)">
+                        使用模板
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 预览弹框 -->
+    <el-dialog title="模板预览" :visible.sync="previewDialog" :before-close="previewClose">
+        <div class="preview-body">
+            <div class="web-preview">
+                <iframe id="preview" :src="Fast.api.cdnurl(iframeSrc)" frameborder="1"
+                    height="600px"></iframe>
+            </div>
+            <div class="code-preview">
+                <div>
+                    <div class="template-title">{{previewData.name}}</div>
+                    <div class="template-company">{{previewData.memo}}</div>
+                    <div class="template-platform" v-if="previewData.platform">
+                        <img v-for="i in previewData.platform.split(',')"
+                            :src="'/assets/addons/shopro/img/decorate/'+i+'.png'">
+                    </div>
+                </div>
+                <div class="wechart-code">
+                    <div class="code-item"><img class="code-item-img" :src="Fast.api.cdnurl(qrcodeSrc)" />
+                    <div class="code-title">微信扫描二维码即可预览</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </el-dialog>
+</div>

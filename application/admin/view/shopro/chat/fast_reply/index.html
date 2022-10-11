@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #fastReplyIndex {
+        color: #444;
+        background: #fff;
+        padding-bottom: 30px;
+    }
+
+    .shopro-header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="fastReplyIndex" v-cloak>
+    <div class="shopro-header-container">
+        <div class="choose-status" style="font-size: 14px;">
+            快捷回复
+        </div>
+        <div class="custom-search">
+            <el-input placeholder="请输入搜索名称" suffix-icon="el-icon-search" v-model="search" size="small">
+            </el-input>
+        </div>
+    </div>
+    <div class="shopro-index-button-container">
+        <div class="shopro-button shopro-refresh-button" @click="getData">
+            <i class="el-icon-refresh"></i>
+        </div>
+        <div class="shopro-button shopro-add-button" @click="operation('create',null)">
+            <i class="el-icon-plus"></i>添加回复
+        </div>
+    </div>
+    <div class="shopro-table-container">
+        <div class="custom-table-border">
+            <el-table :data="data" border :cell-class-name="tableCellClassName" stripe
+                :header-cell-class-name="tableCellClassName" @row-dblclick="operation">
+                <el-table-column label="ID" prop="id" min-width="60">
+                </el-table-column>
+                <el-table-column label="名称" min-width="160">
+                    <template slot-scope="scope">
+                        <div class="ellipsis-item">{{scope.row.name}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" min-width="110">
+                    <template slot-scope="scope">
+                        <div class="display-flex">
+                            <span v-if="scope.row.status=='normal'" class="display-flex">
+                                <span class="shopro-status-dot shopro-status-normal-dot"></span>
+                                <span class="shopro-status-normal">{{scope.row.status_text}}</span>
+                            </span>
+                            <span v-else-if="scope.row.status=='hidden'" class="display-flex">
+                                <span class="shopro-status-dot shopro-status-default-dot"></span>
+                                <span class="shopro-status-default">{{scope.row.status_text}}</span>
+                            </span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="创建时间" min-width="160">
+                    <template slot-scope="scope">
+                        <div>
+                            {{moment(scope.row.createtime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="更新时间" min-width="160">
+                    <template slot-scope="scope">
+                        <div>
+                            {{moment(scope.row.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" min-width="180">
+                    <template slot-scope="scope">
+                        <div>
+                            <span class="shopro-edit-text" @click="operation('edit',scope.row.id)">编辑</span>
+                            <span class="shopro-delete-text" @click="operation('del',scope.row.id)">删除</span>
+                        </div>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="shopro-pagination-container">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="limit"
+                layout="total, sizes, prev, pager, next, jumper" :total="totalPage">
+            </el-pagination>
+        </div>
+    </div>
+</div>

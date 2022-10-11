@@ -1,0 +1,169 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #customerServiceIndex {
+        color: #444;
+        background: #fff;
+        padding-bottom: 30px;
+    }
+
+    .shopro-header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .kefu-status {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+        margin: 0 6px 0 0;
+    }
+
+    .kefu-status-online {
+        background: #8644F2;
+    }
+
+    .kefu-status-offline {
+        background: #ED655F;
+    }
+
+    .kefu-status-other {
+        background: #666;
+    }
+
+    .kefu-status-text-offline {
+        color: #ED655F;
+    }
+
+    .kefu-status-text-online {
+        color: #8644F2;
+    }
+
+    .kefu-status-text-other {
+        color: #666;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="customerServiceIndex" v-cloak>
+    <div class="shopro-header-container">
+        <div class="choose-status" style="font-size: 14px;">
+            客服管理
+        </div>
+        <div class="custom-search">
+            <el-input placeholder="请输入搜索名称" suffix-icon="el-icon-search" v-model="search" size="small">
+            </el-input>
+        </div>
+    </div>
+    <div class="shopro-index-button-container">
+        <div class="shopro-button shopro-refresh-button" @click="getData">
+            <i class="el-icon-refresh"></i>
+        </div>
+        <div class="shopro-button shopro-add-button" @click="operation('create',null)">
+            <i class="el-icon-plus"></i>添加客服
+        </div>
+    </div>
+    <div class="shopro-table-container">
+        <div class="custom-table-border">
+            <el-table :data="data" border :cell-class-name="tableCellClassName" stripe
+                :header-cell-class-name="tableCellClassName" @row-dblclick="operation">
+                <el-table-column label="ID" prop="id" min-width="60">
+                </el-table-column>
+                <el-table-column label="绑定管理员" min-width="200">
+                    <template slot-scope="scope">
+                        <div v-if="scope.row.admin">
+                            <div class="table-image">
+                                <el-image :src="Fast.api.cdnurl(scope.row.admin.avatar)" fit="contain">
+                                    <div slot="error" class="image-slot">
+                                        <i class="el-icon-picture-outline"></i>
+                                    </div>
+                                </el-image>
+                            </div>
+                            <div class="ellipsis-item">{{scope.row.admin.nickname}}</div>
+                        </div>
+                        <div v-else>{{scope.row.admin_id}}</div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="客服信息" min-width="200">
+                    <template slot-scope="scope">
+                        <div>
+                            <div class="table-image">
+                                <el-image :src="Fast.api.cdnurl(scope.row.avatar)" fit="contain">
+                                    <div slot="error" class="image-slot">
+                                        <i class="el-icon-picture-outline"></i>
+                                    </div>
+                                </el-image>
+                            </div>
+                            <div class="ellipsis-item">{{scope.row.name}}</div>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="接待上限" prop="max_num" width="80">
+                </el-table-column>
+                <el-table-column label="上次服务时间" width="150">
+                    <template slot-scope="scope">
+                        <div>
+                            <span v-if="scope.row.lasttime==0">-</span>
+                            <span v-else>{{scope.row.lasttime_text}}</span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="状态" width="80">
+                    <template slot-scope="scope">
+                        <div>
+                            <span v-if="scope.row.status=='offline'" class="display-flex">
+                                <span class="kefu-status kefu-status-offline"></span>
+                                <span class="kefu-status-text-offline">{{scope.row.status_text}}</span>
+                            </span>
+                            <span v-else-if="scope.row.status=='online'" class="display-flex">
+                                <span class="kefu-status kefu-status-online"></span>
+                                <span class="kefu-status-text-online">{{scope.row.status_text}}</span>
+                            </span>
+                            <span v-else class="display-flex">
+                                <span class="kefu-status kefu-status-other"></span>
+                                <span class="kefu-status-text-other">{{scope.row.status_text}}</span>
+                            </span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="创建时间" width="150">
+                    <template slot-scope="scope">
+                        <div>
+                            <span
+                                v-if="scope.row.createtime">{{moment(scope.row.createtime*1000).format("YYYY-MM-DD HH:mm:ss")}}</span>
+                            <span v-else>-</span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="更新时间" width="150">
+                    <template slot-scope="scope">
+                        <div>
+                            {{moment(scope.row.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" min-width="180">
+                    <template slot-scope="scope">
+                        <div>
+                            <span class="shopro-edit-text" @click="operation('edit',scope.row.id)">编辑</span>
+                            <span class="shopro-delete-text" @click="operation('del',scope.row.id)">删除</span>
+                        </div>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="shopro-pagination-container">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="limit"
+                layout="total, sizes, prev, pager, next, jumper" :total="totalPage">
+            </el-pagination>
+        </div>
+    </div>
+</div>

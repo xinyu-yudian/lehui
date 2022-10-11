@@ -1,0 +1,725 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #userDetail {
+        color: #444;
+        padding: 0 20px 30px;
+        background-color: #fff;
+    }
+
+    .header-tip {
+        height: 50px;
+        line-height: 50px;
+        font-size: 14px;
+    }
+
+    .message-container {
+        border: 1px solid #E6E6E6;
+        padding: 20px 26px 0;
+        margin-bottom: 30px;
+    }
+
+    .message-title {
+        height: 62px;
+        line-height: 62px;
+        font-size: 16px;
+    }
+
+    .message-item {
+        margin-bottom: 14px;
+    }
+
+    .message-tip {
+        width: 56px;
+        /* margin-right: 20px; */
+        height: 34px;
+        line-height: 34px;
+        /* text-align: right; */
+        text-align: justify;
+        text-align-last: justify;
+    }
+
+    .message-tip-right {
+        width: 70px;
+        /* margin-right: 20px; */
+        text-align: justify;
+        text-align-last: justify;
+    }
+
+    .message-con {
+        flex: 1;
+        justify-content: space-between;
+    }
+
+    .avatar-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 6px;
+        margin-right: 20px;
+        border: 1px solid #E5E5E5;
+    }
+
+    .change-avatar {
+        width: 88px;
+        height: 32px;
+        border: 1px solid #7438D5;
+        border-radius: 4px;
+        justify-content: center;
+        cursor: pointer;
+        color: #7438D5;
+    }
+
+    .message-money,
+    .message-score {
+        margin-right: 30px;
+    }
+
+    .page-container {
+        justify-content: flex-end;
+    }
+
+    .table-img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .date-tip {
+        margin-left: 20px;
+        color: #999;
+    }
+
+    .margin-right-20 {
+        margin-right: 20px;
+    }
+
+    .el-popover {
+        left: 46px;
+        top: 10px;
+        padding: 16px;
+    }
+
+    .popover-container>div {
+        margin-bottom: 10px;
+    }
+
+    .popover-tip {
+        width: 56px;
+        color: #666;
+        text-align: justify;
+        text-align-last: justify;
+    }
+
+    .el-table th .cell,
+    .el-table td .cell {
+        display: block;
+        line-height: 44px;
+    }
+
+    .agent-dialog.el-dialog {
+        width: fit-content !important;
+    }
+
+    .agent-dialog.el-dialog .el-dialog__body {
+        padding: 10px 20px;
+    }
+
+    .el-dialog-tip {
+        color: #F8A92B;
+        font-size: 12px;
+        line-height: 20px;
+        margin-bottom: 14px;
+    }
+
+    .el-dialog-search {
+        margin-bottom: 14px;
+    }
+
+    .parent-agent-header {
+        height: 40px;
+        background: #F9F9F9;
+        border: 1px solid #E6E6E6;
+    }
+
+    .parent-agent-header>div {
+        text-align: center;
+        line-height: 40px;
+    }
+
+    .parent-agent-id {
+        width: 70px;
+        text-align: center;
+    }
+
+    .parent-agent-message {
+        width: 170px;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .parent-agent-message .table-image {
+        margin: 0 10px 0 0;
+    }
+
+    .parent-agent-body .parent-agent-id,
+    .parent-agent-body .parent-agent-message {
+        border-right: 1px solid #F7F7F7;
+    }
+
+    .parent-agent-phone {
+        width: 110px;
+        text-align: center;
+        position: relative;
+    }
+
+    .parent-agent-item {
+        height: 44px;
+        border-bottom: 1px solid #E6E6E6;
+        cursor: pointer;
+    }
+
+    .parent-agent-item:last-of-type {
+        border: none;
+    }
+
+    .parent-agent-body {
+        border: 1px solid #E6E6E6;
+        border-top: none;
+    }
+
+    .parent-agent-search {
+        margin-bottom: 14px;
+    }
+
+    .agent-refresh {
+        position: absolute;
+        top: -164px;
+        color: #86848B;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .agent-refresh span {
+        margin-left: 8px;
+    }
+
+    .parent-agent-item-active {
+        background: rgba(116, 56, 213, 0.1);
+    }
+
+    .table-image {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin: 0 10px;
+    }
+
+    .parent-user-avatar {
+        width: 32px;
+        height: 32px;
+        margin-right: 10px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="userDetail" v-cloak>
+    <div class="header-tip">
+        基本信息
+    </div>
+    <div class="message-container">
+        <el-row :gutter="60" type="flex" align="stretch">
+            <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <div class="">
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">用户头像</div>:
+                        </div>
+                        <div class="message-date display-flex">
+                            <img v-if="data.avatar" class="avatar-img" :src="Fast.api.cdnurl(data.avatar)">
+                            <div class="display-flex change-avatar" @click="operation('avatar')">更换头像</div>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">角色分组</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-select v-model="data.group_id" placeholder="" size="medium">
+                                <el-option v-for="group in groupList" :key="group" :label="group.name"
+                                    :value="group.id">
+                                </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">用户名</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-input v-model="data.username" placeholder="请输入用户名" size="medium"></el-input>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">用户昵称</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-input v-model="data.nickname" placeholder="请输入用户昵称" size="medium"></el-input>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">用户等级</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-input type="number" v-model="data.level" size="medium"></el-input>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">生日</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-date-picker v-model="data.birthday" type="date" placeholder="选择日期"
+                                value-format="yyyy-MM-dd" format="yyyy-MM-dd">
+                            </el-date-picker>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">格言</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-input v-model="data.bio" size="medium"></el-input>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">手机号</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-input v-model="data.mobile" placeholder="未绑定手机号" size="medium"></el-input>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">邮箱</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-input v-model="data.email" placeholder="请输入邮箱" size="medium"></el-input>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">密码</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-input v-model="upPassword" placeholder="不修改密码请留空" size="medium"></el-input>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="display-flex margin-right-20">
+                            <div class="message-tip">状态</div>:
+                        </div>
+                        <div class="message-con display-flex">
+                            <el-radio-group v-model="data.status">
+                                <el-radio label="normal">正常</el-radio>
+                                <el-radio label="hidden">禁用</el-radio>
+                            </el-radio-group>
+                        </div>
+                    </div>
+                    <!-- <div class="message-item display-flex">
+                        <div class="message-tip">邀请人:</div>
+                        <div class="message-con display-flex">
+                            {{data.password}}
+                        </div>
+                    </div> -->
+                </div>
+            </el-col>
+            <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
+                <div style="display: flex;flex-direction: column;justify-content: space-between;height: 100%;">
+                    <div>
+                        <div class="message-item display-flex" v-if="data.hasOwnProperty('parent_user')">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">推荐人</div>:
+                            </div>
+                            <div class="message-con display-flex">
+                                <div v-if="data.parent_user_id"
+                                    class="message-money theme-color cursor-pointer display-flex"
+                                    @click="openAgentProfile(data.parent_user.id)">
+                                    <img class="avatar-img parent-user-avatar" v-if="data.parent_user.avatar"
+                                        :src="Fast.api.cdnurl(data.parent_user.avatar)">
+                                    <span class="ellipsis-item">{{data.parent_user.nickname}}</span>
+                                </div>
+                                <template v-if="data.parent_user_id==null">
+                                    暂无推荐人
+                                </template>
+                                <template v-if="data.parent_user_id==0">
+                                    平台直推
+                                </template>
+                                <!-- <div v-if="!data.parent_user">暂无推荐人</div> -->
+                                <div class="theme-color cursor-pointer" style="flex-shrink: 0;" @click="openDialog">
+                                    更换
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">用户ID</div>:
+                            </div>
+                            <div class="message-con display-flex">
+                                <div class="message-money">
+                                    {{data.id}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">第三方账号</div>:
+                            </div>
+                            <div class="message-date display-flex">
+                                <el-popover placement="bottom" trigger="hover"
+                                    :title="operation('platformname',i.platform)" width="360"
+                                    v-for="(i,index) in data.third_platform">
+                                    <div class="popover-container">
+                                        <div v-if="i.headimgurl" class="display-flex">
+                                            <div class="display-flex">
+                                                <div class="popover-tip">头像</div>：
+                                            </div>
+                                            <img class="avatar-img" :src="Fast.api.cdnurl(i.headimgurl)">
+                                        </div>
+                                        <div class="display-flex">
+                                            <div class="display-flex">
+                                                <div class="popover-tip">性别</div>：
+                                            </div>
+                                            <div class="color-7536D0">{{i.sex==2?'女':'男'}}</div>
+                                        </div>
+                                        <div class="display-flex">
+                                            <div class="display-flex">
+                                                <div class="popover-tip">国家</div>：
+                                            </div>
+                                            <div class="color-7536D0">{{i.country}}</div>
+                                        </div>
+                                        <div class="display-flex">
+                                            <div class="display-flex">
+                                                <div class="popover-tip">省市</div>：
+                                            </div>
+                                            <div class="color-7536D0">{{i.province}}-{{i.city}}</div>
+                                        </div>
+                                        <div class="display-flex">
+                                            <div class="display-flex">
+                                                <div class="popover-tip">OpenId</div>：
+                                            </div>
+                                            <div class="color-7536D0">{{i.openid}}</div>
+                                        </div>
+                                        <div class="display-flex">
+                                            <div class="display-flex">
+                                                <div class="popover-tip">UnionId</div>：
+                                            </div>
+                                            <div class="color-7536D0">{{i.unionid}}</div>
+                                        </div>
+                                        <div class="display-flex">
+                                            <div class="display-flex">
+                                                <div class="popover-tip">创建时间</div>：
+                                            </div>
+                                            <div class="color-7536D0">
+                                                {{moment(i.createtime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ellipsis-item cursor-pointer" slot="reference">
+                                        <img style="width: 30px;height: 30px;"
+                                            :style="{'margin-right':index!=data.third_platform.length-1?'5px':''}"
+                                            :src="'/assets/addons/shopro/img/user/'+i.provider+'-'+i.platform+'.png'">
+                                    </div>
+                                </el-popover>
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">用户性别</div>:
+                            </div>
+                            <div class="message-con display-flex">
+                                <el-radio-group v-model="data.gender">
+                                    <el-radio :label="0">未知</el-radio>
+                                    <el-radio :label="1">男</el-radio>
+                                    <el-radio :label="2">女</el-radio>
+                                </el-radio-group>
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">账户余额</div>:
+                            </div>
+                            <div class="message-con display-flex">
+                                <div class="message-money">
+                                    {{data.money}}
+                                </div>
+                                <div class="theme-color cursor-pointer" @click="operation('money')">
+                                    充值
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">账户积分</div>:
+                            </div>
+                            <div class="message-con display-flex">
+                                <div class="message-score">
+                                    {{data.score}}
+                                </div>
+                                <div class="theme-color cursor-pointer" @click="operation('score')">
+                                    充值
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">加入IP</div>:
+                            </div>
+                            <div class="message-con display-flex">
+                                {{data.joinip}}
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">登录时间</div>:
+                            </div>
+                            <div class="display-flex">
+                                {{moment(data.logintime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">连续登录</div>:
+                            </div>
+                            <div class="display-flex">
+                                {{data.successions}}
+                                <span class="date-tip">天</span>
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">连续登录</div>:
+                            </div>
+                            <div class="display-flex">
+                                {{data.maxsuccessions}}
+                                <span class="date-tip">最多天数</span>
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">登录失败</div>:
+                            </div>
+                            <div class="display-flex">
+                                {{data.loginfailure}}
+                                <span class="date-tip">次</span>
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">更新时间</div>:
+                            </div>
+                            <div class="display-flex">
+                                {{moment(data.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">上次登录</div>:
+                            </div>
+                            <div class="display-flex">
+                                {{moment(data.prevtime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                            </div>
+                        </div>
+                        <div class="message-item display-flex">
+                            <div class="display-flex margin-right-20">
+                                <div class="message-tip-right">加入时间</div>:
+                            </div>
+                            <div class="display-flex">
+                                {{moment(data.jointime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message-item display-flex">
+                        <div class="message-con display-flex" style="justify-content: flex-end;">
+                            <div class="dialog-cancel-btn" style="color: #999;" @click="operation('reset')">重置
+                            </div>
+                            <div class="dialog-define-btn" @click="operation('save')">保存</div>
+                        </div>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+    <div v-if="logList && activeStatus">
+        <div class="display-flex">
+            <div class="custom-refresh display-flex-c" @click="getListData(activeStatus)">
+                <i class="el-icon-refresh"></i>
+            </div>
+            <div class="flex-1">
+                <el-radio-group v-model="activeStatus" fill="#7536D0" @change="radioChange">
+                    {if condition = "$auth->check('shopro/user/user/money_log')"}
+                    <el-radio-button label="money_log">余额明细</el-radio-button>
+                    {/if}
+                    {if condition = "$auth->check('shopro/user/user/score_log')"}
+                    <el-radio-button label="score_log">积分明细</el-radio-button>
+                    {/if}
+                    {if condition = "$auth->check('shopro/user/user/order_log')"}
+                    <el-radio-button label="order_log">订单记录</el-radio-button>
+                    {/if}
+                    <!-- {if condition = "$auth->check('shopro/user/user/login_log')"}
+                    <el-radio-button label="login_log">登录记录</el-radio-button>
+                    {/if} -->
+                    {if condition = "$auth->check('shopro/user/user/share_log')"}
+                    <el-radio-button label="share_log">分享记录</el-radio-button>
+                    {/if}
+                    {if condition = "$auth->check('shopro/user/user/goods_favorite')"}
+                    <el-radio-button label="goods_favorite">收藏商品</el-radio-button>
+                    {/if}
+                    {if condition = "$auth->check('shopro/user/user/goods_view')"}
+                    <el-radio-button label="goods_view">浏览足迹</el-radio-button>
+                    {/if}
+                    {if condition = "$auth->check('shopro/user/user/coupon_log')"}
+                    <el-radio-button label="coupon_log">优惠券</el-radio-button>
+                    {/if}
+                </el-radio-group>
+            </div>
+        </div>
+        <div class="custom-table-body">
+            <el-table ref="multipleTable" :data="logList" tooltip-effect="dark" style="width: 100%" border
+                :row-class-name="tableRowClassName">
+                <template v-for="(item, index) in columns[activeStatus]">
+                    <el-table-column :key="index" :fixed="item.fixed" :prop="item.field" :label="item.title"
+                        :align="item.align ? item.align : 'center'" :min-width="item.width">
+                        <template slot-scope="scope">
+                            <div v-if="item.type=='order'" @click="operation('order',scope.row.id)"
+                                class="theme-color cursor-pointer">{{scope.row[item.field]}}</div>
+                            <div v-if="item.type=='text'">
+                                <span v-if="scope.row[item.field] || scope.row[item.field]==0">
+                                    {{scope.row[item.field]}}
+                                </span>
+                            </div>
+                            <div class="display-flex-c" style="width: 100%;" v-if="item.type=='htmls'"
+                                v-html="item.formatter(scope.row, item)"></div>
+
+                            <div class="display-flex-c" style="width: 100%;height: 44px;"
+                                v-if="item.type=='time' || item.type=='image'" v-html="item.formatter(scope.row, item)">
+                            </div>
+                            <!-- 分享用户 -->
+                            <div class="display-flex-c theme-color cursor-pointer" style="width: 100%;"
+                                v-if="item.type=='shareUser'" v-html="item.formatter(scope.row, item)"
+                                @click="operation('shareUser',scope.row.user.id)"></div>
+                            <!-- 商品信息 -->
+                            <div class="display-flex-c theme-color cursor-pointer" style="width: 100%;"
+                                v-if="item.type=='shareMessage' && scope.row.type=='goods'"
+                                v-html="item.formatter(scope.row, item)"
+                                @click="operation(scope.row.type,scope.row[scope.row.type].id)"></div>
+                            <!-- 收藏商品,浏览商品 -->
+                            <div class="display-flex-c theme-color cursor-pointer" style="width: 100%;"
+                                v-if="item.type=='goods'" v-html="item.formatter(scope.row, item)"
+                                @click="operation('goods',scope.row.goods.id)"></div>
+
+                            <!-- 拼团 -->
+                            <div class="display-flex-c theme-color cursor-pointer" style="width: 100%;"
+                                v-if="item.type=='shareMessage' && scope.row.type=='groupon'"
+                                v-html="item.formatter(scope.row, item)"
+                                @click="operation(scope.row.type,scope.row.id)"></div>
+
+                            <!-- 优惠券 -->
+                            <div class="display-flex-c" style="width: 100%;"
+                                v-if="item.type=='couponStatus'&& item.formatter(scope.row, item)==0">未使用</div>
+
+                            <div class="display-flex-c theme-color cursor-pointer" style="width: 100%;"
+                                v-if="item.type=='couponStatus'&& item.formatter(scope.row, item)==1"
+                                @click="operation('order',scope.row.use_order_id)">已使用{{scope.row.user_order_id}}</div>
+
+                            <div v-if="item.type=='price'">{{scope.row[item.field]}}元</div>
+                        </template>
+                    </el-table-column>
+                </template>
+            </el-table>
+        </div>
+        <div class="page-container display-flex">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="limit"
+                layout="total, sizes, prev, pager, next, jumper" :total="totalPage">
+            </el-pagination>
+        </div>
+    </div>
+    <el-dialog title="修改推荐人" :visible.sync="agentDialogVisible" :before-close="closeDialog" custom-class="agent-dialog">
+        <div>
+            <div class="el-dialog-tip">
+                注意：更换上级分销商之后，该用户之后的所有团队和业绩将移至新的分销商名下。
+            </div>
+            <div class="el-dialog-search">
+                <el-input placeholder="请输入内容" v-model="parentFilterForm.form_1_value" class="input-with-select"
+                    size="medium" @input="parentDebounceFilter">
+                    <el-select v-model="parentFilterForm.form_1_key" slot="prepend" placeholder="请选择">
+                        <el-option label="会员ID" value="user_id"></el-option>
+                        <el-option label="会员昵称" value="nickname"></el-option>
+                        <el-option label="手机号" value="mobile"></el-option>
+                    </el-select>
+                    <i slot="suffix" class="el-input__icon el-icon-search"></i>
+                </el-input>
+            </div>
+            <div>
+                <div class="parent-agent-header display-flex">
+                    <div class="parent-agent-id">ID</div>
+                    <div class="parent-agent-message">分销信息</div>
+                    <div class="parent-agent-message">分销等级</div>
+                    <div class="parent-agent-phone">手机号</div>
+                </div>
+                <div class="parent-agent-body">
+                    <div class="parent-agent-item display-flex"
+                        :class="parent.user_id==selectParentAgentId?'parent-agent-item-active':''"
+                        v-for="parent in dialogList" v-if="dialogList.length>0" @click="initAgentData(parent.user_id)">
+                        <div class="parent-agent-id">{{parent.user_id}}</div>
+                        <div class="parent-agent-message">
+                            <div v-if="parent.user" class="display-flex">
+                                <div class="table-image" v-if="parent.user.avatar">
+                                    <el-image :src="Fast.api.cdnurl(parent.user.avatar)" fit="contain">
+                                        <div slot="error" class="image-slot">
+                                            <i class="el-icon-picture-outline"></i>
+                                        </div>
+                                    </el-image>
+                                </div>
+                                <div class="ellipsis-item">{{parent.user.nickname?parent.user.nickname:'-'}}</div>
+                            </div>
+                            <div v-else style="text-align: left;">-</div>
+                        </div>
+                        <div class="parent-agent-message">
+                            <span v-if="parent.agent_level && parent.agent_level.name">
+                                {{parent.agent_level.name}}
+                            </span>
+                            (等级{{parent.level}})
+                        </div>
+                        <div class="parent-agent-phone">
+                            <span v-if="parent.user">{{parent.user.mobile?parent.user.mobile:'-'}}</span>
+                            <span v-else>-</span>
+                        </div>
+                    </div>
+                    <div class="parent-agent-item display-flex" style="justify-content: center;"
+                        v-if="dialogList.length==0">无数据</div>
+                </div>
+            </div>
+            <div class="shopro-pagination-container">
+                <el-pagination pager-count="5" @current-change="phandleCurrentChange" :current-page="pcurrentPage"
+                    :page-size="plimit" layout="total, prev, pager, next, jumper" :total="ptotalPage">
+                </el-pagination>
+            </div>
+        </div>
+        <span slot="footer" style="display: flex;align-items: center;justify-content: space-between;">
+            <el-checkbox v-model="noRecommendationChecked" @change="initAgentData(noRecommendationChecked)">设为无推荐人
+            </el-checkbox>
+            <div>
+                <el-button style="margin-right: 10px;" @click="closeDialog" size="mini" type="text">取 消</el-button>
+                <el-button type="primary" size="small" @click="closeDialog(true)">确 定</el-button>
+            </div>
+        </span>
+    </el-dialog>
+</div>

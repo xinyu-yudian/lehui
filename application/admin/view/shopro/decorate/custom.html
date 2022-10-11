@@ -1,0 +1,290 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<style>
+    #decorate-list {
+        font-family: Source Han Sans SC;
+        padding: 0 20px 20px;
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        height: calc(100vh - 66px);
+        overflow: auto;
+    }
+
+    .title {
+        height: 58px;
+        line-height: 58px;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    .btn-common {
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 4px;
+        font-size: 13px;
+        text-align: center;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .btn-box {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .create-btn {
+        background: #7536D0;
+        color: #fff;
+        width: 100px;
+        height: 32px;
+        line-height: 32px;
+    }
+
+    .opt-status {
+        cursor: pointer;
+    }
+
+    .opt-decorate {
+        color: #7536D0;
+        margin-right: 20px;
+    }
+
+    .opt-delete {
+        color: #FF5000;
+    }
+
+    .el-table th {
+        background: #F9F9F9;
+    }
+
+    .el-table_1_column_1,
+    .el-table_1_column_2,
+    .el-table_1_column_3 {
+        border-right: none !important;
+    }
+
+    .el-table__fixed-right::before,
+    .el-table__fixed::before {
+        height: 0 !important;
+    }
+
+    .el-table th>.cell,
+    .el-table .cell {
+        /* text-align: center; */
+        color: #444;
+        font-weight: 500;
+        padding-left: 20px;
+    }
+
+    /* .el-table_1_column_1 .cell {
+        text-align: left;
+    } */
+
+    .platform-img {
+        margin-right: 10px;
+        width: 22px;
+        height: 22px;
+    }
+
+    .platform-img:last-child {
+        margin-right: 0;
+    }
+
+    .el-dialog {
+        width: 500px;
+        /* height: 186px; */
+    }
+
+    .el-dialog__header {
+        border-radius: 10px 10px 0 0;
+    }
+
+    .custom-items {
+        display: flex;
+        align-items: center;
+        height: 46px;
+    }
+
+    .custom-titles {
+        width: 92px;
+    }
+
+    .custom-btn {
+        justify-content: flex-end;
+    }
+
+    .custom-btn-1 {
+        color: #7438D5;
+        /* float: right; */
+        line-height: 36px;
+    }
+
+    .custom-btn-2 {
+        width: 88px;
+        height: 36px;
+        background: #7438D5;
+        border-radius: 4px;
+        font-size: 16px;
+        color: #fff;
+        line-height: 36px;
+        /* float: right; */
+    }
+
+    .custom-edit {
+        display: none;
+        margin-left: 6px;
+        margin-right: 5px;
+        font-size: 13px;
+    }
+
+    .change-name {
+        display: flex;
+        border: none;
+        background: rgba(0, 0, 0, 0);
+        margin-left: -10px;
+    }
+
+    .change-name:hover,
+    .change-name:focus {
+        background: rgba(0, 0, 0, 0);
+        color: #7438D5;
+    }
+
+    .change-name:hover .custom-edit,
+    .change-name:focus .custom-edit {
+        background: rgba(0, 0, 0, 0);
+        color: #7438D5;
+        display: block;
+    }
+
+    .preview-template:focus,
+    .preview-template:hover,
+    .preview-template {
+        background: rgba(0, 0, 0, 0);
+        border: none;
+        color: #7438D5;
+    }
+
+    .preview-code {
+        width: 96px;
+        height: 96px;
+        background: #f00;
+        margin: 0 auto;
+    }
+
+    /* 按钮颜色 */
+    .el-button--primary,
+    .el-button--primary:hover,
+    .el-button--primary:focus {
+        color: #FFF;
+        background-color: #7438D5;
+        border-color: #7438D5;
+    }
+
+    .el-button--text,
+    .el-button--text:hover,
+    .el-button--text:focus {
+        color: #7438D5;
+    }
+
+    .el-popover {
+        min-width: 120px !important;
+    }
+
+    .class4 {
+        /* color: #f00; */
+        display: none;
+    }
+
+    .popover-input {
+        width: 130px;
+        height: 32px;
+        line-height: 32px;
+        padding: 0 10px;
+        border-radius: 5px;
+        background: none;
+        border: 1px solid #C0C4CC;
+    }
+
+    .opt-edit {
+        color: #18d3a9;
+    }
+
+    .opt-copy {
+        color: #444;
+    }
+
+    .el-form-item:last-child {
+        margin-bottom: 0px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="decorate-list" v-cloak>
+    <div class="title">
+        自定义页面
+    </div>
+    <div class="btn-box">
+        <div class="btn-common create-btn" @click="operation('create',null,null)">
+            <i class="el-icon-plus" style="margin-right: 5px;font-size:13px;"></i>新建页面
+        </div>
+    </div>
+    <el-table :data="decorateList" style="width: 100%" border>
+        <el-table-column prop="name" label="页面名称" width="200">
+        </el-table-column>
+        <el-table-column prop="memo" label="备注" width="300">
+        </el-table-column>
+        <el-table-column prop="updatetime" label="最后修改时间" width="300">
+            <template slot-scope="scope">
+                {{moment(scope.row.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+            </template>
+        </el-table-column>
+        <el-table-column label="操作" fixed="right" min-width="240">
+            <template slot-scope="scope">
+                <div>
+                    <span class="opt-status opt-decorate"
+                        @click="operation('decorate',scope.row.id,scope.row.type,scope.row.name)">装修</span>
+                    <span class="opt-status opt-decorate opt-edit"
+                        @click="operation('edit',scope.row.id,scope.row.type)">编辑</span>
+                    <span class="opt-status opt-decorate opt-copy"
+                        @click="operation('copy',scope.row.id,scope.row.type)">复制</span>
+                    <span class="opt-status opt-delete"
+                        @click="operation('delete',scope.row.id,scope.row.type)">删除</span>
+                </div>
+            </template>
+        </el-table-column>
+    </el-table>
+    <!-- 创建自定义 -->
+    <el-dialog :title="editId?'编辑页面':'创建新页面'" :visible.sync="customDialog" :before-close="customClose">
+        <div class="custom-bodys">
+            <el-form :model="customTem" :rules="rules" ref="ruleForm" label-width="80px">
+                <el-form-item label="页面名称" prop="name">
+                    <el-input type="text" placeholder="最多可输入10个字" v-model="customTem.name" maxlength="10">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="备注" prop="memo">
+                    <el-input type="text" placeholder="最多可输入12个字" v-model="customTem.memo" maxlength="12">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="发布平台">
+                    <el-checkbox-group v-model="customTem.platform">
+                        <el-checkbox label="wxMiniProgram">微信小程序</el-checkbox>
+                        <el-checkbox label="wxOfficialAccount">微信公众号</el-checkbox>
+                        <el-checkbox label="H5">H5</el-checkbox>
+                        <el-checkbox label="App">App</el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+            </el-form>
+            <div class="custom-items custom-btn">
+                <div @click="customClose" class="btn-common custom-btn-1">取消</div>
+                <div @click="customClose('yes')" class="btn-common custom-btn-2">确定</div>
+            </div>
+        </div>
+    </el-dialog>
+</div>

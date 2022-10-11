@@ -1,0 +1,94 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #skuPrice {
+        padding: 0 20px 60px;
+    }
+    .table-box {
+        /* border: 1px solid #E6E6E6; */
+        margin: 20px 0;
+        overflow-x: auto;
+    }
+
+    .table-box .table {
+        table-layout: auto;
+        margin: 0;
+    }
+
+    .table-box .table td,
+    .table-box .table th {
+        white-space: nowrap;
+        min-width: 80px;
+        line-height: 32px;
+    }
+    .table-input{
+        width: 100px;
+    }
+    .table-status {
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+    .table-status-down {
+        color: #3498db;
+    }
+    .table-status-up {
+        color: #ED3C30;
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<div id="skuPrice" v-cloak>
+    <div class="table-box">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th v-for="(item, i) in skuList" :key="i">
+                        {{item.name}}
+                    </th>
+                    <th width="80">库存</th>
+                    <th width="80">价格</th>
+                    <th width="80">活动销量</th>
+                    <th width="80">活动库存</th>
+                    <th width="80">活动价格</th>
+                    <th width="80">操作1</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, i) in skuPrice" :key="i">
+                    <td v-for="(v, j) in item.goods_sku_text" :key="j">
+                        {{v}}
+                    </td>
+                    <td width="80">
+                        <el-input class="table-input" type="number" v-model="item.stock" disabled size="small"></el-input>
+                    </td>
+                    <td width="80">
+                        <el-input class="table-input" type="number" v-model="item.price" disabled size="small"></el-input>
+                    </td>
+                    <td width="80">
+                        <el-input class="table-input" type="number" v-model="item.sales" disabled size="small"></el-input>
+                    </td>
+                    <td width="80">
+                        <el-input v-positive-integer v-if="actSkuPrice[i].status=='up'" class="table-input" type="number" 
+                        v-model="actSkuPrice[i].stock" :disabled="type=='view' || activity_status=='end'" size="small" @input="activityStock(i,'stock')">
+                        </el-input>
+                    </td>
+                    <td width="80">
+                        <el-input v-enter-number v-if="actSkuPrice[i].status=='up'" class="table-input" type="number" 
+                        v-model="actSkuPrice[i].price" :disabled="type=='view' || activity_status=='ing' || activity_status=='end'" size="small"
+                        @input="activityStock(i,'price')">
+                        </el-input>
+                    </td>
+                    <td width="80">
+                        <span v-if="type=='add' || (type=='edit' && activity_status=='nostart')" class="table-status" :class="actSkuPrice[i].status=='up'?'table-status-up':'table-status-down'" @click="changeStatus(i)">
+                            {{actSkuPrice[i].status=='up'?'取消':'参与'}}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="shopro-submit-container">
+        <el-button type="primary" @click="submitForm()">确定</el-button>
+    </div>
+</div>

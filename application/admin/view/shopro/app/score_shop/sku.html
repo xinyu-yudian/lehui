@@ -1,0 +1,228 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    .skuChildrenBox {
+        display: flex;
+        padding: 0 15px;
+        flex-wrap: wrap;
+    }
+
+    .skuChildren {
+        margin-right: 10px;
+        margin-top: 10px;
+        width: 50px;
+        height: 24px;
+        line-height: 24px;
+        color: rgba(80, 80, 80, 1);
+        border-radius: 2px;
+        font-size: 12px;
+        text-align: center;
+        border: 1px solid rgba(231, 231, 231, 1);
+        position: relative;
+    }
+
+    .skuChildrenSelect {
+        border: 1px solid rgba(212, 48, 48, 1)
+    }
+
+    .skuChildren-close {
+        position: absolute;
+        background: rgba(212, 48, 48, 1);
+        color: #fff;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        top: -6px;
+        right: -6px;
+        font-style: 12px;
+        -webkit-transform: scale(0.8);
+    }
+
+    .status {
+        border: none;
+        cursor: pointer;
+        color: #7438D5;
+        font-size: 14px;
+    }
+
+    .status-s {
+        color: #FF5959;
+    }
+
+    #skuPrice {
+        background: #fff;
+        padding: 10px;
+        color: #444;
+    }
+
+    .display-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .goods-message {
+        height: 70px;
+        border: 1px solid #E6E6E6;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .goods-container {
+        height: 100%;
+        width: 100%;
+        background: #F9F9F9;
+        padding: 0 10px;
+    }
+
+    .goods_img {
+        width: 34px;
+        height: 34px;
+        margin-right: 14px;
+    }
+
+    .table {
+        border: 1px solid #E6E6E6;
+        border-bottom: none;
+    }
+
+    .table>thead {
+        background: #F9F9F9
+    }
+
+    .table>thead>tr>th {
+        padding: 9px;
+        border-bottom: 1px solid #E6E6E6;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .table>tbody>tr>td {
+        padding: 9px;
+        border-bottom: 1px solid #E6E6E6;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .page-footer {
+        justify-content: flex-end;
+    }
+
+    .sub-btn {
+        width: 88px;
+        height: 36px;
+        background: #7438D5;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #fff;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .el-input__inner {
+        height: 32px;
+        line-height: 32px;
+        padding: 0 4px;
+    }
+
+    .all-edit {
+        margin-left: 6px;
+        color: #7438D5;
+        font-size: 14px;
+    }
+    .popover-btn-container{
+        text-align: right; margin-top: 10px
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<div id="skuPrice" v-cloak>
+    <div class="goods-message display-flex">
+        <div class="goods-container display-flex">
+            <img class="goods_img" :src="Fast.api.cdnurl(goodsDetail.image)">
+            <div>{{goodsDetail.title}}</div>
+        </div>
+    </div>
+    <div class="widget-body no-padding">
+        <table class="table" id="skuPrce" v-cloak>
+            <thead>
+                <tr>
+                    <th v-for="(item, i) in skuList" :key="i">
+                        {{item.name}}
+                    </th>
+                    <th width="80">库存</th>
+                    <th width="80">价格</th>
+                    <th width="80">活动销量</th>
+                    <th width="100">
+                        <div>活动库存
+                            <el-popover placement="top" width="160" v-model="allEditPopover.stock">
+                                <el-input type="number" v-model="allEditDatas" placeholder="请输入内容"></el-input>
+                                <div class="popover-btn-container">
+                                    <el-button size="mini" type="text" @click="allEditData('stock','cancel')">取消
+                                    </el-button>
+                                    <el-button type="primary" size="mini" @click="allEditData('stock','define')">确定
+                                    </el-button>
+                                </div>
+                                <i slot="reference" class="el-icon-edit-outline all-edit"></i>
+                            </el-popover>
+                        </div>
+                    </th>
+                    <th width="120">兑换积分<el-popover placement="top" width="160" v-model="allEditPopover.score">
+                            <el-input type="number" v-model="allEditDatas" placeholder="请输入内容"></el-input>
+                            <div class="popover-btn-container">
+                                <el-button size="mini" type="text" @click="allEditData('score','cancel')">取消</el-button>
+                                <el-button type="primary" size="mini" @click="allEditData('score','define')">确定
+                                </el-button>
+                            </div>
+                            <i slot="reference" class="el-icon-edit-outline all-edit"></i>
+                        </el-popover>
+                    </th>
+                    <th width="100">兑换价格<el-popover placement="top" width="160" v-model="allEditPopover.price">
+                            <el-input type="number" v-model="allEditDatas" placeholder="请输入内容"></el-input>
+                            <div class="popover-btn-container">
+                                <el-button size="mini" type="text" @click="allEditData('price','cancel')">取消</el-button>
+                                <el-button type="primary" size="mini" @click="allEditData('price','define')">确定
+                                </el-button>
+                            </div>
+                            <i slot="reference" class="el-icon-edit-outline all-edit"></i>
+                        </el-popover>
+                    </th>
+                    <th width="80">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item, i) in skuPrice" :key="i">
+                    <td v-for="(v, j) in item.goods_sku_text" :key="j">
+                        {{v}}
+                    </td>
+                    <td width="80">{{item.stock}}</td>
+                    <td width="80">{{item.price}}</td>
+                    <td width="80">{{item.sales}}</td>
+                    <td width="100">
+                        <el-input v-show="activitySkuPrice[i].status=='up'" type="number" v-model="activitySkuPrice[i].stock">
+                        </el-input>
+                    </td>
+                    <td width="120">
+                        <el-input v-show="activitySkuPrice[i].status=='up'" type="number" v-model="activitySkuPrice[i].score">
+                        </el-input>
+                    </td>
+                    <td width="100">
+                        <el-input v-show="activitySkuPrice[i].status=='up'" type="number" v-model="activitySkuPrice[i].price">
+                        </el-input>
+                    </td>
+                    <td width="80"><span class="input-sm form-control status"
+                            :class="activitySkuPrice[i].status=='up'?'status-s':''"
+                            @click="goJoin(i)">{{activitySkuPrice[i].status=='up'?'取消':'参与'}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="page-footer display-flex">
+        <div class="sub-btn display-flex" @click="submitForm">
+            确定
+        </div>
+    </div>
+</div>

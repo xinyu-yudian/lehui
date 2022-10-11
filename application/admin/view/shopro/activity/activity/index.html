@@ -1,0 +1,264 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+
+    .shopro-reset-button {
+        margin-right: 20px;
+    }
+
+    #activityIndex {
+        background: #fff;
+        padding: 0 20px 30px;
+        font-size: 14px;
+        font-family: Source Han Sans SC;
+        font-weight: 500;
+        color: #444;
+    }
+
+    .activity-title {
+        height: 50px;
+        line-height: 50px;
+        font-weight: 600;
+    }
+
+    .activity-tips {
+        padding: 16px;
+        border-radius: 5px;
+        background-color: #F1EBFA;
+        position: relative;
+        margin-bottom: 20px;
+        font-size: 12px;
+    }
+
+    .activity-tips-close {
+        color: #7536D0;
+        position: absolute;
+        top: 16px;
+        right: 16px;
+    }
+
+    .activity-screen {
+        flex-wrap: wrap;
+        align-items: flex-end;
+    }
+
+    .activity-screen-condition {
+        flex: 1;
+        flex-wrap: wrap;
+    }
+
+    .activity-screen-button {
+        flex-shrink: 0;
+        margin-bottom: 20px;
+    }
+
+    .activity-screen-condition-item {
+        margin: 0 28px 20px 0;
+    }
+
+    .activity-screen-condition-label {
+        margin-right: 14px;
+        flex-shrink: 0;
+        font-size: 12px;
+        color: #444;
+    }
+
+    .activity-screen-condition-content {
+        width: 176px;
+    }
+
+    .activity-screen-condition-content-time {
+        width: 400px;
+    }
+
+    .activity-table-button-left {
+        flex: 1;
+    }
+
+    .activity-table-button-right {
+        flex-shrink: 0;
+    }
+
+    .activity-table-container {
+        margin-top: 14px;
+    }
+
+    .activity-table-goods-image {
+        width: 36px;
+        height: 36px;
+        border-radius: 4px;
+        overflow: hidden;
+        border: 1px solid #e6e6e6;
+    }
+
+    .table-operation {
+        cursor: pointer;
+        color: #7536D0;
+        margin-right: 16px;
+    }
+
+    .table-operation-delete {
+        color: #F54747;
+        margin-right: 0px;
+    }
+
+    .table-operation:hover {
+        color: #7536D0;
+    }
+
+    .table-operation-delete:hover {
+        color: #F54747;
+    }
+
+    [v-cloak] {
+        display: none;
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="activityIndex" v-cloak>
+    <div class="activity-title">营销活动</div>
+    <div class="activity-tips" v-if="tipCloseFlag">
+        <p><strong>活动说明</strong></p>
+        <p>1、为确保活动的可靠性，请务必配置 Redis <a class="tip-a" href="https://doc.fastadmin.net/shopro" target="_blank">查看文档</a>
+        </p>
+        <p>2、活动订单自动关闭时间 是为当前活动订单专门设置的超时未支付自动关闭时间，如果未设置，将使用系统订单自动关闭时间</p>
+        <p>3、活动自动关闭时间 是当前活动结束后多长时间自动关闭，关闭的活动请在历史活动查看</p>
+        <p>4、每人限购 不设置或者设置为 0 将不限制购买数量</p>
+        <i class="el-icon-close activity-tips-close" @click="activityTipsClose"></i>
+    </div>
+    <div class="activity-screen display-flex">
+        <div class="activity-screen-condition display-flex">
+            <div class="activity-screen-condition-item display-flex">
+                <div class="activity-screen-condition-label">
+                    活动名称
+                </div>
+                <div class="activity-screen-condition-content">
+                    <el-input size="small" v-model="searchForm.title" placeholder="请输入活动名称"></el-input>
+                </div>
+            </div>
+            <div class="activity-screen-condition-item display-flex">
+                <div class="activity-screen-condition-label">
+                    活动类型
+                </div>
+                <div class="activity-screen-condition-content">
+                    <el-select class="select-item" size="small" v-model="searchForm.type" placeholder="请选择">
+                        <el-option v-for="item in activityOptions" :key="item.type" :label="item.name"
+                            :value="item.type">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <div class="activity-screen-condition-item display-flex">
+                <div class="activity-screen-condition-label">
+                    活动状态
+                </div>
+                <div class="activity-screen-condition-content">
+                    <el-select class="select-item" size="small" v-model="searchForm.status" placeholder="请选择">
+                        <el-option v-for="item in statusOptins" :key="item.type" :label="item.name"
+                            :value="item.type">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <div class="activity-screen-condition-item display-flex">
+                <div class="activity-screen-condition-label">
+                    活动时间
+                </div>
+                <div class="activity-screen-condition-content activity-screen-condition-content-time">
+                    <el-date-picker v-model="searchForm.activitytime" type="datetimerange" size="small"
+                        start-placeholder="开始日期" end-placeholder="结束日期" value-format="yyyy-MM-dd HH:mm:ss"
+                        format="yyyy-MM-dd HH:mm:ss">
+                    </el-date-picker>
+                </div>
+            </div>
+        </div>
+        <div class="activity-screen-button display-flex">
+            <div class="shopro-button shopro-reset-button" @click="screenEmpty">重置</div>
+            <div class="shopro-button shopro-screen-button" @click="getActivityData(0,10)">筛选</div>
+        </div>
+    </div>
+    <div class="activity-table-button display-flex">
+        <div class="activity-table-button-left display-flex">
+            <div class="shopro-button shopro-refresh-button" @click="getActivityData()"><i class="el-icon-refresh"></i></div>
+            <div class="shopro-add-button" @click="activityAdd">
+                <i class="el-icon-plus margin-right-5"></i>新建活动
+            </div>
+        </div>
+        <div class="activity-table-button-right">
+            <div class="recycle-btn" @click="activityRecyclebin">历史活动</div>
+        </div>
+    </div>
+    <div class="activity-table-container">
+        <el-table :data="activityData" style="width: 100%" border>
+            <el-table-column prop="id" label="ID" width="80">
+            </el-table-column>
+            <el-table-column prop="title" label="活动名称" width="160">
+            </el-table-column>
+            <el-table-column prop="goods_ids" label="商品组" min-width="200">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.goods.length>0" class="display-flex shopro-container-scrollbar" style="overflow: auto;">
+                        <div v-for="(ite,gindex) in scope.row.goods">
+                            <el-popover placement="bottom" trigger="hover" width="240">
+                                <div class="popover-container">
+                                    <div class="display-flex" style="align-items: flex-start;">
+                                        <div class="display-flex">
+                                            <div class="popover-tip">商品ID</div>：
+                                        </div>
+                                        <div>{{ite.id}}</div>
+                                    </div>
+                                    <div class="display-flex" style="align-items: flex-start;">
+                                        <div class="display-flex" style="flex-shrink: 0;">
+                                            <div class="popover-tip">商品标题</div>：
+                                        </div>
+                                        <div>{{ite.title}}</div>
+                                    </div>
+                                </div>
+                                <div class="activity-table-goods-image" slot="reference"
+                                    :style="{marginRight:gindex!=scope.row.goods.length-1?'6px':''}">
+                                    <el-image :src="Fast.api.cdnurl(ite.image)" fit="contain">
+                                        <div slot="error" class="image-slot">
+                                            <i class="el-icon-picture-outline"></i>
+                                        </div>
+                                    </el-image>
+                                </div>
+                            </el-popover>
+                        </div>
+                    </div>
+                    <div v-else style="line-height: 36px;">全部商品</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="type_text" label="类型" width="160">
+            </el-table-column>
+            <el-table-column prop="status_text" label="状态" width="160">
+            </el-table-column>
+            <el-table-column prop="starttime_text" label="开始时间" width="200">
+            </el-table-column>
+            <el-table-column prop="endtime_text" label="结束时间" width="200">
+            </el-table-column>
+            <el-table-column prop="createtime" label="创建时间" width="200">
+                <template slot-scope="scope">
+                    <span>{{moment(scope.row.createtime*1000).format('YYYY-MM-DD HH:mm:ss')}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="richtext_id" label="活动说明" width="80">
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" width="140">
+                <template slot-scope="scope">
+                    <span class="table-operation" @click="activityView(scope.row)">查看
+                    </span>
+                    <span v-if="scope.row.status=='nostart' || scope.row.status=='ing'" class="table-operation"
+                        @click="activityEdit(scope.row)">编辑</span>
+                    <span class="table-operation table-operation-delete" @click="activityDelete(scope.row)">删除</span>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div class="shopro-pagination-container">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper"
+            :total="totalPage">
+        </el-pagination>
+    </div>
+</div>

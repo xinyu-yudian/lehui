@@ -1,0 +1,206 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<style>
+    [v-cloak] {
+        display: none
+    }
+
+    #groupon-detail {
+        font-size: 14px;
+        font-family: Source Han Sans SC;
+        color: #444;
+    }
+
+    .groupon-good {
+        margin-bottom: 12px;
+    }
+
+    .good-item {
+        display: flex;
+    }
+
+    .good-item-img {
+        width: 50px;
+        height: 50px;
+        margin-right: 12px;
+    }
+
+    .ellipsis-item {
+        overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    }
+
+    .good-num {
+        color: #999;
+    }
+
+    .team-img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        position: relative;
+    }
+
+    .refresh-btn {
+        font-size: 16px;
+        color: #999;
+        position: absolute;
+        left: 86px;
+        top: 22px;
+    }
+
+    .btn-box {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .teamed-btn {
+        width: 110px;
+        height: 30px;
+        border: 1px solid #7943D2;
+        border-radius: 4px;
+        line-height: 30px;
+        text-align: center;
+        color: #7943D2;
+        margin-right: 30px;
+        cursor: pointer;
+    }
+
+    .dismiss-btn {
+        width: 100px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        border: 1px solid #F57272;
+        border-radius: 4px;
+        color: #F57272;
+        cursor: pointer;
+    }
+    .fictitious-define{
+        color: #7943D2;
+        cursor: pointer;
+    }
+    .fictitious-cancel{
+        color: #F57272;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+    .el-table_2_column_5,
+    .el-table_1_column_1,
+    .el-table_1_column_5 {
+        border-left: 1px solid #eee;
+    }
+
+    .el-table_2_column_9,
+    .el-table_1_column_2,
+    .el-table_1_column_3,
+    .el-table_1_column_4 {
+        border-right: 1px solid #eee;
+    }
+
+    .el-table .el-table_1_column_3.is-leaf,.el-table_1_column_2.is-leaf {
+        border-left: none;
+        border-right: none;
+    }
+
+    .cell {
+        text-align: center;
+        color: #444;
+    }
+
+    .el-table_1_column_1 .cell {
+        text-align: left;
+    }
+
+    .el-table th {
+        border-top: 1px solid #eee;
+        background: #F9F9F9; 
+        padding: 5px 0;
+    }
+
+    .el-table th.is-leaf {
+        font-size: 12px;
+    }
+    .el-table th.is-leaf .cell{
+        font-weight: 500;
+    }
+    .flex-1{
+        flex: 1;
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/clipboard.min.js"></script>
+<div id="groupon-detail" v-cloak>
+    <div class="groupon-good">
+        <el-table :data="grouponGoodsData" style="width: 100%">
+            <el-table-column label="拼团商品">
+                <template slot-scope="scope">
+                    <div class="good-item" v-if="scope.row.goods_title">
+                        <img class="good-item-img" :src="Fast.api.cdnurl(scope.row.goods_image)">
+                        <div class="flex-1">
+                            <div class="ellipsis-item">{{scope.row.goods_title}}</div>
+                            <div class="good-num">数量：{{scope.row.current_num}}</div>
+                        </div>
+                    </div>
+                    <div v-else>未找到商品或该商品已删除</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="createtime" label="开团时间" width="160">
+                <template slot-scope="scope">
+                    <span>{{moment(scope.row.createtime*1000).format("YYYY-MM-DD HH:mm:ss")}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="num" label="成团人数" width="88">
+            </el-table-column>
+            <el-table-column prop="status_text" label="状态" width="86">
+            </el-table-column>
+        </el-table>
+    </div>
+    <div class="groupon-team">
+        <el-table :data="grouponTeamList" style="width: 100%">
+            <el-table-column prop="is_leader" label="身份" width="100">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.is_leader">团长</span>
+                    <span v-if="!scope.row.is_leader">团员</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="avatar" label="头像" width="110">
+                <template slot-scope="scope">
+                    <img class="team-img" v-if="scope.row.user_avatar" :src="Fast.api.cdnurl(scope.row.user_avatar)">
+                    <i v-if="scope.row.is_define" class="el-icon-refresh refresh-btn"
+                        @click="refreshTeamer(scope.$index)"></i>
+                </template>
+            </el-table-column>
+            <el-table-column prop="user_nickname" label="昵称" width="218">
+            </el-table-column>
+            <el-table-column prop="createtime" label="参团时间">
+                <template slot-scope="scope">
+                    <span>{{moment(scope.row.createtime*1000).format("YYYY-MM-DD HH:mm:ss")}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" width="100">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.is_define" class="fictitious-define"
+                        @click="defineTeamer(scope.$index,scope.row)">确定</span>
+                    <span v-if="scope.row.is_define" class="fictitious-cancel"
+                        @click="cancelTeamer(scope.$index)">取消</span>
+                        <span v-if="!scope.row.is_define && scope.row.is_fictitious">虚拟</span>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div class="btn-box" v-if="(grouponGoodsData[0]?grouponGoodsData[0].num:null) > is_define_grouponTeamListLeng && (grouponGoodsData[0]?grouponGoodsData[0].status:null)=='ing'">
+        <div class="teamed-btn" @click="refreshTeamer(null)">添加虚拟人数</div>
+        <div class="dismiss-btn" @click="dismissTeam">解散&拼团</div>
+    </div>
+    <!-- <div class="btn-box">
+        <div class="teamed-btn" @click="refreshTeamer(null)">添加虚拟人数</div>
+        <div class="dismiss-btn" @click="dismissTeam">解散&拼团</div>
+    </div> -->
+</div>

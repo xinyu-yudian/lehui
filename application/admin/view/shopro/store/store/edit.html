@@ -1,0 +1,500 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<style>
+    #storeDetail {
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        height: calc(100vh - 66px);
+        color: #666;
+        font-weight: 500;
+    }
+
+    .btn-common {
+        width: 88px;
+        height: 32px;
+        line-height: 30px;
+        border-radius: 4px;
+        font-size: 12px;
+        text-align: center;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .display-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .el-radio__input.is-checked+.el-radio__label,
+    .el-checkbox__input.is-checked+.el-checkbox__label {
+        color: #7438D5;
+    }
+
+    .el-radio__input.is-checked .el-radio__inner,
+    .el-checkbox__input.is-checked .el-checkbox__inner,
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+        background: #7438D5;
+        border-color: #7438D5;
+    }
+
+    .el-radio {
+        color: #666;
+    }
+
+    label {
+        margin-bottom: 0;
+    }
+
+    .el-cascader {
+        width: 100%;
+    }
+
+    .el-form-item__label {
+        color: #444;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .form-bodys {
+        height: calc(100vh - 100px);
+        overflow-y: auto;
+        padding-right: 20px;
+    }
+
+    .form-bodys::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .form-bodys::-webkit-scrollbar-thumb {
+        width: 6px;
+        background: #e6e6e6;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .form-custom-title {
+        width: 90px;
+        height: 30px;
+        line-height: 30px;
+        margin-right: 12px;
+        text-align: right;
+        color: #444;
+        font-size: 13px;
+    }
+
+    .form-map {
+        width: 100%;
+        height: 400px;
+        border: 1px solid #DCDFE6;
+        border-radius: 4px;
+        padding: 10px;
+        position: relative;
+    }
+
+    .form-custom-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .form-custom-body {
+        flex: 1;
+    }
+
+    .form-custom-container-item {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    #mapArea {
+        height: 380px
+    }
+
+    #mapAreaDiy {
+        height: 380px
+    }
+
+    .form-tip {
+        color: #999;
+        margin-left: 24px;
+    }
+
+    .page-footer {
+        padding: 20px 10px 0;
+        justify-content: flex-end;
+    }
+
+    .footer-btn-1 {
+        color: #7438D5;
+        line-height: 36px;
+    }
+
+    .footer-btn-2 {
+        width: 90px;
+        height: 36px;
+        background: #7438D5;
+        border-radius: 4px;
+        font-size: 16px;
+        color: #fff;
+        line-height: 36px;
+        border-radius: 18px;
+    }
+
+    .el-input-group__append,
+    .el-input-group__prepend {
+        padding: 0 10px;
+    }
+
+    .user-container {
+        flex: 1;
+    }
+
+    .user-container .el-select {
+        width: 100%;
+    }
+
+    .user-container .el-select .el-select__input,
+    .user-container .el-select .el-select__input:focus {
+        border: none !important;
+        height: 20px;
+    }
+
+    .el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
+        color: #7438D5;
+    }
+
+    .radius-container {
+        width: 160px;
+    }
+
+    .edit-area-btn {
+        color: #7438D5;
+        cursor: pointer;
+    }
+
+    .pagination {
+        margin: 0;
+    }
+
+    .el-pagination__sizes {
+        display: none !important;
+    }
+
+    .text-normal {
+        padding: 0 10px;
+    }
+
+    .el-pagination__jump {
+        margin-left: 8px;
+    }
+
+    .add-img {
+        width: 60px;
+        height: 60px;
+        border: 1px dashed #E6E6E6;
+        border-radius: 4px;
+        justify-content: center;
+    }
+
+    .goods-images {
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+        position: relative;
+        border: 1px solid #7438D5;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .label-auto {
+        width: 100%;
+        height: 100%;
+    }
+
+    .del-image-btn {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: 600;
+        background: #7438D5;
+        color: #fff;
+        top: -7px;
+        right: -7px;
+    }
+
+    .image-slot {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+
+    .input-card {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border-radius: .25rem;
+        width: 22rem;
+        border-width: 0;
+        border-radius: 0.4rem;
+        box-shadow: 0 2px 6px 0 rgba(114, 124, 245, .5);
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 0.75rem 1.25rem;
+    }
+
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        border: 1px solid transparent;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        background-color: transparent;
+        background-image: none;
+        color: #25A5F7;
+        border-color: #25A5F7;
+        padding: .25rem .5rem;
+        line-height: 1.5;
+        border-radius: 1rem;
+        -webkit-appearance: button;
+        cursor:pointer;
+    }
+
+    .btn:hover {
+        color: #fff;
+        background-color: #25A5F7;
+        border-color: #25A5F7
+    }
+
+    .btn:hover {
+        text-decoration: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/Sortable.min.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/vuedraggable.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<script type="text/javascript">
+    window._AMapSecurityConfig = {
+        securityJsCode: "{notempty name='amap.jscode'}{$amap['jscode']}{/notempty}",
+    }
+</script>
+<!--<script-->
+<!--    src="https://webapi.amap.com/maps?v=1.4.15&key={notempty name='amap.appkey'}{$amap['appkey']}{/notempty}&plugin=AMap.CircleEditor,AMap.Geocoder,AMap.Autocomplete,AMap.PlaceSearch">-->
+<!--    </script>-->
+<script
+    src="https://webapi.amap.com/maps?v=2.0&key={notempty name='amap.appkey'}{$amap['appkey']}{/notempty}&plugin=AMap.CircleEditor,AMap.Geocoder,AMap.Autocomplete,AMap.PlaceSearch,AMap.PolygonEditor">
+    </script>
+
+<div id="storeDetail" v-cloak>
+    <div class="form-bodys">
+        <el-form :model="storeForm" ref="storeForm" :rules="rules" label-width="114px" class="demo-storeForm">
+            <el-form-item label="门店名称：" prop="name">
+                <el-input v-model="storeForm.name" placeholder="请输入门店名称" size="medium"></el-input>
+            </el-form-item>
+            <el-form-item label="门店图片：" prop="images">
+                <div class="display-flex" style="flex-wrap: wrap;">
+                    <div class="goods-image-box display-flex" v-if="timeData.images_arr">
+                        <draggable class="display-flex" :list="timeData.images_arr" v-bind="$attrs"
+                            :options="{animation:500}">
+                            <div class="goods-images" v-for="(it,index) in timeData.images_arr"
+                                @click="addImg(index,false)">
+                                <el-image class="label-auto" :src="Fast.api.cdnurl(it)" fit="cover">
+                                    <div slot="error" class="image-slot">
+                                        <i class="el-icon-picture-outline"></i>
+                                    </div>
+                                </el-image>
+                                <div class="del-image-btn" @click.stop="delImg(index)">
+                                    <img class="label-auto" src="/assets/addons/shopro/img/goods/close.png">
+                                </div>
+                            </div>
+                        </draggable>
+                    </div>
+                    <div class="add-img display-flex" @click="addImg(null,true)" style="margin-right: 30px;"
+                        v-if="9>isAddImage">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+            <el-form-item label="联系人：" prop="realname">
+                <el-input v-model="storeForm.realname" placeholder="请输入联系人" size="medium"></el-input>
+            </el-form-item>
+            <el-form-item label="联系电话：" prop="phone">
+                <el-input v-model="storeForm.phone" placeholder="请输入联系电话" size="medium"></el-input>
+            </el-form-item>
+            <el-form-item label="门店地址：" prop="store_address">
+                <div class="display-flex">
+                    <el-cascader v-model="storeForm.store_address" separator="-" :props="{value:'name'}"
+                        :options="areaOptions" @change="areaOptionsChange">
+                    </el-cascader>
+                </div>
+            </el-form-item>
+            <el-form-item label="详细地址：" v-if="isAddress">
+                <div class="display-flex">
+                    <el-input id="tipinput" placeholder="请输入详细地址信息" @input="detailAddressFilter"
+                        v-model="storeForm.address" size="medium"></el-input>
+                </div>
+            </el-form-item>
+            <el-form-item label="添加管理员：" prop="user_ids" style="height: auto;">
+                <div class="display-flex">
+                    <div class="user-container">
+                        <el-select style="position: relative;" v-model="storeForm.user_ids" multiple filterable
+                            size="medium" placeholder="" :filter-method="dataFilter" @visible-change="changeUser">
+                            <el-option v-for="item in aboutUserOptions" v-if="item" :key="item.id"
+                                :label="item.nickname" :value="item.id">
+                                <div class="display-flex" style="justify-content: space-around;">
+                                    <span>{{ item.id }}</span>
+                                    <div style="width: 24px;">
+                                        <img v-if="item.avatar" style="width:24px;height:24px;border-radius:50%;"
+                                            :src="Fast.api.cdnurl(item.avatar)">
+                                    </div>
+                                    <div style="width: 80px;">{{ item.nickname }}</div>
+                                    <div style="width: 90px;">
+                                        <div style="width: 90px;" v-if="item.mobile">{{ item.mobile }}</div>
+                                        <div style="width: 90px;text-align: center;" v-else>-</div>
+                                    </div>
+                                </div>
+                            </el-option>
+                            <div class="text-center"
+                                style="position: sticky;background: #fff;height:28px;top:0;z-index:1">
+                                <div class="text-normal display-flex" style="justify-content: center;">
+                                    <el-pagination class="pagination" :page-sizes="[6]" :current-page="currentPage"
+                                        :total="totalPage" layout="total, sizes, prev, pager,next, jumper"
+                                        pager-count="5" @size-change.stop="pageSizeChange"
+                                        @current-change="pageCurrentChange" />
+                                    </el-pagination>
+                                    <div style="cursor: pointer;color: #7438D5;margin-left: 8px;" @click="getUser">确定
+                                    </div>
+                                </div>
+                            </div>
+                        </el-select>
+                    </div>
+                    <div class="form-tip">在关联用户时请务必成为Shopro用户</div>
+                </div>
+            </el-form-item>
+            <el-form-item label="支持配送方式：" prop="express_type" v-if="expressData && storeForm.express_type">
+                <div class="display-flex">
+                    <el-checkbox-group v-model="storeForm.express_type" @change="checkChange">
+                        <el-checkbox v-for="item in expressData" :label="item.id" :key="item.id">{{item.name}}
+                        </el-checkbox>
+                    </el-checkbox-group>
+                </div>
+            </el-form-item>
+            <div v-if="storeForm.express_type && storeForm.express_type.indexOf('store')!=-1">
+                <el-form-item label="服务范围：" prop="service_type">
+                    <div class="display-flex" style="height: 100%;">
+                        <div>
+                            <el-radio-group v-model="storeForm.service_type" @change="radioChange">
+                                <el-radio label="radius">按服务半径</el-radio>
+                                <el-radio label="area">按行政地区</el-radio>
+                                <el-radio label="diyarea">自定义区域</el-radio>
+                            </el-radio-group>
+                        </div>
+                        <div class="form-tip">（收货地址在配送范围之外的买家将不可见）</div>
+                    </div>
+                </el-form-item>
+                <el-form-item label="服务半径：" prop="radius" v-if="storeForm.service_type=='radius'">
+                    <div class="display-flex">
+                        <div class="radius-container">
+                            <el-input v-enter-number type="number" placeholder="请输入服务半径"
+                                v-model="storeForm.service_radius" size="medium" min="0">
+                                <template slot="append">米</template>
+                            </el-input>
+                        </div>
+                    </div>
+                </el-form-item>
+                <el-form-item label="行政地区：" prop="radius" v-if="storeForm.service_type=='area'">
+                    <div class="display-flex">
+                        <!-- <div class="form-tip" style="margin-left: 0;margin-right: 20px;">可配送区域</div> -->
+                        <div v-if="storeForm.area_text" style="margin-right: 20px;flex: 1;">{{storeForm.area_text}}
+                        </div>
+                        <div class="edit-area-btn" @click="editArea()">
+                            编辑地区
+                        </div>
+                    </div>
+                </el-form-item>
+                <el-form-item label="自定义区域：" prop="radius" v-if="storeForm.service_type=='diyarea'">
+                    <div class="form-custom-container">
+                        <div class="form-custom-body">
+                            <div class="form-map">
+                                <div id="mapAreaDiy"></div>
+                                <div class="input-card" style="width: 120px">
+                                    <div class="btn" @click="createPolygon" style="margin-bottom: 5px">新建</div>
+<!--                                    <div class="btn" @click="polyEditor.open()" style="margin-bottom: 5px">开始编辑</div>-->
+                                    <div class="btn" @click="stopCoverage">结束编辑</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </el-form-item>
+            </div>
+            <el-form-item label="营业时间：" prop="openhours">
+                <div class="display-flex">
+                    <el-time-picker size="small" value-format="HH:mm" format="HH:mm" is-range @change="changeTime"
+                        v-model="timeData.openhours_arr" range-separator="至" start-placeholder="开始时间"
+                        end-placeholder="结束时间" placeholder="选择时间范围">
+                    </el-time-picker>
+                </div>
+            </el-form-item>
+            <el-form-item label="" prop="openweeks">
+                <div class="display-flex">
+                    <el-checkbox-group v-model="timeData.openweeks_arr" @change="changeWeek">
+                        <el-checkbox label="1">周一</el-checkbox>
+                        <el-checkbox label="2">周二</el-checkbox>
+                        <el-checkbox label="3">周三</el-checkbox>
+                        <el-checkbox label="4">周四</el-checkbox>
+                        <el-checkbox label="5">周五</el-checkbox>
+                        <el-checkbox label="6">周六</el-checkbox>
+                        <el-checkbox label="7">周日</el-checkbox>
+                    </el-checkbox-group>
+                </div>
+            </el-form-item>
+            <el-form-item label="门店状态：" prop="status">
+                <div class="display-flex" style="height: 40px;">
+                    <el-switch v-model="storeForm.status" active-value="1" inactive-value="0" active-color="#7438D5"
+                        inactive-color="#eee">
+                    </el-switch>
+                    <div style="margin-left: 20px;">
+                        {{storeForm.status==1?'启用':'禁用'}}
+                    </div>
+                </div>
+            </el-form-item>
+            <div class="form-custom-container">
+                <div class="form-custom-title">详细地址：</div>
+                <div class="form-custom-body">
+                    <div class="form-map">
+                        <div id="mapArea"></div>
+                        <div
+                                style="position: absolute;top: 30px;right: 30px;background: #fff;padding: 10px;border-radius: 4px;">
+                            经纬度{{lnglat}}</div>
+                    </div>
+                </div>
+            </div>
+        </el-form>
+    </div>
+    <div class="page-footer display-flex">
+        <div @click="storeSub" class="btn-common footer-btn-1">取消</div>
+        <div @click="storeSub('yes','storeForm')" class="btn-common footer-btn-2">确定</div>
+    </div>
+</div>

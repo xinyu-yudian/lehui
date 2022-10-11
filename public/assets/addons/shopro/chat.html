@@ -1,0 +1,1014 @@
+<style>
+    #shopro-kefu-container .el-dialog {
+        width: 900px;
+    }
+
+    #shopro-kefu-container .el-dialog__body,
+    #shopro-kefu-container .el-dialog__header {
+        padding: 0 !important;
+    }
+
+    #shopro-kefu-container .el-dialog__header {
+        background: #FBFBFB;
+    }
+
+    #shopro-kefu-container .el-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 19px;
+    }
+
+    #shopro-kefu-container .image-slot {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .ellipsis-item {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .shopro-chat-goods-title {
+        width: 144px;
+    }
+
+    .display-flex {
+        display: flex;
+    }
+
+    .scrollbar-containering::-webkit-scrollbar {
+        width: 6px;
+        background: #F4F4F4;
+    }
+
+    .scrollbar-containering::-webkit-scrollbar-thumb {
+        width: 6px;
+        background: #e6e6e6;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .el-textarea__inner::-webkit-scrollbar {
+        width: 4px;
+        background: #F4F4F4;
+    }
+
+    .el-textarea__inner::-webkit-scrollbar-thumb {
+        width: 4px;
+        background: #e6e6e6;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+
+    .shopro-kefu-container-shake {
+        animation: shopro-shake 1s;
+        -o-animation: shopro-shake 1s;
+        -webkit-animation: shopro-shake 1s;
+        -moz-animation: shopro-shake 1s;
+    }
+
+    @keyframes shopro-shake {
+
+        0%,
+        100% {
+            -webkit-transform: translateX(0);
+        }
+
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+            -webkit-transform: translateX(-5px);
+        }
+
+        20%,
+        40%,
+        60%,
+        80% {
+            -webkit-transform: translateX(5px);
+        }
+    }
+
+    @keyframes dyeing {
+        0% {
+            -moz-box-shadow: 0 0 0 0 rgba(119, 97, 251, 0.5);
+            box-shadow: 0 0 0 0 rgba(119, 97, 251, 0.5);
+        }
+
+        70% {
+            -moz-box-shadow: 0 0 0 10px rgba(119, 97, 251, 0);
+            box-shadow: 0 0 0 10px rgba(119, 97, 251, 0);
+        }
+
+        100% {
+            -moz-box-shadow: 0 0 0 0 rgba(119, 97, 251, 0);
+            ;
+            box-shadow: 0 0 0 0 rgba(119, 97, 251, 0);
+            ;
+        }
+    }
+
+    #shopro-kefu-button {
+        position: absolute;
+        top: 80%;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        z-index: 2000;
+        cursor: pointer;
+        border-radius: 25px;
+        background: #7761FB url(/assets/addons/shopro/img/chat/menu.gif) center no-repeat;
+        background-size: 30px 27px;
+        animation: dyeing 2s infinite;
+    }
+
+    .shopro-kefu-title {
+        display: flex;
+        align-items: center;
+        /* justify-content: space-between; */
+        padding: 0 18px;
+        height: 50px;
+        border-bottom: 1px solid #e6e6e6;
+    }
+
+    .shopro-kefu-title-avatar {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #E6E6E6;
+        border-radius: 14px;
+        margin-right: 12px
+    }
+
+    .shopro-kefu-title-name {
+        margin-right: 16px;
+        color: #534C70;
+        font-size: 14px;
+    }
+
+    .shopro-kefu-title-line {
+        width: 80px
+    }
+
+    .shopro-kefu-content {
+        height: 657px;
+        display: flex;
+    }
+
+    .chater-left {
+        height: 100%;
+        width: 303px;
+        border-right: 1px solid #F4F4F4;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chater-header {
+        display: flex;
+        width: 300px;
+        height: 38px;
+        border-bottom: 1px solid #F4F4F4;
+    }
+
+    .chater-header-item {
+        width: 100px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 12px;
+    }
+
+    .chater-header-item-active {
+        width: 84px;
+        height: 26px;
+        background: rgba(157, 96, 255, 0.2);
+        border-radius: 18px;
+        line-height: 26px;
+        text-align: center;
+        font-size: 12px;
+        color: #7438D5;
+    }
+
+    .chater-header-container {
+        flex: 1;
+        overflow: auto;
+        background: #F9F9F9;
+    }
+
+    .chater-header-list {
+        padding: 8px 10px 13px 0px;
+        border-bottom: 1px solid #F4F4F4;
+        cursor: pointer;
+        background: #fff;
+    }
+
+    .chater-header-list:hover {
+        /* background: #EBDFFF; */
+    }
+
+    .chater-header-list:hover .chater-el-icon-close i {
+        display: block;
+    }
+
+    .chater-header-list-active,
+    .chater-header-list-offline-active {
+        background: #EBDFFF;
+    }
+
+    .offline-status {
+        margin: 0 6px;
+        flex-shrink: 0;
+    }
+
+    .offline-status .line-status-offline {
+        color: #ED655F;
+    }
+
+    .offline-status .line-status-online {
+        color: #7438D5;
+    }
+
+    .chater-el-icon-close {
+        font-size: 10px;
+        width: 22px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .chater-el-icon-close i {
+        display: none;
+    }
+
+    .chater-el-icon-close:hover {
+        color: #A268FF;
+    }
+
+    .chater-header-list-image {
+        width: 40px;
+        height: 40px;
+        background: #C4C4C4;
+        border: 1px solid #E6E6E6;
+        margin-right: 10px;
+        border-radius: 20px;
+    }
+
+    .chater-header-list-image img {
+        width: 100%;
+        height: 100%;
+        border-radius: 20px;
+    }
+
+    .chater-header-list-message {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .chater-header-list-message-1 {
+        display: flex;
+        justify-content: space-between;
+        line-height: 14px;
+        margin-bottom: 6px
+    }
+
+    .chater-header-list-message-2 {
+        line-height: 12px;
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chater-right {
+        flex: 1;
+        position: relative;
+    }
+
+    .shopro-chat-container {
+        height: 517px;
+        padding: 20px;
+        overflow: auto;
+    }
+
+    .shopro-chat-container-item {
+        display: flex;
+        margin-bottom: 42px;
+    }
+
+    .shopro-chat-container-item-system {
+        width: 100%;
+    }
+
+    .shopro-chat-container-item-image {
+        width: 38px;
+        height: 38px;
+        border: 1px solid #E6E6E6;
+        border-radius: 19px;
+        margin-right: 14px
+    }
+
+    .shopro-chat-container-item-image-1 {
+        width: 38px;
+        height: 38px;
+        border: 1px solid #E6E6E6;
+        border-radius: 19px;
+        margin-left: 14px
+    }
+
+    .shopro-chat-container-item-message {
+        background: #F6F6F6;
+        border-radius: 6px 6px 6px 0px;
+        max-width: 432px;
+    }
+
+    .shopro-chat-container-item-message-1 {
+        max-width: 432px;
+        border-radius: 6px 6px 0px 6px;
+        color: #444;
+        background: #ECE1FF;
+    }
+
+    .shopro-chat-container-item-message-text {
+        padding: 10px;
+        line-height: 18px;
+    }
+
+    .shopro-chat-container-item-message-text img {
+        width: 100%;
+    }
+
+    .shopro-send-container {
+        width: 100%;
+        height: 140px;
+        padding: 0 24px 0 16px;
+        border-top: 1px solid #e6e6e6;
+    }
+
+    .shopro-send-tip-container {
+        height: 42px;
+        display: flex;
+        align-items: center;
+    }
+
+    .shopro-send-tip-item {
+        width: 18px;
+        height: 18px;
+        margin-right: 12px;
+        cursor: pointer;
+    }
+
+    .shopro-send-textarea {
+        height: 44px;
+        overflow: auto;
+    }
+
+    .shopro-send-textarea::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .shopro-send-textarea::-webkit-scrollbar-thumb {
+        width: 6px;
+        background: #ccc;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .shopro-send-textarea textarea {
+        height: 44px;
+        width: 554px !important;
+        border: none;
+        margin: 0px;
+    }
+
+    .shopro-send-textarea textarea:focus {
+        border: none !important;
+    }
+
+    .shopro-send-button-container {
+        padding: 12px 0;
+        height: 64px
+    }
+
+    .shopro-send-button {
+        width: 78px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: 13px;
+        color: #fff;
+        background: #7438D5;
+        border-radius: 4px;
+        float: right;
+        cursor: pointer;
+    }
+
+
+    #inputFile {
+        display: none;
+    }
+
+    .shopro-chat-goods-item {
+        min-width: 240px;
+        height: 60px;
+        /* background: #FFFFFF; */
+        /* border: 1px solid #E6E6E6; */
+        border-radius: 4px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .shopro-chat-goods-image {
+        width: 44px;
+        height: 44px;
+        border: 1px solid #E6E6E6;
+        border-radius: 3px;
+        margin-right: 10px;
+    }
+
+    .shopro-chat-goods-image .el-image,
+    .shopro-chat-image {
+        position: relative;
+        border-radius: 3px !important;
+    }
+
+    .shopro-chat-goods-message {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+        height: 100%;
+    }
+
+    .shopro-chat-goods-bodys {
+        justify-content: space-between;
+        height: 20px;
+    }
+
+    .customer-service {
+        color: #fff;
+        justify-content: flex-end;
+    }
+
+    .customer-user {
+        color: #444;
+        justify-content: flex-start;
+    }
+
+    .customer-system {
+        justify-content: center;
+    }
+
+    .shopro-chat-system {
+        height: 30px;
+        line-height: 30px;
+        padding: 0 10px;
+        border-radius: 10px;
+        background: #f9f9f9;
+    }
+
+    .shopro-chat-emoji-container {
+        display: flex;
+        flex-wrap: wrap;
+        height: 150px;
+        overflow: auto;
+        padding: 10px 10px 5px;
+    }
+
+    .shopro-chat-emoji-image {
+        width: 24px;
+        height: 24px;
+        /* border: 1px solid #E6E6E6; */
+        border-radius: 3px;
+        margin-right: 10px;
+        margin-bottom: 5px;
+    }
+
+    .shopro-chat-emoji-image:nth-of-type(6n) {
+        margin-right: 0px;
+    }
+
+    .shopro-send-pre,
+    .shopro-send-pre:focus,
+    .shopro-send-pre:default {
+        border: none !important;
+        outline: none;
+        background: none;
+        height: 44px;
+        padding: 0;
+    }
+
+    .message-dot {
+        padding: 4px 7px;
+        border-radius: 10px;
+        text-align: center;
+        background: #F15847;
+        color: #fff;
+    }
+
+    .common-words-item,
+    .common-words-item-tip {
+        cursor: pointer;
+        height: 30px;
+        line-height: 30px;
+        padding: 0 12px;
+        border-bottom: 1px solid #e6e6e6;
+        color: #666;
+    }
+
+    .common-words-item-tip {
+        height: 40px;
+        line-height: 40px;
+        border-bottom: none;
+    }
+
+    .common-words-item:hover {
+        background: #F7F7FC;
+    }
+
+    .no-more-data {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 22px;
+    }
+
+    .shopro-chat-order-item {
+        cursor: pointer;
+    }
+
+    .shopro-chat-order-title {
+        height: 30px;
+        line-height: 30px;
+        border-bottom: 1px solid #e6e6e6;
+        padding: 0 10px;
+    }
+
+    #shopro-kefu-container .el-dialog__headerbtn {
+        height: 50px;
+        top: 0;
+    }
+
+    .shopro-kefu-title-line input,
+    .shopro-kefu-title-line .el-input__inner {
+        border: none;
+        background-color: #FBFBFB;
+        color: inherit;
+    }
+
+    #shopro-kefu-button .message-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 7px;
+        float: right;
+    }
+
+    .el-popover {
+        padding: 0;
+    }
+
+    .el-popover-common-words {
+        max-height: 150px;
+        overflow-y: auto;
+        font-size: 12px;
+    }
+
+    .emoji {
+        width: 20px !important;
+        height: 20px !important;
+        margin: 0 2px;
+    }
+
+    .el-icon-loading {
+        color: #7438D5;
+        font-size: 20px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -10px;
+        margin-top: -10px;
+    }
+
+    .shopro-chat-container-item-message .el-icon-loading {
+        color: #999;
+    }
+
+    .transfer-item {
+        width: 160px;
+        background: #fff;
+        font-size: 12px;
+    }
+
+    .transfer-item .el-input__inner {
+        padding: 0 10px;
+    }
+
+    .el-dialog__wrapper {
+        overflow: hidden;
+    }
+
+    .specific-createtime {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 6px;
+    }
+
+    .specific-createtime .createtime-item {
+        width: 160px;
+        border-radius: 10px;
+        height: 20px;
+        line-height: 20px;
+        background: #f6f6f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #777;
+    }
+
+    label {
+        margin-bottom: 0;
+    }
+
+    .error-tip-popover.el-popover {
+        padding: 12px 16px;
+        border: 1px solid #e6e6e6;
+    }
+
+    .error-tip-popover.el-popper[x-placement^=left] .popper__arrow {
+        border-left-color: #e6e6e6;
+    }
+
+    .kefu-access-status {
+        position: absolute;
+        top: 20px;
+        left: 16px;
+        width: 565px;
+        height: 42px;
+        background: #FFFCF7;
+        box-shadow: 0px 2px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        padding: 0 16px;
+        font-size: 14px;
+        color: #F0AF41;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 100;
+    }
+
+    .kefu-access-status-left i {
+        margin-right: 8px;
+    }
+
+    .shopro-nosend-container {
+        padding: 16px;
+        font-size: 17px;
+        color: #D1D1D1;
+    }
+
+    #shopro-kefu-container .shopro-chat-container-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    #shopro-kefu-container .shopro-chat-container-icon .el-image {
+        width: 146px;
+        height: 146px;
+    }
+
+    .shopro-chat-container-tip {
+        font-size: 16px;
+        color: #999999;
+        margin-top: 30px;
+    }
+</style>
+
+<script type="text/x-template" id="chatTemp" style="position: relative;">
+
+    <div id="shopro-kefu-container" class="">
+        <el-popover
+        popper-class="error-tip-popover"
+        placement="left"
+        width="264"
+        trigger="manual"
+        v-model="errorTipVisible">
+        <div>客服连接失败，请点击 <span style="cursor: pointer;color: #7438D5;" @click="linkWebSocket(passvalue.wsUri, passvalue.token, passvalue.expire_time, passvalue.customer_service_id)">重新连接</span><i style="margin-left:10px;cursor: pointer" class="el-icon-close" @click="closeErrorTipVisible"></i></div>
+        <div slot="reference" id="shopro-kefu-button" ref="shoproKefuButtonRef" v-show="isButtonShow" @mousedown="moveKefu" @click="openDialog()">
+            <div v-if="kefuButtonvisible && !dialogVisible" class="message-dot"></div>
+        </div>
+      </el-popover>
+
+        <el-dialog :visible.sync="dialogVisible" :before-close="handleClose" :custom-class="shoproKefuShake?'shopro-kefu-container-shake':''" v-dialogDrag>
+            <span slot="title">
+                <div class="shopro-kefu-title" ref="shoproKefuTitleRef" v-if="adminData.customer_service" @click.stop="closerightShowId">
+                    <img class="shopro-kefu-title-avatar" :src="adminData.customer_service.avatar?Fast.api.cdnurl(adminData.customer_service.avatar):'/assets/addons/shopro/img/chat/default.png'">
+                    <div class="shopro-kefu-title-name">客服-{{adminData.customer_service.name}}</div>
+                    <div class="shopro-kefu-title-line" v-if="relink==1">
+                        <el-select v-model="lineStatus" size="mini" placeholder="" @change="changeLineStatus" :style="{color:lineStatus=='online'?'#7438D5':(lineStatus=='offline'?'#ED655F':'#666666')}">
+                            <el-option v-for="line in lineOptions" :key="line.value" :label="line.label" :value="line.value">
+                                <span :style="{color: line.color}">{{ line.label }}</span>
+                            </el-option>
+                        </el-select>
+                    </div>
+                    <div v-if="relink==0">
+                        网络断开中，请点击 <span style="cursor: pointer;color: #7438D5;" @click="linkWebSocket(passvalue.wsUri, passvalue.token, passvalue.expire_time, passvalue.customer_service_id)">重新连接</span>
+                    </div>
+                </div>
+            </span>
+            <div class="shopro-kefu-content" @click.stop="closerightShowId">
+                    <div class="chater-left">
+                        <div class="chater-header">
+                            <div class="chater-header-item"
+                                v-for="(chater,chaterIndex) in liaoData" @click="changeGroup(chaterIndex)">
+                                <span v-if="groupIndex!=chaterIndex">{{chater.title}}</span>
+                                <div class="chater-header-item-active" v-if="groupIndex==chaterIndex">{{chater.title}}</div>
+                            </div>
+                        </div>
+                        <div class="chater-header-container scrollbar-containering">
+                            <div class="chater-header-list" v-if="openGroupList.length>0"
+                                v-for="(group,gIndex) in openGroupList" :class="[(user_offline.includes(group.session_id) && isChatingId==group.session_id)?'chater-header-list-offline-active':'',((user_offline.includes(group.session_id) && isChatingId!=group.session_id)) ?'chater-header-list-offline':'',((!user_offline.includes(group.session_id)) && isChatingId==group.session_id)?'chater-header-list-active':'']" @click.stop="selectChating(group.session_id,gIndex,true,group)"
+                                @contextmenu.prevent="show($event,group.session_id,gIndex)">
+                                <div class="display-flex">
+                                    <div class="chater-el-icon-close" @click.stop="deleteChating(group.session_id,gIndex,true)">
+                                        <i class="el-icon-close"></i>
+                                    </div>
+                                    <div class="chater-header-list-image">
+                                        <img :src="group.avatar?Fast.api.cdnurl(group.avatar):'/assets/addons/shopro/img/chat/user-default.png'" />
+                                    </div>
+                                    <div class="chater-header-list-message">
+                                        <div class="chater-header-list-message-1">
+                                            <div class="display-flex" style="flex:1">
+                                                <div class="ellipsis-item">{{group.nickname}}</div>
+                                                <div class="offline-status">
+                                                    <span v-if="user_offline.includes(group.session_id)" class="line-status-offline">离线</span>
+                                                    <span v-else class="line-status-online">在线</span>
+                                                </div>
+                                            </div>
+                                            <div style="font-size:12px;flex-shrink: 0;" v-if="group.last_message">
+                                            {{timeFilter(group.last_message.createtime*1000)}}
+                                            </div>
+                                        </div>
+                                        <div class="chater-header-list-message-2">
+                                            <div class="display-flex">
+                                                <!-- <div v-if="user_offline.includes(group.session_id)" class="offline-status">{{user_offline.includes(group.session_id)?'离线':''}}</div> -->
+                                                <div v-if="group.last_message">
+                                                    <div v-if="group.last_message.message_type=='text'">
+                                                        [文本]
+                                                    </div>
+                                                    <div v-if="group.last_message.message_type=='image'">[图片]</div>
+                                                    <div v-if="group.last_message.message_type=='goods'">[商品]</div>
+                                                    <div v-if="group.last_message.message_type=='order'">[订单]</div>
+                                                </div>
+                                            </div>
+                                            <div class="message-dot" v-if="group.message_unread_num">{{group.message_unread_num>99?'99+':group.message_unread_num}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 右键 -->
+                                <div :style="{position:'fixed',top:rightShowPosition.top,left:rightShowPosition.left,zIndex:1}" v-if="rightShowId==group.session_id">
+                                    <el-select class="transfer-item" v-model="transferAdminList" placeholder="请选择转接客服人员" @change="transferKfu" size="small">
+                                        <el-option
+                                          v-for="item in changeKefuList"
+                                          :key="item.id"
+                                          :label="item.name"
+                                          :value="item.id">
+                                        </el-option>
+                                      </el-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chater-right">
+                        <!-- 弹出提示 -->
+                        <div v-if="kefuAccessStatus" class="kefu-access-status">
+                            <div class="kefu-access-status-left">
+                              <i class="el-icon-warning"></i>
+                                {{kefuAccessTip}}  
+                            </div>
+                            <i class="el-icon-close" @click="closeKefuAccessStatus"></i>
+                        </div>
+                        <div v-show="!isChatingId" class="shopro-chat-container scrollbar-containering shopro-chat-container-icon">
+                            <el-image src="/assets/addons/shopro/img/chat/chat-icon.png" fit="contain">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                            <div class="shopro-chat-container-tip">
+                                暂时没有会话哦!
+                            </div>
+                        </div>
+                        <div v-show="isChatingId" class="shopro-chat-container scrollbar-containering" ref="shoproChatContainerRef">
+                        <div class="no-more-data" v-if="message_num<10">没有更多数据了</div>
+                            <template v-if="isChatingId">
+                                <div class="shopro-chat-container-item" 
+                                :class="[specific.sender_identify=='customer_service'?'customer-service':'customer-user',specific.message_type=='system'?'customer-system':'']"
+                                v-for="(specific,specificindex) in specificChatMessage" style="flex-direction: column;">
+                                    <template v-if="specific.message_type=='system'">
+                                        <div class="shopro-chat-system">{{specific.message}}<div>
+                                    </template>	
+                                    <template v-if="specific.sender_identify=='user' && specific.message_type!='system'">
+                                        <template>
+                                            <div class="specific-createtime" v-if="specificindex>0 && specific.createtime-specificChatMessage[specificindex-1].createtime>300">
+                                                <div class="createtime-item">
+                                                    {{Moment(specific.createtime*1000).format('YYYY-MM-DD HH:mm:ss')}}
+                                                </div>
+                                            </div>
+                                            <div class="specific-createtime" v-if="specificindex==0 && specific.createtime">
+                                                <div class="createtime-item">
+                                                    {{Moment(specific.createtime*1000).format('YYYY-MM-DD HH:mm:ss')}}
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <div class="display-flex">
+                                            <div class="shopro-chat-container-item-image">
+                                                <el-image v-if="specific.identify"
+                                                :src="specific.identify.avatar?Fast.api.cdnurl(specific.identify.avatar):'/assets/addons/shopro/img/chat/user-default.png'"
+                                                fit="cover">
+                                                    <div slot="error" class="image-slot">
+                                                        <i class="el-icon-picture-outline"></i>
+                                                    </div>
+                                                </el-image>
+                                            </div>
+                                            <div class="shopro-chat-container-item-message">
+                                                <!--type='text' -->
+                                                <div class="shopro-chat-container-item-message-text" v-if="specific.message_type=='text'" v-html="specific.message"></div>	
+                                                <!--type='image' -->
+                                                <div class="shopro-chat-container-item-message-text shopro-chat-image" :style="{width:!specific.hidden?'30px':''}" v-if="specific.message_type=='image'">
+                                                    <i v-if="!specific.hidden" class="el-icon-loading"></i>
+                                                    <el-image ref="imageRef" lazy :src="Fast.api.cdnurl(specific.message)" fit="contain" @load="getimageload(specificindex)" @error="imagerror(specificindex)">
+                                                        <div slot="error" class="image-slot">
+                                                        <i class="el-icon-picture-outline"></i>
+                                                        </div>
+                                                    </el-image>
+                                                </div>
+                                                <!--type='goods' -->
+                                                <div class="shopro-chat-goods-item" v-if="specific.message_type=='goods'" @click="openGoods(specific.message.id)">
+                                                    <div class="shopro-chat-goods-image">
+                                                        <el-image
+                                                        :src="Fast.api.cdnurl(specific.message.image)"
+                                                        fit="contain">
+                                                            <div slot="error" class="image-slot">
+                                                                <i class="el-icon-picture-outline"></i>
+                                                            </div>
+                                                        </el-image>
+                                                    </div>
+                                                    <div class="shopro-chat-goods-message">
+                                                        <div class="display-flex">
+                                                            <div style="margin-right:10px;">{{specific.message.id}}</div>
+                                                            <div class="shopro-chat-goods-title ellipsis-item">{{specific.message.title}}</div>
+                                                        </div>
+                                                        <div class="shopro-chat-goods-bodys display-flex">
+                                                            <div>￥{{specific.message.price}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--type='order' -->
+                                                <div class="shopro-chat-order-item" v-if="specific.message_type=='order'" @click="openOrder(specific.message.id)">
+                                                    <div class="shopro-chat-order-title">订单号：{{specific.message.order_sn}}</div>
+                                                    <div class="shopro-chat-goods-item">
+                                                        <div class="shopro-chat-goods-image">
+                                                            <el-image
+                                                            :src="Fast.api.cdnurl(specific.message.image)"
+                                                            fit="contain">
+                                                                <div slot="error" class="image-slot">
+                                                                    <i class="el-icon-picture-outline"></i>
+                                                                </div>
+                                                            </el-image>
+                                                        </div>
+                                                        <div class="shopro-chat-goods-message">
+                                                            <div class="display-flex">
+                                                                <div style="margin-right:10px">{{specific.message.id}}</div>
+                                                                <div class="shopro-chat-goods-title ellipsis-item">{{specific.message.title}}</div>
+                                                            </div>
+                                                            <div class="shopro-chat-goods-bodys display-flex">
+                                                                <div>￥{{specific.message.price}}</div>
+                                                                <div class="shopro-chat-goods-stock">x{{specific.message.num}}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template v-if="specific.sender_identify=='customer_service' && specific.message_type!='system'">
+                                        <div class="specific-createtime" v-if="specificindex>0 && specific.createtime-specificChatMessage[specificindex-1].createtime>300">
+                                                <div class="createtime-item">
+                                                    {{Moment(specific.createtime*1000).format('YYYY-MM-DD HH:mm:ss')}}
+                                                </div>
+                                            </div>
+                                            <div class="specific-createtime" v-if="specificindex==0 && specific.createtime">
+                                                <div class="createtime-item">
+                                                    {{Moment(specific.createtime*1000).format('YYYY-MM-DD HH:mm:ss')}}
+                                                </div>
+                                            </div>
+                                        <div class="display-flex" style="justify-content: flex-end;">
+                                        <div class="shopro-chat-container-item-message-1">
+                                        <!--type='text' -->
+                                        <div class="shopro-chat-container-item-message-text" v-if="specific.message_type=='text'" v-html="specific.message"></div>	
+                                        <!--type='image' -->
+                                        <div class="shopro-chat-container-item-message-text shopro-chat-image" :style="{width:!specific.hidden?'30px':''}" v-if="specific.message_type=='image' && specific.message">
+                                            <i v-if="!specific.hidden" class="el-icon-loading"></i>
+                                            <el-image ref="imageRef" lazy :src="Fast.api.cdnurl(specific.message)" fit="contain" @load="getimageload(specificindex)" @error="imagerror(specificindex)">
+                                                <div slot="error" class="image-slot">
+                                                <i class="el-icon-picture-outline"></i>
+                                                </div>
+                                            </el-image>
+                                        </div>
+                                        <div class="shopro-chat-goods-item" v-if="specific.message_type=='goods'" @click="openGoods(specific.message.id)">
+                                                <div class="shopro-chat-goods-image">
+                                                    <el-image
+                                                    :src="Fast.api.cdnurl(specific.message.image)"
+                                                    fit="contain">
+                                                        <div slot="error" class="image-slot">
+                                                            <i class="el-icon-picture-outline"></i>
+                                                        </div>
+                                                    </el-image>
+                                                </div>
+                                                <div class="shopro-chat-goods-message">
+                                                    <div class="display-flex">
+                                                        <div style="margin-right:10px">{{specific.message.id}}</div>
+                                                        <div class="shopro-chat-goods-title ellipsis-item">{{specific.message.title}}</div>
+                                                    </div>
+                                                    <div class="shopro-chat-goods-bodys display-flex">
+                                                        <div>￥{{specific.message.price}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="shopro-chat-container-item-image-1">
+                                            <el-image v-if="specific.identify"
+                                            :src="specific.identify.avatar?Fast.api.cdnurl(specific.identify.avatar):'/assets/addons/shopro/img/chat/default.png'"
+                                            fit="cover">
+                                                <div slot="error" class="image-slot">
+                                                    <i class="el-icon-picture-outline"></i>
+                                                </div>
+                                            </el-image>
+                                        </div>
+                                    </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="shopro-send-container shopro-nosend-container" v-show="isChatingId && kefuAccessStatusSend">
+                            暂时无法与之会话
+                        </div>
+                        <div class="shopro-send-container" v-show="isChatingId && !kefuAccessStatusSend">
+                            <div class="shopro-send-tip-container">
+                            <el-popover placement="top-start" width="222" v-model="emojivisible">
+                                    <div class="scrollbar-containering shopro-chat-emoji-container" style="">
+                                        <div class="shopro-chat-emoji-image" v-for="emoji in emoji_list" @click="selectEmoji(emoji)">
+                                            <el-image
+                                            :src="'/assets/addons/shopro/img/emoji/'+emoji.file"
+                                            fit="contain">
+                                                <div slot="error" class="image-slot">
+                                                    <i class="el-icon-picture-outline"></i>
+                                                </div>
+                                            </el-image>
+                                        </div>
+                                    </div>
+                                    <img class="shopro-send-tip-item" slot="reference" src="/assets/addons/shopro/img/chat/expression.png" />
+                                </el-popover>
+                                <el-popover placement="top-start" width="180" v-model="commonWordsvisible">
+                                    <div>
+                                        <div class="common-words-item" v-if="commonWordsList.length==0">赶紧去配置常用语吧～</div>
+                                        <div class="scrollbar-containering el-popover-common-words"  v-if="commonWordsList.length>0">
+                                            <div class="common-words-item ellipsis-item" v-for="(words,wordsIndex) in commonWordsList" @click="selectCommonWords(wordsIndex)">{{words.name}}</div>
+                                        </div>
+                                    </div>
+                                    <img class="shopro-send-tip-item" slot="reference" src="/assets/addons/shopro/img/chat/commonWords.png" />
+                                </el-popover>
+                                <img class="shopro-send-tip-item" style="margin-top: 4px;" @click="selectGoods()" src="/assets/addons/shopro/img/chat/goods.png" />
+                                <div class="shopro-send-tip-item">
+                                    <label for="inputFile">
+                                    <img class="shopro-send-tip-item" src="/assets/addons/shopro/img/chat/file.png" />
+                                    </label>
+                                    <input id="inputFile" type="file" @change="addfile" ref="inputFileRef" multiple accept="image/png,image/jpeg,image/gif,image/jpg"/>
+                                </div>
+                            </div>
+                            <div class="shopro-send-textarea scrollbar-containering">
+                                <div class="shopro-send-pre" v-model="sendMessage" contenteditable @keyup.enter.stop="successMessage(event)"></div>
+                            </div>
+                            <div class="shopro-send-button-container">
+                                <div class="shopro-send-button" @click="successMessage()">发送</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </el-dialog>
+    </div>
+</script>

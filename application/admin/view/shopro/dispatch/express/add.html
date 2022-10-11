@@ -1,0 +1,191 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #dispatchDetail {
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        height: calc(100vh - 66px);
+        color: #444;
+        font-weight: 500;
+    }
+
+    .demo-dispatchForm {
+        height: calc(100vh - 150px);
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    /* .dispatch-bodys: */
+    .demo-dispatchForm::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .demo-dispatchForm::-webkit-scrollbar-thumb {
+        width: 6px;
+        background: #e6e6e6;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .detail-table {
+        overflow-y: auto;
+        color: #444;
+        margin-left: 15px;
+        border: 1px solid #E6E6E6;
+        border-bottom: none;
+    }
+
+    .detail-table-header {
+        border-bottom: 1px solid #E6E6E6;
+        display: flex;
+        height: 32px;
+        justify-content: space-around;
+        align-items: center;
+        padding-left: 18px;
+        background: #F9F9F9;
+    }
+
+    .custom-item-with {
+        width: 100px;
+    }
+
+    .express-table {
+        display: flex;
+        align-items: center;
+        height: 59px;
+        padding-left: 18px;
+        border-bottom: 1px solid #E6E6E6;
+    }
+
+    .custom-item-area {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .express-table .el-input,
+    .express-table .el-input .el-input__inner {
+        width: 80px;
+    }
+
+    .del-btn {
+        margin-right: 10px;
+        color: #FF5959;
+        cursor: pointer;
+    }
+
+    .add-btn {
+        border: 1px solid #7438D5;
+        border-radius: 4px;
+        color: #7438D5;
+        height: 32px;
+        width: 88px;
+        margin-left: 15px;
+    }
+
+    .add-btn i {
+        margin-right: 5px;
+        color: #7438D5;
+    }
+
+    .edit-btn {
+        margin: 0 12px;
+        color: #7438D5;
+        cursor: pointer;
+    }
+
+    .el-input,
+    .el-input .el-input__inner {
+        height: 34px;
+        line-height: 34px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/Sortable.min.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/vuedraggable.js"></script>
+<div id="dispatchDetail" v-cloak>
+    <el-form :model="dispatchForm" ref="dispatchForm" :rules="rules" label-width="100px" class="demo-dispatchForm">
+        <div class="form-item-custom">
+            <el-form-item label="模板名称：" prop="name">
+                <el-input v-model="dispatchForm.name" placeholder="请输入模板名称"></el-input>
+            </el-form-item>
+        </div>
+        <div>
+            <el-form-item label="计价方式：" prop="type">
+                <el-radio-group v-model="dispatchForm.type">
+                    <el-radio label="number">按件数</el-radio>
+                    <el-radio label="weight">按重量</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <div class="detail-table">
+                <div class="detail-table-header">
+                    <div style="flex: 1;">
+                        可配送区域
+                    </div>
+                    <div class="custom-item-with">
+                        {{dispatchForm.type=='weight'?'首重':'首件'}}
+                    </div>
+                    <div class="custom-item-with">
+                        运费(元)
+                    </div>
+                    <div class="custom-item-with">
+                        {{dispatchForm.type=='weight'?'续重':'续件'}}
+                    </div>
+                    <div class="custom-item-with">
+                        续费(元)
+                    </div>
+                    <div style="width: 50px;"></div>
+                </div>
+                <div class="detail-table-body">
+                    <draggable :list="dispatchForm.express" v-bind="$attrs" class="menu-item"
+                        :options="{animation:1000}">
+                        <div v-for="(item,index) in dispatchForm.express" class="express-table">
+                            <div class="custom-item-area">
+                                <div class="add-btn display-flex-c cursor-pointer" v-if="!item.area_text" @click="editArea(index)">
+                                    选择地址
+                                </div>
+                                <div class="ellipsis-item-2 flex-1" v-if="item.area_text">
+                                    {{item.area_text}}
+                                </div>
+                                <div class="edit-btn cursor-pointer" v-if="item.area_text" @click="editArea(index)">选择</div>
+                            </div>
+                            <div class="custom-item-with">
+                                <el-input type="number" v-model="item.first_num"></el-input>
+                            </div>
+                            <div class="custom-item-with">
+                                <el-input v-enter-number type="number" :step="0.1" v-model="item.first_price"></el-input>
+                            </div>
+                            <div class="custom-item-with">
+                                <el-input type="number" v-model="item.additional_num"></el-input>
+                            </div>
+                            <div class="custom-item-with">
+                                <el-input v-enter-number type="number" :step="0.1" v-model="item.additional_price"></el-input>
+                            </div>
+                            <div class="display-flex" style="width: 50px;">
+                                <div class="del-btn cursor-pointer" @click="delArea(index)">删除</div>
+                                <img src="/assets/addons/shopro/img/goods/move.png">
+                            </div>
+                        </div>
+                    </draggable>
+                </div>
+            </div>
+        </div>
+    </el-form>
+    <div class="dispatch-items dispatch-footer">
+        <div class="add-btn display-flex-c cursor-pointer" @click="addExpress">
+            <i class="el-icon-plus"></i>添加
+        </div>
+    </div>
+    <div class="dialog-footer display-flex">
+        <div @click="dispatchSub" class="dialog-cancel-btn display-flex-c cursor-pointer">取消</div>
+        <div @click="dispatchSub('yes','dispatchForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定
+        </div>
+    </div>
+</div>

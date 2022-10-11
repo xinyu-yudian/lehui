@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #companyIndex {
+        color: #444;
+        background: #fff;
+        border-radius: 4px;
+        padding: 0px 20px 30px;
+    }
+
+    .table-img {
+        width: 30px;
+        height: 30px;
+        margin-right: 16px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="companyIndex" v-cloak v-loading="isAjax">
+    <div class="custom-index">
+        <div class="custom-header display-flex">
+            <div class="custom-header-title">
+                快递公司列表
+            </div>
+            <div class="custom-search">
+                <el-input placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="searchKey" size="small">
+                </el-input>
+            </div>
+        </div>
+        <div class="custom-button-container">
+            <div class="create-btn" @click="operation('create')">
+                <i class="el-icon-plus"></i>
+                <span>添加</span>
+            </div>
+            <!-- <div class="recycle-btn" @click="operation('recycle')">
+                <i class="fa fa-recycle"></i>
+                回收站
+            </div> -->
+        </div>
+        <div>
+            <el-table ref="multipleTable" :data="indexData" tooltip-effect="dark" style="width: 100%" border
+                :row-class-name="tableRowClassName" :cell-class-name="tableCellClassName"
+                :header-cell-class-name="tableCellClassName" @row-dblclick="operation">
+                <el-table-column label="ID" prop="id" width="60">
+                </el-table-column>
+                <el-table-column label="快递公司" prop="name" min-width="220">
+                </el-table-column>
+                <el-table-column prop="code" label="编码" min-width="180">
+                </el-table-column>
+                <el-table-column prop="weigh" label="权重" width="100">
+                </el-table-column>
+                <el-table-column label="操作" width="120">
+                    <template slot-scope="scope">
+                        <span class="table-edit-text" @click="operation('edit',scope.row.id)">编辑
+                        </span>
+                        <span class="table-delete-text" @click.stop="operation('del',scope.row.id)">删除</span>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="pagination-container">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="limit"
+                layout="total, sizes, prev, pager, next, jumper" :total="totalPage">
+            </el-pagination>
+        </div>
+    </div>
+</div>

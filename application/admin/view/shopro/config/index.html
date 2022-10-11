@@ -1,0 +1,208 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #configIndex {
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        color: #444;
+        font-weight: 500;
+    }
+
+    .el-tabs__nav {
+        margin-left: 30px;
+    }
+
+    .el-tabs__header {
+        margin-bottom: 0;
+    }
+
+    .el-tabs__item {
+        margin-bottom: 8px;
+        width: 120px;
+    }
+
+    .el-tabs__active-bar {
+        width: 80px !important;
+        left: 10px;
+        height: 3px;
+    }
+
+    .el-tabs--top .el-tabs__item.is-top:last-child {
+        padding-right: 20px;
+    }
+
+    .custom-tabs {
+        padding-top: 12px;
+    }
+
+    .custom-body {
+        padding: 30px 30px 0;
+    }
+
+    .tip-container {
+        padding: 0 10px;
+    }
+
+    .config-item {
+        width: 100%;
+        /* max-width: 370px; */
+        height: 254px;
+        border-radius: 20px;
+        padding: 0 10px 24px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: stretch;
+        color: #fff;
+        justify-content: space-between;
+    }
+
+    .config-item-icon-container {
+        /* width: 48px; */
+        height: 48px;
+    }
+
+    .config-title {
+        font-size: 22px;
+        margin-top: 28px;
+    }
+
+    .config-tip {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 14px;
+    }
+
+    .config-message {
+        font-size: 14px;
+        max-width: 170px;
+        margin-top: 26px;
+    }
+
+    .set-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .config-item-btn {
+        width: 98px;
+        height: 40px;
+        border-radius: 20px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .item-icon-1 {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+    }
+
+    .item-icon-1 img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .item-icon-2 {
+        width: 48px;
+        height: 48px;
+        background: #fff;
+        border-radius: 50%;
+        position: absolute;
+        left: 36px;
+        opacity: 0.5;
+    }
+
+    .config-item-leaf-container {
+        display: flex;
+        flex: 1;
+    }
+
+    .leaf {
+        width: 54px;
+        height: 54px;
+    }
+
+    .leaf-11 {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 0px 34px;
+    }
+
+    .leaf-12 {
+        border-radius: 0px 35px;
+        transform: matrix(-1, 0, 0, 1, 0, 0);
+    }
+
+    .leaf-13 {
+        background: rgba(255, 255, 255, 0.66);
+        border-radius: 0px 34px;
+    }
+
+    .item-leaf-2 {
+        width: 40px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.4);
+        border-radius: 6px;
+        transform: rotate(-45deg);
+        margin-top: 86px;
+        margin-left: 10px;
+    }
+
+    .config-item {
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .config-item:hover {
+        transform: scale(1.05);
+        filter: drop-shadow(0px 1px 8px rgba(0, 0, 0, 0.1));
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<div id="configIndex" v-cloak>
+    <div class="custom-tabs">
+        <el-tabs v-model="activeName" @tab-click="tabClick">
+            <el-tab-pane label="基础配置" name="basic"></el-tab-pane>
+            <el-tab-pane label="平台配置" name="platform"></el-tab-pane>
+            <el-tab-pane label="支付配置" name="payment"></el-tab-pane>
+        </el-tabs>
+    </div>
+    <div class="custom-body">
+        <el-row :gutter="30">
+            <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="6" v-for="item in configData[activeName]">
+                <div class="config-item" :style="{background:item.background}">
+                    <div class="tip-container">
+                        <div class="config-item-icon-container"
+                            style="margin-top: 30px;position: relative;display: flex;">
+                            <div class="item-icon-1"><img :src="'/assets/addons/shopro/img/config/'+item.icon+'.png'" />
+                            </div>
+                            <div class="item-icon-2"></div>
+                        </div>
+                        <div class="config-title">{{item.title}}</div>
+                        <div class="config-tip ellipsis-item">{{item.tip}}</div>
+                        <div class="config-message ellipsis-item">{{item.message}}</div>
+                    </div>
+                    <div class="set-container">
+                        <div class="config-item-leaf-container">
+                            <div class="item-leaf-1">
+                                <div class="leaf leaf-11"></div>
+                                <div class="leaf leaf-12" :style="{background:item.leaf}"></div>
+                                <div class="leaf leaf-13"></div>
+                            </div>
+                            <div class="item-leaf-2"></div>
+                        </div>
+                        <div v-if="item.id!='apple'" class="config-item-btn display-flex-c" :style="item.button"
+                            @click="operation(item.id,item.title)">{{item.buttonMessage?item.buttonMessage:'立即设置'}}</div>
+                        <div v-if="item.id=='apple'" class="config-item-btn display-flex-c" :style="item.button">暂未开通
+                        </div>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+</div>

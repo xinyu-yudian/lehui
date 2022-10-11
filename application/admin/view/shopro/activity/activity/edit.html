@@ -1,0 +1,386 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #activityDetail {
+        background: #fff;
+        padding: 0 20px 60px;
+        font-size: 14px;
+        font-family: Source Han Sans SC;
+        font-weight: 500;
+    }
+
+    .el-form-item__label {
+        color: #666;
+        font-weight: 500;
+    }
+
+    .el-table td,
+    .el-table th {
+        padding: 12px 0;
+    }
+
+    .dialog-submit {
+        width: 88px;
+        height: 36px;
+        background: #F3EFFB;
+        border: 1px solid #7536d0;
+        color: #7536d0;
+        position: absolute;
+        right: 0px;
+        border-radius: 20px;
+        text-align: center;
+        line-height: 36px;
+    }
+
+    .dialog-submit-gray {
+        color: #999;
+        border: 1px solid #999;
+        background: #fff;
+    }
+
+    .table-good-status {
+        color: #7536D0;
+        margin-right: 14px;
+    }
+
+    .table-good-status-1 {
+        color: #21D7AE;
+    }
+
+    .table-good-status-delete {
+        color: #F54747;
+    }
+
+    .switch-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .switch-tip {
+        margin: 0 16px;
+    }
+
+    .el-icon-question {
+        font-size: 24px;
+        color: #d5d5d5;
+
+    }
+
+    .popover-item {
+        line-height: 42px;
+        position: relative;
+        top: 5px;
+    }
+
+    .activity-type {
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .activity-type-item {
+        width: 114px;
+        height: 40px;
+        background: #FFFFFF;
+        border: 1px solid #E6E6E6;
+        box-sizing: border-box;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #444444;
+        margin: 0 24px 30px 0;
+        cursor: pointer;
+    }
+
+    .activity-type-item:last-child {
+        margin-right: 0;
+    }
+
+    .activity-type-item-active {
+        background: rgba(110, 61, 200, 0.2);
+        border: 1px solid #6E3DC8;
+        color: #6E3DC8;
+    }
+
+    .activity-type-icon {
+        margin-right: 14px;
+        width: 22px;
+        height: 22px;
+    }
+
+    .activity-type-name {
+        font-size: 14px;
+        line-height: 1;
+    }
+
+    .discount-item {
+        margin: 0 0 10px 0;
+    }
+
+    .discount-input {
+        width: 200px;
+        margin: 0 20px 0 0;
+    }
+
+    .discount-input span {
+        flex-shrink: 0;
+        margin-right: 10px;
+    }
+
+    .discount-close-icon {
+        cursor: pointer;
+        color: #FE7C76;
+        font-size: 20px;
+    }
+
+    .table-goods-image {
+        width: 44px;
+        height: 44px;
+        margin-right: 15px;
+        flex-shrink: 0;
+        border: 1px solid #e6e6e6;
+    }
+
+    [v-cloak] {
+        display: none;
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="activityDetail" v-cloak>
+    <div class="activity-type display-flex">
+        <div v-if="(activityForm.type==aitem.type && optType!='add') || optType=='add'" class="activity-type-item"
+            :class="activityForm.type==aitem.type?'activity-type-item-active':''"
+            v-for="(aitem,aindex) in activityTypeList" @click="initForm(aitem.type)">
+            <img class="activity-type-icon" :src="'/assets/addons/shopro/img/activity/'+aitem.icon+'.png'">
+            <div class="activity-type-name">{{aitem.label}}</div>
+        </div>
+    </div>
+    <el-form ref="activityForm" :model="activityForm" label-width="130px" :rules="rules">
+        <div class="activityForm-auto">
+            <el-form-item label="活动名称：" prop="title">
+                <el-input v-model="activityForm.title" placeholder="请输入活动名称" maxlength="10" :disabled="isDisabled"
+                    size="medium">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="活动时间：" prop="dateTime">
+                <el-date-picker
+                    v-if="optType=='add' || optType=='view' ||(optType=='edit' && Config.activity.status=='nostart')"
+                    v-model="activityForm.dateTime" type="datetimerange" size="medium" start-placeholder="开始日期"
+                    end-placeholder="结束日期" :disabled="isDisabled && someIsDisabled" value-format="yyyy-MM-dd HH:mm:ss"
+                    format="yyyy-MM-dd HH:mm:ss">
+                </el-date-picker>
+                <div class="display-flex" v-else>
+                    <el-date-picker v-model="activityForm.dateTime[0]" type="datetime" disabled>
+                    </el-date-picker>
+                    <div style="flex-shrink: 0;">---</div>
+                    <el-date-picker v-model="activityForm.dateTime[1]" :picker-options="pickerOptions" type="datetime"
+                        placeholder="结束日期">
+                    </el-date-picker>
+                </div>
+            </el-form-item>
+            <template v-if="activityForm.type=='groupon'">
+                <el-form-item label="成团人数：" prop="temp_team_num">
+                    <el-input v-positive-integer type='number' v-model.number="activityForm.temp_team_num"
+                        placeholder="请输入成团人的数量" :disabled="isDisabled" size="medium">
+                        <template slot="append">人</template>
+                    </el-input>
+                </el-form-item>
+                <div class="switch-flex">
+                    <el-form-item label="单独购买：">
+                        <el-switch v-model="activityForm.temp_is_alone" active-color="#7536D0" inactive-color="#e9ebef"
+                            :disabled="isDisabled" active-value="1" inactive-value="0">
+                        </el-switch>
+                        <span class="switch-tip">允许</span>
+                    </el-form-item>
+                    <el-form-item label="虚拟成团：">
+                        <el-switch v-model="activityForm.temp_is_fictitious" active-color="#7536D0"
+                            inactive-color="#e9ebef" :disabled="isDisabled" active-value="1" inactive-value="0">
+                        </el-switch>
+                        <span class="switch-tip">允许</span>
+                        <el-popover class="popover-item" width="240" trigger="hover"
+                            content="开启虚拟成团后，在拼团有效期内人数不够的团，系统会虚拟用户凑满人数，使拼团成功。虚拟的用户不生成订单，只需对真实买家发货。(请在资料管理中添加足够数量的虚拟用户，否则虚拟成团不会成功)">
+                            <i slot="reference" class="el-icon-question"></i>
+                        </el-popover>
+                    </el-form-item>
+                </div>
+                <el-form-item label="参团卡显示：">
+                    <el-switch v-model="activityForm.temp_team_card" active-color="#7536D0" inactive-color="#e9ebef"
+                        :disabled="isDisabled" active-value="1" inactive-value="0">
+                    </el-switch>
+                    <span class="switch-tip">允许</span>
+                    <el-popover class="popover-item" width="240" trigger="hover"
+                        content="开启参团卡显示后，商品详情页显示未成团的团列表，买家可以直接选择一个参团。">
+                        <i slot="reference" class="el-icon-question"></i>
+                    </el-popover>
+                </el-form-item>
+                <el-form-item label="最多虚拟人数：" v-if="activityForm.temp_is_fictitious=='1'">
+                    <el-input type='number' v-model.number="activityForm.temp_fictitious_num"
+                        placeholder="单团最多虚拟人数的名额限制，不填时，不限制名额" :disabled="isDisabled" size="medium">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="组团有效时间：">
+                    <el-input type='number' v-model.number="activityForm.temp_valid_time" placeholder="申请组团的有效时间,默认不限制"
+                        :disabled="isDisabled" size="medium">
+                        <template slot="append">小时</template>
+                    </el-input>
+                </el-form-item>
+            </template>
+            <template v-if="activityForm.type=='groupon' || activityForm.type=='seckill'">
+                <el-form-item label="每人限购件数：">
+                    <el-input v-positive-integer type='number' v-model.number="activityForm.temp_limit_buy"
+                        placeholder="请输入限购件数" :disabled="isDisabled" size="medium">
+                        <template slot="append">件</template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="订单关闭时间：">
+                    <el-input v-model="activityForm.temp_order_auto_close" placeholder="未支付订单，订单将自动关闭并退出活动"
+                        :disabled="isDisabled" size="medium">
+                        <template slot="append">分钟</template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="活动下架时间：">
+                    <el-input v-model="activityForm.temp_activity_auto_close" placeholder="活动结束后，将自动进入历史活动"
+                        :disabled="isDisabled" size="medium">
+                        <template slot="append">分钟</template>
+                    </el-input>
+                </el-form-item>
+            </template>
+            <div v-show="activityForm.type=='full_reduce' || activityForm.type=='full_discount'">
+                <el-form-item label="优惠类型：" prop="temp_type">
+                    <el-radio-group v-model="activityForm.temp_type" :disabled="isDisabled">
+                        <el-radio label="money">消费金额</el-radio>
+                        <el-radio label="num">购买件数</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="优惠条件" prop="temp_discounts">
+                    <div>
+                        <div class="discount-item display-flex" v-for="(ditem,dindex) in activityForm.temp_discounts">
+                            <div class="discount-input display-flex">
+                                <span>消费满</span>
+                                <el-input type='number' v-model="ditem.full" :disabled="isDisabled" size="medium">
+                                    <template slot="append">{{activityForm.temp_type=='money'?'元':'件'}}</template>
+                                </el-input>
+                            </div>
+                            <div class="discount-input display-flex">
+                                <span>{{activityForm.type=='full_reduce'?'优惠金额':'折扣'}}</span>
+                                <el-input type='number' v-model="ditem.discount" :disabled="isDisabled" size="medium">
+                                    <template slot="append">{{activityForm.type=='full_reduce'?'元':'折'}}</template>
+                                </el-input>
+                            </div>
+                            <template v-if="!isDisabled">
+                                <i class="el-icon-circle-close discount-close-icon"
+                                    @click="discountsDelete(dindex)"></i>
+                            </template>
+                        </div>
+                    </div>
+                    <el-button v-if="activityForm.temp_discounts && activityForm.temp_discounts.length<5" type="primary"
+                        size="medium" :disabled="isDisabled" @click="discountsAdd">
+                        编辑优惠条件
+                    </el-button>
+                </el-form-item>
+            </div>
+            <template v-if="activityForm.type=='free_shipping'">
+                <el-form-item label="优惠类型：">
+                    <el-radio-group v-model="activityForm.temp_type" :disabled="isDisabled"
+                        @change="changeFreeShippingType">
+                        <el-radio label="money">消费金额</el-radio>
+                        <el-radio label="num">购买件数</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <template v-if="activityForm.temp_type=='money'">
+                    <el-form-item label="消费金额：" prop="temp_full_num">
+                        <el-input type='number' v-model.number="activityForm.temp_full_num" placeholder="请输入消费金额"
+                            :disabled="isDisabled" size="medium">
+                            <template slot="append">元</template>
+                        </el-input>
+                    </el-form-item>
+                </template>
+                <template v-if="activityForm.temp_type=='num'">
+                    <el-form-item label="购买件数：" prop="temp_full_num">
+                        <el-input type='number' v-model.number="activityForm.temp_full_num" placeholder="请输入购买件数"
+                            :disabled="isDisabled" size="medium">
+                            <template slot="append">件</template>
+                        </el-input>
+                    </el-form-item>
+                </template>
+                <el-form-item label="活动不支持区域：">
+                    <div class="ellipsis-item">{{activityForm.temp_area_text}}</div>
+                    <el-button v-if="optType=='add'" type="primary" size="medium" :disabled="isDisabled"
+                        @click="areaSelect">
+                        选择不支持区域
+                    </el-button>
+                </el-form-item>
+            </template>
+            <el-form-item label="活动说明：">
+                <div class="display-flex" style="align-items: center;line-height: 34px;position: relative;">
+                    <el-input v-model="activityForm.richtext_title" :disabled="isDisabled" placeholder="请选择活动说明"
+                        size="medium">
+                    </el-input>
+                    <el-button style="position: absolute;right: 0;" type="primary" :disabled="isDisabled"
+                        @click="richtextSelect" size="medium">
+                        选择活动说明
+                    </el-button>
+                </div>
+            </el-form-item>
+            <el-form-item label="活动商品：" prop="selectedGoodsType=='some'?'goods_list':''">
+                <template
+                    v-if="activityForm.type=='full_reduce' || activityForm.type=='full_discount' || activityForm.type=='free_shipping'">
+                    <el-radio-group v-model="selectedGoodsType" :disabled="isDisabled" @change="changeGoodsType">
+                        <el-radio label="all">全部商品</el-radio>
+                        <el-radio label="some">部分商品</el-radio>
+                    </el-radio-group>
+                </template>
+                <div v-if="selectedGoodsType=='some'">
+                    <el-button type="primary" :disabled="isDisabled" @click="goodsSelect">
+                        商品选择
+                    </el-button>
+                </div>
+            </el-form-item>
+            <el-form-item style="margin-bottom: 20px;" v-if="selectedGoodsType=='some'">
+                <el-table :data="activityForm.goods_list" style="width: 100%" v-if="activityForm.goods_list.length>0">
+                    <el-table-column label="商品信息" width="320" align="left">
+                        <template slot-scope="scope">
+                            <div class="display-flex">
+                                <div class="table-goods-image">
+                                    <el-image v-if="scope.row.image" :src="Fast.api.cdnurl(scope.row.image)"
+                                        fit="cover">
+                                        <div slot="error" class="image-slot">
+                                            <i class="el-icon-picture-outline"></i>
+                                        </div>
+                                    </el-image>
+                                </div>
+                                <span class="ellipsis-item-2">{{scope.row.title}}</span>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" min-width="100">
+                        <template slot-scope="scope">
+                            <template v-if="activityForm.type=='seckill' || activityForm.type=='groupon'">
+                                <span v-if="optType=='add' || optType=='edit'" class="table-good-status cursor-pointer"
+                                    :class="scope.row.opt?'table-good-status-1':''"
+                                    @click="activitySku(scope.row.id,scope.$index,encodeURI(scope.row.actSkuPrice))">
+                                    {{scope.row.opt=== 0 ? "设置" : "修改"}}
+                                </span>
+                                <span v-if="optType=='view'" class="table-good-status cursor-pointer"
+                                    @click="activitySku(scope.row.id,scope.$index,encodeURI(scope.row.actSkuPrice))">
+                                    查看详情
+                                </span>
+                            </template>
+                            <template v-if="optType=='add' || (optType=='edit' && Config.activity.status=='nostart')">
+                                <span class="table-good-status-delete cursor-pointer"
+                                    @click="goodsDelete(scope.$index)">
+                                    移除
+                                </span>
+                            </template>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-form-item>
+        </div>
+    </el-form>
+    <div class="shopro-submit-container">
+        <el-button type="primary" :disabled="optType=='view'" @click="submitForm('activityForm')">确定</el-button>
+    </div>
+</div>

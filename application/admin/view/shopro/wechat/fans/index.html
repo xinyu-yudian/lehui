@@ -1,0 +1,114 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #fansIndex {
+        color: #666;
+        background: #fff;
+        border-radius: 6px;
+        padding: 0 20px 30px;
+        font-size: 13px;
+    }
+
+    .avatar-img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid #E6E6E6;
+    }
+
+    .sex-img {
+        width: 16px;
+        height: 16px;
+        margin: 0 20px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="fansIndex" v-cloak>
+    <div class="custom-header custom-index">
+        <div class="custom-header-title">
+            粉丝列表
+        </div>
+        <div class="custom-header-search">
+            <el-input placeholder="搜索粉丝" suffix-icon="el-icon-search" v-model="searchKey" size="small">
+            </el-input>
+        </div>
+    </div>
+    <div class="sync-button-container display-flex">
+        <div class="custom-refresh" @click="getfansList">
+            <i class="el-icon-refresh"></i>
+        </div>
+        {if condition = "$auth->check('shopro/wechat/fans/syncfans')"}
+        <el-button type="primary" @click="getSync" size="small">同步所有粉丝</el-button>
+        {/if}
+    </div>
+    <div class="custom-table-body">
+        <el-table :data="fansList" border style="width: 100%" :row-class-name="tableRowClassName"
+            :cell-class-name="tableCellClassName" :header-cell-class-name="tableCellClassName">
+            <el-table-column prop="id" label="ID" min-width="60">
+            </el-table-column>
+            <el-table-column prop="" label="关注粉丝" min-width="230">
+                <template slot-scope="scope">
+                    <div class="display-flex">
+                        <img class="avatar-img"
+                            :src="scope.row.headimgurl?Fast.api.cdnurl(scope.row.headimgurl):'/assets/addons/shopro/img/wechat/avatar.jpg'">
+                        <img class="sex-img" v-if="scope.row.sex==0" src="/assets/addons/shopro/img/wechat/male-female.png">
+                        <img class="sex-img" v-if="scope.row.sex==1" src="/assets/addons/shopro/img/wechat/male.png">
+                        <img class="sex-img" v-if="scope.row.sex==2" src="/assets/addons/shopro/img/wechat/female.png">
+                        <div class="ellipsis-item">{{scope.row.nickname}}</div>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="" label="粉丝地区" min-width="130">
+                <template slot-scope="scope">
+                    <div class="ellipsis-item" v-if="scope.row.country">
+                        {{scope.row.country}} {{scope.row.province}} {{scope.row.city}}
+                    </div>
+                    <div v-if="!scope.row.country">-</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="subscribe" label="关注状态" min-width="100">
+                <template slot-scope="scope">
+                    <div class="display-flex">
+                        <span v-if="scope.row.subscribe=='1'" class="display-flex">
+                            <span class="shopro-status-dot shopro-status-normal-dot"></span>
+                            <span class="shopro-status-normal">正在关注</span>
+                        </span>
+                        <span v-else-if="scope.row.subscribe=='0'" class="display-flex">
+                            <span class="shopro-status-dot shopro-status-nonormal-dot"></span>
+                            <span class="shopro-status-nonormal">取消关注</span>
+                        </span>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="subscribe_time" label="关注时间" min-width="160">
+                <template slot-scope="scope">
+                    <span>{{moment(scope.row.subscribe_time*1000).format("YYYY-MM-DD HH:mm:ss")}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="subscribe_time" label="更新时间" min-width="160">
+                <template slot-scope="scope">
+                    <span>{{moment(scope.row.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="" label="操作" min-width="80px">
+                <template slot-scope="scope">
+                    {if condition = "$auth->check('shopro/user/user/profile')"}
+                    <span class="theme-color cursor-pointer" @click="viewBtn(scope.row.openid)">查看</span>
+                    {/if}
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div class="pagination-container">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
+            :total="totalPage">
+        </el-pagination>
+    </div>
+</div>

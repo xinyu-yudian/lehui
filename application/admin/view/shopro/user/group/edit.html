@@ -1,0 +1,103 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #groupDetail {
+        background: #fff;
+        border-radius: 6px;
+        font-size: 14px;
+        padding: 0 20px 20px;
+        color: #444;
+    }
+
+    .del-image-btn {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: 600;
+        background: #7438D5;
+        color: #fff;
+        top: -7px;
+        right: -7px;
+    }
+
+    .goods-images {
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+        position: relative;
+        border: 1px solid #7438D5;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .label-auto {
+        width: 100%;
+        height: 100%;
+    }
+
+    .add-img {
+        width: 60px;
+        height: 60px;
+        border: 1px dashed #E6E6E6;
+        border-radius: 4px;
+        justify-content: center;
+    }
+
+    .el-tree-node.is-expanded>.el-tree-node__children,.el-tree-node>.el-tree-node__children {
+        display: flex;
+    }
+    .el-checkbox__input.is-checked+.el-checkbox__label{
+        color: #7438D5;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+
+<div id="groupDetail" v-cloak>
+    <el-form :model="detailForm" ref="detailForm" :rules="fromRules" label-width="100px" class="demo-detailForm">
+        <el-form-item label="组名：" prop="name">
+            <el-input v-model="detailForm.name" placeholder="请输入组名"></el-input>
+        </el-form-item>
+        <el-form-item label="等级图片：" prop="image">
+            <div class="display-flex">
+                <div class="goods-image-box display-flex" v-if="detailForm.image">
+                    <div class="goods-images" style="margin-right: 0;">
+                        <img class="label-auto" :src="Fast.api.cdnurl(detailForm.image)" style="border-radius: 4px;">
+                        <div class="del-image-btn" @click="delImg('image',null)">
+                            <img class="label-auto" src="/assets/addons/shopro/img/goods/close.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="add-img display-flex" @click="addImg('image',null,false)" v-if="!detailForm.image">
+                    <i class="el-icon-plus"></i>
+                </div>
+            </div>
+        </el-form-item>
+        <el-form-item label="权限：" prop="rules_arr">
+            <div><el-checkbox v-model="ischecked" @change="checkedAll">选择全部</el-checkbox><el-checkbox v-model="isexpand" @change="expandAll">展开全部</el-checkbox></div>
+            <el-tree
+            v-if="openOrNot" :data="nodeList" show-checkbox node-key="id" ref="tree" highlight-current :default-checked-keys="detailForm.rules_arr" :default-expanded-keys="expand_arr" @check="selcetedStatus"
+                :props="defaultProps">
+            </el-tree>
+        </el-form-item>
+        <el-form-item label="状态：" prop="status">
+            <el-radio-group v-model="detailForm.status">
+                <el-radio label="normal">正常</el-radio>
+                <el-radio label="hidden">隐藏</el-radio>
+            </el-radio-group>
+        </el-form-item>
+    </el-form>
+    <div class="dialog-footer">
+        <div @click="submitFrom" class="dialog-cancel-btn display-flex-c cursor-pointer">取消</div>
+        <div @click="submitFrom('yes','detailForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定
+        </div>
+    </div>
+</div>

@@ -1,0 +1,194 @@
+<style>
+    .skuChildrenBox {
+        display: flex;
+        padding: 0 15px;
+        flex-wrap: wrap;
+    }
+
+    .skuChildren {
+        margin-right: 10px;
+        margin-top: 10px;
+        line-height: 24px;
+        color: rgba(80, 80, 80, 1);
+        border-radius: 2px;
+        font-size: 12px;
+        text-align: center;
+        position: relative;
+    }
+
+    .skuChildrenSelect {
+        border: 1px solid rgba(212, 48, 48, 1)
+    }
+
+    .skuChildren-close {
+        position: absolute;
+        background: rgba(212, 48, 48, 1);
+        color: #fff;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        top: -6px;
+        right: -6px;
+        font-style: 12px;
+        -webkit-transform: scale(0.8);
+    }
+
+    .status {
+        border: none;
+        cursor: pointer;
+    }
+
+    .sku-img {
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+
+    }
+
+    .legend-tip {
+        color: #f00;
+        font-size: 14px;
+        margin-left: 5px;
+    }
+    .all-edit-btn{
+        width: 120px;
+        margin: 20px auto;
+    }
+    .i-color{
+        color: #f00;
+    }
+    .tooltip-inner{
+        background: #fff;
+        color: #999;
+        border: 1px solid #999;
+        box-shadow: 2px 2px 2px 2px #eee;
+    }
+    .tooltip.bottom .tooltip-arrow{
+        border-bottom-color: #fff;
+    }
+    .tooltip-toggle{
+        color: #000;
+    }
+    .tooltip-toggle:hover{
+        color: #000;
+    }
+    .form-group.skuMain {
+        background-color: #f5f5f5;
+        padding: 10px 0;
+        border: 1px solid #e5e5e5;
+        border-radius: 3px;
+    }
+
+    .sku-tips {
+        padding: 16px;
+        border: 1px solid #7536D0;
+        border-radius: 5px;
+        background-color: #F1EBFA;
+        position: relative;
+        margin-bottom: 26px;
+    }
+
+</style>
+<div class="tab-pane fade" id="skuPrce">
+    <div class="widget-body no-padding">
+        <div class="form-group">
+            <legend>规格价格</legend>
+            <div class="sku-tips">
+                <p><strong>注意</strong></p>
+                <p>1、请完善主规格子规格</p>
+                <p>2、注意如果商品参与了拼团，秒杀，积分商城等活动，编辑规格可能会导致活动规格不可用，请谨慎编辑</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="hidden" name="is_reset_sku" v-model="isResetSku">
+            <input type="hidden" name="sku[listData]" v-model="skuListData">
+            <input type="hidden" name="sku[priceData]" v-model="skuPriceData">
+            <label class="control-label col-xs-12 col-sm-2">添加主规格:</label>
+            <div class="col-xs-4 col-sm-4">
+                <input class="form-control" type="text" v-model="skuModal" placeholder="请输入主规格名称" maxlength="5">
+            </div>
+            <div class="col-xs-4 col-sm-4">
+                <span class="btn btn-primary" @click="addMainSku">确认</span>
+            </div>
+        </div>
+        <div class="form-group skuMain" v-for="(s, k) in skuList">  
+            <label class="control-label col-xs-12 col-sm-2" style="padding-top: 0px;"><input class="form-control" style="width: 90%;" type="text" v-model="skuList[k]['name']" maxlength="5">:</label>
+            <div class="col-xs-4 col-sm-4">
+                <input class="form-control" type="text" v-model="childrenModal[k]" maxlength="22" placeholder="请输入子规格名称">
+            </div>
+            <div class="col-xs-4 col-sm-4">
+                <span class="btn btn-primary" @click="addChildrenSku(k)">添加</span>
+                <span class="btn btn-danger" @click="deleteMainSku(k)">移除</span>
+            </div>
+            <div class="col-xs-8 col-sm-8 col-xs-offset-2 col-sm-offset-2 skuChildrenBox">
+                <div class="skuChildren" v-for="(sc, c) in s.children">
+                    <input class="form-control" style="width: 100px;" type="text" v-model="skuList[k]['children'][c]['name']" maxlength="22" placeholder="请输入子规格名称">
+                    <i class="fa fa-close skuChildren-close" @click="deleteChildrenSku(k,c)"></i>
+                </div>
+            </div>
+        </div>
+        <!-- <span class="btn btn-primary" @click="buildSkuPriceTable">刷新规格表单</span> -->
+
+        <div>
+            <div class="row" v-show="skuPrice.length && skuList.length">
+                <div class="col-md-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <template v-for="(item, i) in skuList" :key="i">
+                                    <th v-if="item.children.length" >
+                                        {{item.name}}
+                                    </th>
+                                </template>
+                                <th width="80">
+                                    <span class="tooltip-toggle" data-toggle="tooltip" data-placement="bottom" title="批量设置">现价<i class="fa fa-indent i-color" @click="allEdit('price')"></i></span>          
+                                    </th>
+                                <th width="80">
+                                    <span class="tooltip-toggle" data-toggle="tooltip" data-placement="bottom" title="批量设置">库存<i class="fa fa-indent i-color" @click="allEdit('stock')"></i></span>          
+                                
+                                </th>
+                                <th width="80">
+                                    <span class="tooltip-toggle" data-toggle="tooltip" data-placement="bottom" title="批量设置">重量<i class="fa fa-indent i-color" @click="allEdit('weight')"></i></span>          
+                                
+                                </th>
+                                <th width="80">
+                                    <span class="tooltip-toggle" data-toggle="tooltip" data-placement="bottom" title="批量设置">编码<i class="fa fa-indent i-color" @click="allEdit('sn')"></i></span>          
+                                
+                                </th>
+                                <th width="80">图片</th>
+                                <th width="80">当前状态</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item, i) in skuPrice" :key="i">
+                                <td v-for="(v, j) in item.goods_sku_text" :key="j">
+                                    {{v}}
+                                </td>
+                                <td width="80">
+                                    <input type="number" class="input-sm form-control" v-model="item.price">
+                                </td>
+                                <td width="80"><input type="number" v-model="item.stock" class="input-sm form-control">
+                                </td>
+                                <td width="80"><input type="number" v-model="item.weight" class="input-sm form-control">
+                                </td>
+                                <td width="80"><input type="text" v-model="item.sn" class="input-sm form-control"></td>
+                                <td width="80">
+                                    <div style="width: 10px">
+                                        <img v-if="item.image" :src="Fast.api.cdnurl(item.image)" class="choosePicture sku-img"
+                                            :data-index="i">
+                                        <button v-else type="button" class="btn-primary btn choosePicture"
+                                            :data-index="i">
+                                            上传图片
+                                        </button>
+                                    </div>
+                                </td>
+                                <td width="80"><span class="input-sm form-control status"
+                                        @click="editStatus(i)">{{item.status=='up'?'上架':'下架'}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #linkDetail {
+        color: #444;
+        background: #fff;
+        padding: 0 20px 20px;
+    }
+
+    .category-image {
+        width: 90px;
+        height: 100px;
+        border: 1px solid #E6E6E6;
+        border-radius: 4px;
+        margin-right: 20px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .el-popover {
+        padding: 0;
+    }
+
+    .image-selected {
+        border-color: #7438D5;
+    }
+
+    .category-style-title {
+        padding-right: 20px;
+    }
+
+    .dialog-cancel-btn {
+        color: #FF5959
+    }
+
+    img {
+        width: 100%;
+        /* height: 100%; */
+    }
+
+    .category-style-title-container {
+        position: relative;
+    }
+
+    .category-style-tip {
+        color: #DDDDDD;
+        position: absolute;
+        right: -20px;
+        top: 13px;
+    }
+
+    .popover-img {
+        width: 180px;
+        height: 319px;
+        border-radius: 1px;
+    }
+
+    .popover-img img {
+        height: 100%;
+    }
+
+    .selected-image-show {
+        position: absolute;
+        right: -2px;
+        bottom: -2px;
+        width: 20px;
+        height: 20px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="linkDetail" v-cloak>
+    <el-form :model="detailForm" :rules="rulesForm" ref="detailForm" label-width="108px" class="detail-form">
+        <el-form-item label="名称：" prop="name">
+            <el-input type="input" v-model="detailForm.name" placeholder="请输入名称"></el-input>
+        </el-form-item>
+        <el-form-item label="路径：" prop="path">
+            <el-input type="input" v-model="detailForm.path" placeholder="请输入路径"></el-input>
+        </el-form-item>
+        <el-form-item label="所属分组：">
+            <el-input type="input" maxlength="5" v-model="detailForm.group" placeholder="请输入所属分组"></el-input>
+        </el-form-item>
+    </el-form>
+    <div class="dialog-footer display-flex">
+        <div @click="submitForm('detailForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定</div>
+    </div>
+</div>

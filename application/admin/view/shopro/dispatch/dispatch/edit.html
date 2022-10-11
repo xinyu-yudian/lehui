@@ -1,0 +1,382 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<style>
+    #dispatchDetail {
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        height: calc(100vh - 66px);
+        color: #444;
+        font-weight: 500;
+    }
+
+    .dispatch-bodys {
+        height: calc(100vh - 150px);
+        overflow-y: auto;
+        padding-right: 5px;
+    }
+
+    /* .dispatch-bodys: */
+    .dispatch-bodys::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .dispatch-bodys::-webkit-scrollbar-thumb {
+        width: 6px;
+        background: #e6e6e6;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .dialog-footer {
+        padding: 10px 10px 0;
+    }
+
+    .btn-common {
+        width: 88px;
+        height: 32px;
+        line-height: 30px;
+        border-radius: 4px;
+        font-size: 12px;
+        text-align: center;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .dispatch-items {
+        display: flex;
+        align-items: center;
+        height: 46px;
+        margin: 10px 0;
+    }
+
+    .dispatch-titles {
+        width: 110px;
+        height: 30px;
+        line-height: 30px;
+        margin-right: 12px;
+        text-align: right;
+        color: #444;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    .dispatch-btn {
+        justify-content: flex-end;
+        margin: 0;
+    }
+
+    .dispatch-btn-1 {
+        color: #7438D5;
+        /* float: right; */
+        line-height: 36px;
+    }
+
+    .dispatch-btn-2 {
+        width: 88px;
+        height: 36px;
+        background: #7438D5;
+        border-radius: 4px;
+        font-size: 16px;
+        color: #fff;
+        line-height: 36px;
+        border-radius: 4px;
+        /* float: right; */
+    }
+
+
+    .edit-btn {
+        margin: 0 12px;
+        color: #7438D5;
+        cursor: pointer;
+    }
+
+    .del-btn {
+        margin-right: 12px;
+        color: #FF5959;
+        cursor: pointer;
+    }
+
+    .custom-item-area-detail {
+        width: 186px;
+    }
+
+    .add-btn-text {
+        border: 1px solid #7438D5;
+        text-align: center;
+        color: #7438D5;
+    }
+
+    .delete-btn {
+        color: #FF5959;
+        padding-left: 12px;
+        border-left: 1px solid #E6E6E6;
+        cursor: pointer;
+    }
+
+    .add-btn {
+        border: 1px solid #7438D5;
+        border-radius: 4px;
+        color: #7438D5;
+        height: 32px;
+        line-height: 30px;
+    }
+
+    .add-btn i {
+        margin-right: 5px;
+        color: #7438D5;
+    }
+
+    .dispatch-footer {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+    }
+
+    .table-body-custom {
+        overflow-y: auto;
+        color: #444;
+        margin-left: 15px;
+        border: 1px solid #E6E6E6;
+        border-bottom: none;
+    }
+
+    .custom-header {
+        border-bottom: 1px solid #E6E6E6;
+        display: flex;
+        height: 32px;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 18px;
+        background: #F9F9F9;
+    }
+
+    .el-input,
+    .el-input .el-input__inner {
+        height: 34px;
+        line-height: 34px;
+    }
+
+
+    /* radio */
+    .el-radio__input.is-checked+.el-radio__label,.el-checkbox__input.is-checked+.el-checkbox__label {
+        color: #7438D5;
+    }
+
+    .el-radio__input.is-checked .el-radio__inner,.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+        background: #7438D5;
+        border-color: #7438D5;
+    }
+
+    .el-radio {
+        color: #666;
+        font-size: 13px;
+    }
+    .el-checkbox{
+        color: #444;
+        font-size: 13px;
+    }
+
+    .custom-item-with {
+        width: 110px;
+    }
+
+
+    .dispatch-name {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+
+
+
+
+    .dispatch-switch {
+        display: flex;
+        align-items: center;
+    }
+
+    .dispatch-switch-tip {
+        margin-left: 12px;
+    }
+
+    #mapArea {
+        height: 180px
+    }
+
+    .edit-area {
+        border: 1px solid #7438D5;
+        color: #7438D5;
+        height: 34px;
+        line-height: 32px;
+        margin-left: 14px;
+    }
+
+    label {
+        margin-bottom: 0;
+    }
+
+    .el-input__icon {
+        height: auto;
+    }
+
+    .el-cascader {
+        width: 100%;
+    }
+
+    .form-tip {
+        color: #7438D5;
+        margin-left: 44px;
+        cursor: pointer;
+    }
+
+    .express-table {
+        display: flex;
+        align-items: center;
+        height: 59px;
+        padding: 0 18px;
+        border-bottom: 1px solid #E6E6E6;
+    }
+
+    .custom-item-area {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .express-table .el-input,
+    .express-table .el-input .el-input__inner {
+        width: 80px;
+    }
+
+    .el-form-item__label {
+        color: #444;
+        font-size: 13px;
+    }
+
+    .el-form-item__content {
+        height: 40px;
+    }
+
+    .display-flex {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    .el-select {
+        width: 100%;
+    }
+
+    .form-item-custom {
+        padding-right: 50px
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/Sortable.min.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/vuedraggable.js"></script>
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=d8c09ea0cdb7574e6a65618793782ece"></script>
+<div id="dispatchDetail" v-cloak>
+    <div class="dispatch-bodys">
+        <el-form :model="dispatchForm" ref="dispatchForm" :rules="rules" label-width="100px" class="demo-dispatchForm">
+            <div class="form-item-custom">
+                <el-form-item label="模板名称：" prop="name" v-if="dispatchForm.type!='selfetch'">
+                    <el-input v-model="dispatchForm.name" placeholder="请输入模板名称"></el-input>
+                </el-form-item>
+            </div>
+            <div v-if="dispatchForm.type=='express'">
+                <el-form-item label="计价方式：" prop="price_type" v-if="dispatchForm.type!='selfetch'">
+                    <div class="display-flex">
+                        <el-radio-group v-model="dispatchForm.price_type">
+                            <el-radio label="number">按件数</el-radio>
+                            <el-radio label="weight">按重量</el-radio>
+                        </el-radio-group>
+                    </div>
+                </el-form-item>
+                <div class="table-body-custom">
+                    <div class="custom-header">
+                        <div style="flex: 1;">
+                            可配送区域
+                        </div>
+                        <div class="custom-item-with">
+                            {{dispatchForm.price_type=='weight'?'首重(Kg)':'首件(个)'}}
+                        </div>
+                        <div class="custom-item-with">
+                            运费(元)
+                        </div>
+                        <div class="custom-item-with">
+                            {{dispatchForm.price_type=='weight'?'续重(Kg)':'续件(个)'}}
+                        </div>
+                        <div class="custom-item-with" style="width: 100px;">
+                            运费(元)
+                        </div>
+                    </div>
+                    <div class="custom-body">
+                        <draggable :list="dispatchForm.express" v-bind="$attrs" class="menu-item"
+                            :options="{animation:1000}">
+                            <div v-for="(item,index) in dispatchForm.express" class="express-table">
+                                <div class="custom-item-area">
+                                    <div class="btn-common add-btn-text" v-if="!item.area_text" @click="addArea(index)">选择地址
+                                    </div>
+                                    <div class="custom-item-area-detail" v-if="item.area_text">
+                                        {{item.area_text.length>28?item.area_text.substr(0,28)+"...":item.area_text}}
+                                    </div>
+                                    <div class="edit-btn" v-if="item.area_text" @click="editArea(index)">编辑</div>
+                                    <div class="del-btn" @click="delArea(index)">删除</div>
+                                </div>
+                                <div class="custom-item-with">
+                                    <el-input v-model="item.first_num"></el-input>
+                                </div>
+                                <div class="custom-item-with">
+                                    <el-input v-model="item.first_price"></el-input>
+                                </div>
+                                <div class="custom-item-with">
+                                    <el-input v-model="item.additional_price"></el-input>
+                                </div>
+                                <div class="custom-item-with" style="width: 88px;">
+                                    <el-input v-model="item.additional_num"></el-input>
+                                </div>
+                                <div>
+                                    <i class="el-icon-rank"></i>
+                                </div>
+                            </div>
+                        </draggable>
+                    </div>
+                </div>
+            </div>
+            <div v-if="dispatchForm.type!='express'" class="form-item-custom">
+                <el-form-item :label="dispatchForm.type=='store'?'配送门店：':'自提门店：'" prop="self_user">
+                    <div class="display-flex">
+                        <div style="flex: 1;">
+                            <el-select v-model="dispatchForm.self_user" filterable placeholder="请选择">
+                                <el-option v-for="item in aboutUserOptions" :key="item.value" :label="item.label"
+                                    :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </div>
+                        <div class="form-tip" @click="createStore">新增门店</div>
+                    </div>
+                </el-form-item>
+            </div>
+        </el-form>
+    </div>
+    <div class="dialog-footer">
+        <div class="dispatch-items dispatch-footer">
+            <div class="btn-common add-btn" @click="addExpress" v-if="dispatchForm.type=='express'">
+                <i class="el-icon-plus"></i>添加
+            </div>
+            <div>
+                <el-checkbox v-model="dispatchForm.real" true-label="1" false-label="0">设为新商品默认模板</el-checkbox>
+            </div>
+        </div>
+        <div class="dispatch-items dispatch-btn">
+            <div @click="dispatchSub" class="btn-common dispatch-btn-1">取消</div>
+            <div @click="dispatchSub('yes')" class="btn-common dispatch-btn-2">确定</div>
+        </div>
+    </div>
+</div>

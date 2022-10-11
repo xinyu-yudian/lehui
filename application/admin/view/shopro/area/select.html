@@ -1,0 +1,78 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<style>
+    #areaSelect {
+        color: #444;
+    }
+
+    .el-input__inner {
+        border-radius: 16px;
+        height: 32px;
+        line-height: 32px;
+    }
+
+    .display-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .title {
+        height: 50px;
+        background: #f9f9f9;
+        margin-bottom: 10px;
+        padding: 0 10px;
+        justify-content: space-between;
+    }
+
+    .input-search {
+        margin-bottom: 10px;
+        padding: 0 10px;
+    }
+
+    .el-tree-node__content {
+        height: 30px;
+    }
+
+    .el-checkbox__input.is-checked .el-checkbox__inner,
+    .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+        background-color: #7536D0;
+        border-color: #7536D0;
+    }
+
+    .define-btn {
+        color: #7536D0;
+        cursor: pointer;
+    }
+
+    .el-scrollbar__wrap {
+        height: 100%;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="areaSelect" v-cloak>
+    <div>
+        <div class="title display-flex">
+            <div>
+                <el-checkbox v-model="checked">全选</el-checkbox>
+            </div>
+            <div class="define-btn" @click="define">
+                确定
+            </div>
+        </div>
+        <div>
+            <div class="input-search">
+                <el-input placeholder="输入关键字进行过滤" v-model="filterText">
+                </el-input>
+            </div>
+            <el-tree :data="data" show-checkbox node-key="id" :default-expanded-keys="[2, 3]"
+                :default-checked-keys="selectedId" :props="defaultProps" :filter-node-method="filterNode"
+                @check="selceted" ref="tree">
+            </el-tree>
+        </div>
+    </div>
+</div>

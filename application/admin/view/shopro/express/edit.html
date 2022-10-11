@@ -1,0 +1,34 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #detailInit {
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        color: #444;
+        font-weight: 500;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="detailInit" v-cloak>
+    <el-form :model="detailForm" ref="detailForm" :rules="rules" label-width="100px" class="dialog-form">
+        <el-form-item label="快递公司：" prop="name">
+            <el-input v-model="detailForm.name" placeholder="请输入快递公司名称" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="快递编码：" prop="code">
+            <el-input v-model="detailForm.code" placeholder="请输入快递编码" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="权重：" prop="weigh">
+            <el-input type="number" v-model="detailForm.weigh" placeholder="请输入权重" size="small"></el-input>
+        </el-form-item>
+    </el-form>
+    <div class="dialog-footer display-flex">
+        <div @click="submitForm(false,'detailForm')" class="dialog-cancel-btn display-flex-c cursor-pointer">取消</div>
+        <div @click="submitForm('yes','detailForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定</div>
+    </div>
+</div>

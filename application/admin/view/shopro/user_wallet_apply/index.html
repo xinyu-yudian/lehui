@@ -1,0 +1,442 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #userWalletApply {
+        padding-bottom: 30px;
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+    }
+
+    .custom-tabs-wrap {
+        padding: 12px 24px 0;
+        border-bottom: 2px solid #e6e6e6;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+    .custom-tabs-wrap .el-tabs__header {
+        margin: 0;
+    }
+
+    .custom-tabs-wrap .tabs-export {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        color: #7438D5;
+        cursor: pointer;
+    }
+
+    .custom-tabs-wrap .tabs-export i {
+        margin-right: 6px;
+    }
+
+    .custom-refresh-button {
+        margin-right: 14px;
+    }
+
+    .custom-filter-wrap .custom-refresh-button {
+        margin-bottom: 14px;
+    }
+
+    .custom-filter-wrap {
+        flex-wrap: wrap;
+        padding: 0 24px;
+    }
+
+    .custom-filter-wrap .custom-filter-item {
+        margin-bottom: 14px;
+        margin-right: 24px;
+    }
+
+    .custom-filter-wrap .custom-filter-button-wrap {
+        margin-bottom: 14px;
+    }
+
+    .custom-filter-wrap .custom-filter-label {
+        flex-shrink: 0;
+        margin-right: 14px;
+        font-size: 12px;
+        color: #666;
+    }
+
+    .custom-filter-wrap .custom-filter-content-input {
+        width: 104px;
+    }
+
+    .custom-table-wrap {
+        margin: 0 24px;
+    }
+
+    .custom-margin-14 {
+        margin-right: 14px !important;
+    }
+
+    .custom-table-operation-text {
+        margin-right: 14px;
+        cursor: pointer;
+    }
+
+    .custom-table-operation-text:last-child {
+        margin-right: 0;
+    }
+
+    .custom-table-image {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid #E6E6E6;
+        margin-right: 8px;
+        flex-shrink: 0;
+        overflow: hidden;
+    }
+
+    .custom-table-color-primary {
+        color: #6E3DC8;
+    }
+
+    .custom-table-color-success {
+        color: #70C140;
+    }
+
+    .custom-table-color-error {
+        color: #ED5B56;
+    }
+
+    .custom-table-color-warning {
+        color: #EFAF41;
+    }
+
+    .custom-table-color-info {
+        color: #999999;
+    }
+
+    .pagination-container-b {
+        justify-content: space-between;
+    }
+
+    .table-checked-all {
+        margin-right: 12px !important;
+    }
+
+    .get-type-iamge {
+        width: 26px;
+        height: 26px;
+        margin-right: 8px;
+        border-radius: none;
+        border: none;
+    }
+
+    .refuse-dialog.el-dialog {
+        width: 474px !important;
+    }
+
+    .refuse-dialog.el-dialog .el-dialog__body {
+        padding: 10px 20px 0;
+    }
+
+    .refuse-dialog.el-dialog .el-dialog__title {
+        font-size: 18px !important;
+        color: #444;
+    }
+
+    .agree-dialog.el-dialog .el-dialog__body {
+        display: none;
+    }
+
+    .el-date-editor.el-input,
+    .el-date-editor.el-input__inner {
+        width: 350px;
+    }
+
+    .el-range-editor--small .el-range-separator {
+        line-height: 25px;
+    }
+
+    .el-date-editor .el-range-separator {
+        width: 7%;
+    }
+
+    .table-popover-jump {
+        cursor: pointer;
+        color: #7438D5;
+    }
+
+    .log-dialog.el-dialog {
+        width: fit-content !important;
+    }
+
+    .custom-table-checkbox .el-table__header .el-table_1_column_1.el-table-column--selection .el-checkbox {
+        display: none;
+    }
+
+    .custom-copy-message {
+        margin-left: 14px;
+        cursor: pointer;
+    }
+
+    .custom-copy-message:hover {
+        color: #7438D5;
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/clipboard.min.js"></script>
+<div id="userWalletApply" v-cloak>
+    <div class="custom-tabs-wrap">
+        <el-tabs v-model="searchForm.status" @tab-click="changeApplyStatus">
+            <el-tab-pane v-for="w in filterRule.status" :label="w.name" :name="w.type+''">
+            </el-tab-pane>
+        </el-tabs>
+        <div class="tabs-export" @click="exportApply">
+            <i class="el-icon-download"></i>
+            列表导出
+        </div>
+    </div>
+    <div class="custom-filter-wrap display-flex">
+        <div class="custom-refresh display-flex custom-refresh-button" @click="getWalletApply(offset,limit)">
+            <i class="el-icon-refresh"></i>
+        </div>
+        <div class="custom-filter-item display-flex">
+            <div class="custom-filter-label">申请时间</div>
+            <div class="custom-filter-content">
+                <el-date-picker v-model="searchForm.createtime" type="daterange" value-format="yyyy-MM-dd HH:mm:ss"
+                    format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+                    :picker-options="pickerOptions" align="right" size="small" :default-time="['00:00:00', '23:59:59']">
+                </el-date-picker>
+            </div>
+        </div>
+        <div class="custom-filter-item display-flex">
+            <div class="custom-filter-label">上次操作时间</div>
+            <div class="custom-filter-content">
+                <el-date-picker v-model="searchForm.updatetime" type="daterange" value-format="yyyy-MM-dd HH:mm:ss"
+                    format="yyyy-MM-dd HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期"
+                    :picker-options="pickerOptions" align="right" size="small" :default-time="['00:00:00', '23:59:59']">
+                </el-date-picker>
+            </div>
+        </div>
+        <div class="custom-filter-item display-flex">
+            <div class="custom-filter-content">
+                <el-input placeholder="请输入内容" v-model="searchForm.form_1_value" class="input-with-select" size="small">
+                    <el-select v-model="searchForm.form_1_key" slot="prepend" placeholder="请选择">
+                        <el-option label="用户ID" value="user_id"></el-option>
+                        <el-option label="用户昵称" value="user_nickname"></el-option>
+                        <el-option label="用户手机号" value="user_mobile"></el-option>
+                    </el-select>
+                </el-input>
+            </div>
+        </div>
+        <div class="custom-filter-item display-flex">
+            <div class="custom-filter-label">提现方式</div>
+            <div class="custom-filter-content custom-filter-content-input">
+                <el-select v-model="searchForm.apply_type" size="small">
+                    <el-option v-for="type in filterRule.apply_type" :label="type.name" :value="type.type">
+                    </el-option>
+                </el-select>
+            </div>
+        </div>
+        <div class="custom-filter-button-wrap display-flex">
+            <el-button class="filter-reset-button" @click="filterEmpty" size="small">重置</el-button>
+            <el-button class="filter-button" @click="filterConfirm()" type="primary" size="small">筛选</el-button>
+        </div>
+    </div>
+    <div class="custom-table-wrap"
+        :class="(searchForm.status!='0' && searchForm.status!='1')?'custom-table-checkbox':''">
+        <el-table ref="multipleTable" :data="walletApplyData" border stripe @selection-change="tableSelect">
+            <el-table-column type="selection" width="40" align="center" :selectable="checkSelectable">
+            </el-table-column>
+            <el-table-column prop="id" min-width="74" label="ID">
+            </el-table-column>
+            <el-table-column min-width="120" label="申请用户" align="left">
+                <template slot-scope="scope">
+                    <template v-if="scope.row.user">
+                        <div v-if="scope.row.user.avatar" class="custom-table-image">
+                            <el-image :src="Fast.api.cdnurl(scope.row.user.avatar)" fit="cover">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                        </div>
+                        <el-popover placement="top" width="200" trigger="hover">
+                            <div class="table-popover-wrap">
+                                <div>
+                                    <span>ID：</span>
+                                    <span class="table-popover-jump"
+                                        @click="openUser(scope.row.user.id)">{{scope.row.user.id}}</span>
+                                </div>
+                                <div>
+                                    <span>手机号：</span>
+                                    <span>{{scope.row.user.mobile?scope.row.user.mobile:'-'}}</span>
+                                </div>
+                            </div>
+                            <div class="ellipsis-item table-popover-jump" slot="reference">
+                                <span @click="openUser(scope.row.user.id)">{{scope.row.user.nickname}}</span>
+                            </div>
+                        </el-popover>
+                    </template>
+                    <template v-else>-</template>
+                </template>
+            </el-table-column>
+            <el-table-column width="200" label="实际到账/提现金额">
+                <template slot-scope="scope">
+                    {{scope.row.actual_money}} <span>元</span>/{{scope.row.money}} <span>元</span>
+                </template>
+            </el-table-column>
+            <el-table-column min-width="150" label="费率/手续费">
+                <template slot-scope="scope">
+                    <span>{{scope.row.service_fee*100}}%</span>/<span>{{scope.row.charge_money}}元</span>
+                </template>
+            </el-table-column>
+            <el-table-column width="120" label="提现方式" align="left">
+                <template slot-scope="scope">
+                    <div class="custom-table-image get-type-iamge">
+                        <el-image :src="'/assets/addons/shopro/img/user_wallet_apply/'+scope.row.apply_type+'.png'"
+                            fit="cover">
+                            <div slot="error" class="image-slot">
+                                <i class="el-icon-picture-outline"></i>
+                            </div>
+                        </el-image>
+                    </div>
+                    <div class="ellipsis-item">{{scope.row.apply_type_text}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column width="240" label="打款信息" align="left">
+                <template slot-scope="scope">
+                    <div>
+                        <template v-if="scope.row.apply_info">
+                            <div class="display-flex" v-for="(key,kindex) in scope.row.apply_info_text">
+                                <span class="ellipsis-item">{{kindex}}:&nbsp;{{key}}</span>
+                                <span class="custom-copy-message" :class="'custom-copy-message'+scope.$index+key"
+                                    :data-clipboard-text="key" @click="copyMessage(scope.$index+key)">
+                                    <i class="el-icon-copy-document"></i>
+                                </span>
+                            </div>
+                        </template>
+                        <template v-if="!scope.row.apply_info">-</template>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column width="150" label="申请时间">
+                <template slot-scope="scope">
+                    {{moment(scope.row.createtime*1000).format('YYYY-MM-DD HH:mm:ss')}}
+                </template>
+            </el-table-column>
+            <el-table-column width="150" label="上次操作时间">
+                <template slot-scope="scope">
+                    {{moment(scope.row.updatetime*1000).format('YYYY-MM-DD HH:mm:ss')}}
+                </template>
+            </el-table-column>
+            <el-table-column width="88" fixed="right" label="状态">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==-1" class="custom-table-color-error">{{scope.row.status_text}}</span>
+                    <span v-if="scope.row.status==0" class="custom-table-color-info">{{scope.row.status_text}}</span>
+                    <span v-if="scope.row.status==1" class="custom-table-color-warning">{{scope.row.status_text}}</span>
+                    <span v-if="scope.row.status==2" class="custom-table-color-success">{{scope.row.status_text}}</span>
+                </template>
+            </el-table-column>
+            <el-table-column min-width="140" fixed="right" label="操作" align="left">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==0" class="custom-table-operation-text custom-table-color-primary"
+                        @click="openAgreeDialog(scope.row)">同意</span>
+                    <span v-if="scope.row.status==1" class="custom-table-operation-text custom-table-color-primary"
+                        @click="openImmediatelyDialog(scope.row)">立即打款</span>
+                    <span v-if="scope.row.status==0 || scope.row.status==1"
+                        class="custom-table-operation-text custom-table-color-error"
+                        @click="openRefuseDialog(scope.row)">拒绝</span>
+                    <span class="custom-table-operation-text custom-table-color-primary"
+                        @click="openLogDialog(scope.row.id)">
+                        <i class="el-icon-time"></i>
+                    </span>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="pagination-container"
+            :class="(searchForm.status=='0' || searchForm.status=='1')?'pagination-container-b':''">
+            <div v-if="searchForm.status=='0' || searchForm.status=='1'">
+                <el-checkbox class="table-checked-all" :indeterminate="isIndeterminate"
+                    :disabled="walletApplyData.length==0" v-model="tableCheckedAll" @change="changeCheckedAll">
+                </el-checkbox>
+                <el-button v-if="searchForm.status=='0'" :type="tableCheckedAll?'primary':''"
+                    :disabled="!tableCheckedAll" plain size="small" @click="openAgreeDialog(multipleSelection)">同意
+                </el-button>
+                <el-button v-if="searchForm.status=='1'" :type="tableCheckedAll?'primary':''"
+                    :disabled="!tableCheckedAll" plain size="small" @click="openImmediatelyDialog(multipleSelection)">
+                    立即打款
+                </el-button>
+                <el-button v-if="searchForm.status=='0' || searchForm.status=='1'" :type="tableCheckedAll?'danger':''"
+                    :disabled="!tableCheckedAll" plain size="small" @click="openRefuseDialog(multipleSelection)">拒绝
+                </el-button>
+            </div>
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :current-page="currentPage" :page-sizes="[10, 20, 30, 40]" :page-size="limit"
+                layout="total, sizes, prev, pager, next, jumper" :total="totalPage">
+            </el-pagination>
+        </div>
+    </div>
+    <!-- 同意 -->
+    <el-dialog custom-class="refuse-dialog agree-dialog" title="操作提示" :visible.sync="agreeDialogVisible"
+        :before-close="closeAgreeDialog">
+        <span slot="footer">
+            <el-button @click="closeAgreeDialog" size="small">取消</el-button>
+            <el-button type="primary" @click="agreePayment()" size="small" plain>同意</el-button>
+            <el-button type="primary" @click="confirmPayment()" size="small">同意&打款</el-button>
+        </span>
+    </el-dialog>
+    <!-- 立即打款 -->
+    <el-dialog custom-class="refuse-dialog agree-dialog" title="操作提示" :visible.sync="immediatelyDialogVisible"
+        :before-close="closeImmediatelyDialog">
+        <span slot="footer">
+            <el-button @click="closeImmediatelyDialog" size="small">取消</el-button>
+            <el-button type="primary" @click="immediatelyPayment()" size="small" plain>确定</el-button>
+        </span>
+    </el-dialog>
+    <!-- 拒绝 -->
+    <el-dialog custom-class="refuse-dialog" title="拒绝理由" :visible.sync="refuseDialogVisible"
+        :before-close="closeRefuseDialog">
+        <div>
+            <el-input v-model="refuseForm.status_msg" placeholder="请输入拒绝理由"></el-input>
+        </div>
+        <span slot="footer">
+            <el-button @click="closeRefuseDialog" size="small">取消</el-button>
+            <el-button type="danger" @click="refusePayment()" size="small">拒绝</el-button>
+        </span>
+    </el-dialog>
+    <!-- 操作日志 -->
+    <el-dialog custom-class="log-dialog" title="操作日志" :visible.sync="logDialogVisible" :before-close="closeLogDialog">
+        <div>
+            <el-table :data="logList" border stripe max-height="450">
+                <el-table-column prop="oper_info" min-width="300" label="日志" align="left">
+                    <template slot-scope="scope">
+                        {{scope.row.oper_info}}
+                    </template>
+                </el-table-column>
+                <el-table-column width="100" label="操作人类型">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.oper">{{scope.row.oper.type}}</span>
+                        <span v-else>-</span>
+                    </template>
+                </el-table-column>
+                <el-table-column width="150" label="操作人" align="left">
+                    <template slot-scope="scope">
+                        <div v-if="scope.row.oper" class="display-flex">
+                            <div v-if="scope.row.oper.avatar" class="custom-table-image">
+                                <el-image :src="Fast.api.cdnurl(scope.row.oper.avatar)" fit="cover">
+                                    <div slot="error" class="image-slot">
+                                        <i class="el-icon-picture-outline"></i>
+                                    </div>
+                                </el-image>
+                            </div>
+                            <span class="ellipsis-item">{{scope.row.oper.name}}</span>
+                        </div>
+                        <span v-else>-</span>
+                    </template>
+                </el-table-column>
+                <el-table-column width="150" label="操作时间">
+                    <template slot-scope="scope">
+                        {{moment(scope.row.oper_time*1000).format('YYYY-MM-DD HH:mm:ss')}}
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+    </el-dialog>
+</div>

@@ -1,0 +1,172 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #applyIndex {
+        color: #444;
+        background: #fff;
+        font-size: 12px;
+    }
+
+    .shopro-form-group-title {
+        border: none;
+        margin-bottom: 0px;
+        color: #444;
+    }
+
+    .el-form-item {
+        margin-bottom: 0px;
+    }
+
+    .el-form-item__label,
+    .el-form-item__content {
+        font-size: 13px;
+        color: #444;
+    }
+
+    .openweeks-item {
+        margin-right: 16px;
+    }
+
+    .reject-reason-input {
+        width: 230px;
+        margin-right: 14px;
+    }
+
+    .reject-reason-input .el-input {
+        font-size: 13px;
+    }
+
+    .table-image {
+        width: 64px;
+        height: 60px;
+        border: 1px solid #e6e6e6;
+        border-radius: 4px;
+        margin-right: 16px;
+    }
+
+    .detail-button-container {
+        justify-content: flex-end;
+    }
+
+    .detail-button {
+        width: 78px;
+        height: 34px;
+        line-height: 34px;
+        text-align: center;
+        border: 1px solid #ED655F;
+        border-radius: 4px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .detail-button-reject {
+        color: #ED655F;
+        margin-right: 20px;
+    }
+
+    .detail-button-agree {
+        color: #fff;
+        background: #7536D0;
+        border: none;
+    }
+
+    .reject-reason-container {
+        margin-top: 30px;
+    }
+    .user-image{
+        width: 30px;
+        height: 30px;
+        border: 1px solid #e6e6e6;
+        border-radius: 15px;
+        margin-right: 12px;
+    }
+    .user-nickname{
+        color: #7536D0;
+        overflow: hidden;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="applyDetail" v-cloak>
+    <el-form :model="detailForm" label-width="126px">
+        <div>
+            <div class="shopro-form-group-title">
+                <div class="shopro-form-group-title-line"></div>门店信息
+            </div>
+            <div>
+                <el-form-item label="门店名称:">
+                    {{detailForm.name}}
+                </el-form-item>
+                <el-form-item label="门店地址:">
+                    {{detailForm.province_name}}{{detailForm.city_name}}{{detailForm.area_name}}{{detailForm.address}}
+                </el-form-item>
+                <el-form-item label="门店图片:">
+                    <div class="table-image">
+                        <el-image :src="Fast.api.cdnurl(detailForm.images)" fit="contain">
+                            <div slot="error" class="image-slot">
+                                <i class="el-icon-picture-outline"></i>
+                            </div>
+                        </el-image>
+                    </div>
+                </el-form-item>
+                <el-form-item label="营业时间:">
+                    <span class="openweeks-item">{{detailForm.openweeks_text}}</span><span>{{detailForm.openhours}}</span>
+                </el-form-item>
+            </div>
+        </div>
+        <div>
+            <div class="shopro-form-group-title">
+                <div class="shopro-form-group-title-line"></div>联系人信息
+            </div>
+            <div>
+                <el-form-item label="联系人姓名:">
+                    {{detailForm.realname}}
+                </el-form-item>
+                <el-form-item label="联系人电话:">
+                    {{detailForm.phone}}
+                </el-form-item>
+            </div>
+        </div>
+        <div>
+            <div class="shopro-form-group-title">
+                <div class="shopro-form-group-title-line"></div>申请人信息
+            </div>
+            <div>
+                <el-form-item label="申请时间:">
+                    {{moment(detailForm.createtime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                </el-form-item>
+                <el-form-item label="提交次数:">
+                    {{detailForm.apply_num}}
+                </el-form-item>
+                <el-form-item label="申请用户:">
+                    <div class="display-flex" v-if="detailForm.user">
+                        <div class="user-image" v-if="detailForm.user.avatar">
+                            <el-image :src="Fast.api.cdnurl(detailForm.user.avatar)" fit="contain">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                        </div>
+                        <div class="ellipsis-item user-nickname">{{detailForm.user.nickname?detailForm.user.nickname:'-'}}</div>
+                    </div>
+                </el-form-item>
+            </div>
+        </div>
+        <div class="reject-reason-container" v-if="detailForm.status==-1 || detailForm.status==0">
+            <el-form-item label="拒绝理由:">
+                <div class="reject-reason-input">
+                    <el-input v-model="detailForm.status_msg" placeholder="点击拒绝时请先填写拒绝理由" size="small"></el-input>
+                </div>
+            </el-form-item>
+        </div>
+    </el-form>
+    <div class="detail-button-container display-flex" v-if="detailForm.status==0">
+        <div class="detail-button detail-button-reject" @click="operation('reject')">拒绝</div>
+        <div class="detail-button detail-button-agree" @click="operation('agree')">同意</div>
+    </div>
+</div>

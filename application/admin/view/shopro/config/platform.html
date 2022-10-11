@@ -1,0 +1,1044 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #configPlatform {
+        color: #444;
+        padding: 0 20px 40px 0;
+        background-color: #fff;
+        position: relative;
+        height: calc(100vh - 40px);
+        overflow-y: auto;
+    }
+
+    .wx-type .el-radio {
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    .platform-images {
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+        position: relative;
+        border: 1px solid #7438D5;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .el-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+    }
+
+    .del-image-btn {
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        line-height: 14px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: 600;
+        background: #fff;
+        color: #7438D5;
+        top: -8px;
+        right: -8px;
+        font-size: 16px;
+    }
+
+    .add-img {
+        width: 60px;
+        height: 60px;
+        border: 1px dashed #E6E6E6;
+        border-radius: 4px;
+        justify-content: center;
+    }
+
+    .form-item-tip {
+        color: #999;
+    }
+
+    .form-item-tip>p {
+        line-height: 20px;
+    }
+
+    .el-form-item {
+        margin-bottom: 10px;
+    }
+
+    .el-image__error {
+        font-size: 12px
+    }
+
+    .divider-title {
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #666;
+        padding-left: 20px;
+    }
+
+    .el-input-group__append,
+    .el-input-group__prepend {
+        background: #f9f9f9;
+    }
+
+    .dialog-footer {
+        position: fixed;
+        right: 20px;
+        bottom: 0px;
+        width: 100%;
+        background: #fff;
+        padding: 30px 10px 30px;
+    }
+
+    .el-input-group__append {
+        line-height: 30px !important;
+    }
+
+    #configPlatform .el-form-item__content .el-input-group {
+        vertical-align: middle;
+    }
+
+    .detailForm-href {
+        margin-left: 30px;
+        flex-shrink: 0;
+    }
+
+    .detailForm-href a {
+        color: #7438D5;
+        cursor: pointer;
+    }
+
+    .select-option-container .option-item {
+        width: 50%;
+    }
+
+    .detailForm-sender {
+        margin-right: 20px;
+    }
+
+    .detailForm-sender:last-child {
+        margin-right: 0px;
+    }
+
+    .local-ajax-upload-wrap label {
+        color: #7536D0;
+    }
+
+    .local-ajax-upload-wrap .local-ajax-upload {
+        display: none !important;
+    }
+
+    .sa-template-wrap {
+        color: var(--sa-font);
+    }
+
+    .sa-template-wrap .title {
+        width: inherit;
+        background: rgba(245, 245, 245, 1);
+        margin: 0 0 12px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+    }
+
+    .sa-template-wrap .key {
+        padding: 0 16px;
+        flex: 1;
+    }
+
+    .sa-template-wrap .oper {
+        flex: none;
+        width: 120px;
+    }
+
+    .sa-template-wrap .item {
+        display: flex;
+    }
+
+    .sa-template-wrap .item>.el-form-item {
+        flex: 1;
+        margin-right: 0;
+        margin-bottom: 24px;
+        padding: 0 16px;
+    }
+
+    .sa-template-wrap .item>.el-form-item.oper {
+        flex: none;
+        width: 120px;
+    }
+
+    .sa-template-wrap .el-form-item__content {
+        display: flex;
+        align-items: center;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/Sortable.min.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/vuedraggable.js"></script>
+<div id="configPlatform" class="shopro-container-scrollbar" v-cloak>
+    <el-form :model="detailForm" ref="detailForm" label-width="168px" class="demo-detailForm">
+        <div v-if="type=='shopro'">
+            <el-form-item label="商城名称：">
+                <el-input v-model="detailForm.name" placeholder="请输入商城名称" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="商城域名：">
+                <el-input v-model="detailForm.domain" placeholder="请输入商城域名必须填写http(s)://" size="small"></el-input>
+                <div class="form-item-tip">
+                    <p>1.此地址用于您的店铺装修预览、H5分享链接等场景</p>
+                    <p>2.请完整输入您的H5商城入口链接，如 http://m.shopro.top/</p>
+                    <p>3.开启SSL并使用hash部署方式，则填写如 https://m.shopro.top/#/</p>
+                </div>
+            </el-form-item>
+            <el-form-item label="版本号：">
+                <el-input v-model="detailForm.version" placeholder="请输入版本号" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="Logo：">
+                <div class="display-flex">
+                    <div class="platform-images" v-if="detailForm.logo">
+                        <el-image :src="Fast.api.cdnurl(detailForm.logo)" fit="contain"
+                            :preview-src-list="detailForm.logo_arr">
+                        </el-image>
+                        <div class="del-image-btn" @click="delImg('image','logo')">
+                            <i class="el-icon-error"></i>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','logo')" v-if="!detailForm.logo">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+            <el-form-item label="版权信息：" v-if="detailForm.copyright">
+                <el-input v-model="detailForm.copyright[0]" placeholder="请输入版权信息" size="small"></el-input>
+                <el-input v-model="detailForm.copyright[1]" placeholder="请输入版权信息" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="用户协议：">
+                <el-input v-model="detailForm.user_protocol" placeholder="请选择用户协议" size="small">
+                    <template slot="append">
+                        <div class="theme-color cursor-pointer" @click="richtextSelect('user_protocol')">选择</div>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item label="隐私协议：">
+                <el-input v-model="detailForm.privacy_protocol" placeholder="请选择隐私协议" size="small">
+                    <template slot="append">
+                        <div class="theme-color cursor-pointer" @click="richtextSelect('privacy_protocol')">选择</div>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item label="关于我们：">
+                <el-input v-model="detailForm.about_us" placeholder="请选择关于我们" size="small">
+                    <template slot="append">
+                        <div class="theme-color cursor-pointer" @click="richtextSelect('about_us')">选择</div>
+                    </template>
+                </el-input>
+            </el-form-item>
+        </div>
+        <div v-if="type=='user'">
+            <el-form-item label="默认昵称：">
+                <el-input v-model="detailForm.nickname" placeholder="请输入默认昵称" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="默认头像：">
+                <div class="display-flex">
+                    <div class="platform-images" v-if="detailForm.avatar">
+                        <el-image :src="Fast.api.cdnurl(detailForm.avatar)" fit="contain"
+                            :preview-src-list="detailForm.avatar_arr">
+                        </el-image>
+                        <div class="del-image-btn" @click="delImg('image','avatar')">
+                            <i class="el-icon-error"></i>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','avatar')"
+                        v-if="!detailForm.avatar">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+                <div class="form-item-tip">第三方登录用户会默认使用已授权的头像和昵称</div>
+            </el-form-item>
+            <el-form-item label="默认分组：">
+                <el-select v-model="detailForm.group_id" filterable placeholder="请选择默认分组" size="small">
+                    <el-option v-for="item in groupList" :key="item.id" :label="item.name" :value="item.id+''">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+        </div>
+        <div v-if="type=='share'">
+            <el-form-item label="分享标题：">
+                <el-input v-model="detailForm.title" placeholder="请输入分享标题" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="默认分享图片：">
+                <div class="display-flex">
+                    <div class="platform-images" v-if="detailForm.image">
+                        <el-image :src="Fast.api.cdnurl(detailForm.image)" fit="contain"
+                            :preview-src-list="detailForm.image_arr">
+                        </el-image>
+                        <div class="del-image-btn" @click="delImg('image','image')">
+                            <i class="el-icon-error"></i>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','image')"
+                        v-if="!detailForm.image">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+            <el-form-item label="商品分享背景：">
+                <div class="display-flex">
+                    <div class="platform-images" v-if="detailForm.goods_poster_bg">
+                        <el-image :src="Fast.api.cdnurl(detailForm.goods_poster_bg)" fit="contain"
+                            :preview-src-list="detailForm.goods_poster_bg_arr">
+                        </el-image>
+                        <div class="del-image-btn" @click="delImg('image','goods_poster_bg')">
+                            <i class="el-icon-error"></i>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','goods_poster_bg')"
+                        v-if="!detailForm.goods_poster_bg">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+            <el-form-item label="用户分享背景：">
+                <div class="display-flex">
+                    <div class="platform-images" v-if="detailForm.user_poster_bg">
+                        <el-image :src="Fast.api.cdnurl(detailForm.user_poster_bg)" fit="contain"
+                            :preview-src-list="detailForm.user_poster_bg_arr">
+                        </el-image>
+                        <div class="del-image-btn" @click="delImg('image','user_poster_bg')">
+                            <i class="el-icon-error"></i>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','user_poster_bg')"
+                        v-if="!detailForm.user_poster_bg">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+            <el-form-item label="拼团分享背景：">
+                <div class="display-flex">
+                    <div class="platform-images" v-if="detailForm.groupon_poster_bg">
+                        <el-image :src="Fast.api.cdnurl(detailForm.groupon_poster_bg)" fit="contain"
+                            :preview-src-list="detailForm.groupon_poster_bg_arr">
+                        </el-image>
+                        <div class="del-image-btn" @click="delImg('image','groupon_poster_bg')">
+                            <i class="el-icon-error"></i>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','groupon_poster_bg')"
+                        v-if="!detailForm.groupon_poster_bg">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+        </div>
+        <div v-if="type=='score'">
+            <el-form-item label="每日签到积分：">
+                <el-input v-model="detailForm.everyday" placeholder="请输入每日签到积分" size="small">
+                    <template slot="append">个</template>
+                </el-input>
+            </el-form-item>
+            <el-form-item label="递增天数：">
+                <el-input v-model="detailForm.until_day" placeholder="请输入递增天数" size="small">
+                    <template slot="append">天</template>
+                </el-input>
+            </el-form-item>
+            <el-form-item label="递增数量：">
+                <el-input v-model="detailForm.inc_value" placeholder="请输入递增数量" size="small">
+                    <template slot="append">个</template>
+                </el-input>
+            </el-form-item>
+            <div class="divider-title">消费积分</div>
+            <el-form-item label="消费返积分：">
+                <div class="display-flex">
+                    <el-switch v-model="detailForm.consume_get_score" active-color="#7438D5" inactive-color="#eee"
+                        active-value="1" inactive-value="0">
+                    </el-switch>
+                    <span style="padding: 0 0 0 16px;">{{detailForm.consume_get_score==0?'关闭':'开启'}}</span>
+                </div>
+            </el-form-item>
+            <el-form-item label="返还积分：">
+                <div class="display-flex">
+                    <span>返还用户实际支付金额</span>
+                    <el-input style="width: 160px;margin:0 16px" v-model="detailForm.consume_get_score_ratio"
+                        v-enter-integer placeholder="数值必须大于0" size="small">
+                        <template slot="append">%</template>
+                    </el-input>
+                    <span> 的积分</span>
+                    <span style="margin-left: 16px;color: #999999;">(只能填写整数)</span>
+                </div>
+            </el-form-item>
+        </div>
+        <div v-if="type=='withdraw'">
+            <div class="divider-title">充值配置</div>
+            <template v-if="detailForm.recharge">
+                <el-form-item label="开启充值：">
+                    <el-switch v-model="detailForm.recharge.enable" active-color="#7438D5" inactive-color="#eee"
+                        active-value="1" inactive-value="0">
+                    </el-switch>
+                    <div class="form-item-tip">请确保支付方式的支付参数配置好，并且在对应的应用平台开启</div>
+                </el-form-item>
+                <el-form-item label="充值方式：">
+                    <el-checkbox-group v-model="detailForm.recharge.methods">
+                        <el-checkbox label="wechat">微信零钱</el-checkbox>
+                        <el-checkbox label="alipay">支付宝</el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+                <el-form-item label="自定义金额：">
+                    <div class="sa-template-wrap">
+                        <div class="title">
+                            <div class="key">金额</div>
+                            <div class="oper">操作</div>
+                        </div>
+                        <draggable :list="detailForm.recharge.moneys" v-bind="$attrs" :animation="300"
+                            handle=".sortable-drag" item-key="element">
+                            <template v-for="(element, index) in detailForm.recharge.moneys">
+                                <div class="item">
+                                    <el-form-item class="key">
+                                        <el-input placeholder="请输入自定义金额" size="small" v-model="element.money">
+                                        </el-input>
+                                    </el-form-item>
+                                    <el-form-item class="oper">
+                                        <el-button @click="deleteTemplate(index)" type="danger" plain size="small">删除
+                                        </el-button>
+                                        <i id="draggableHandle" class="el-icon-rank sortable-drag"
+                                            style="padding-left: 8px;"></i>
+                                    </el-form-item>
+                                </div>
+                            </template>
+                        </draggable>
+                        <el-button @click="addTemplate" style="margin-left: 16px;" type="primary" plain size="small"
+                            icon="Plus">追加</el-button>
+                    </div>
+                </el-form-item>
+            </template>
+            <div class="divider-title">提现配置</div>
+            <el-form-item label="提现方式：" v-if="detailForm.methods != undefined">
+                <el-checkbox-group v-model="detailForm.methods">
+                    <el-checkbox label="wechat">微信零钱</el-checkbox>
+                    <el-checkbox label="alipay">支付宝</el-checkbox>
+                    <el-checkbox label="bank">手动线下打款</el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="自动到账："
+                v-if="detailForm.methods != undefined && (detailForm.methods.includes('wechat') || detailForm.methods.includes('alipay'))">
+                <el-switch v-model="detailForm.wechat_alipay_auto" active-color="#7438D5" inactive-color="#eee"
+                    active-value="1" inactive-value="0">
+                </el-switch>
+                <div class="form-item-tip">开启后用户提现到 <strong>微信零钱/支付宝</strong> 将自动审核通过并且自动打款，手动打款不受开关影响</div>
+            </el-form-item>
+            <el-form-item label="手续费：">
+                <el-input v-model="detailForm.service_fee" type="number" placeholder="请输入手续费" size="small">
+                    <template slot="append">%</template>
+                </el-input>
+            </el-form-item>
+            <el-form-item label="每次最小提现金额：">
+                <el-input v-model="detailForm.min" type="number" placeholder="请输入最小提现金额" size="small">
+                    <template slot="append">元</template>
+                </el-input>
+            </el-form-item>
+            <el-form-item label="每次最大提现金额：">
+                <el-input v-model="detailForm.max" type="number" placeholder="请输入最大提现金额" size="small">
+                    <template slot="append">元</template>
+                </el-input>
+            </el-form-item>
+            <el-form-item label="每日最多提现金额：">
+                <el-input v-model="detailForm.perday_amount" type="number" placeholder="请输入每日最多提现金额" size="small">
+                    <template slot="append">元</template>
+                </el-input>
+                <div class="form-item-tip">0为不限</div>
+            </el-form-item>
+            <el-form-item label="每日最多提现次数：">
+                <el-input v-model="detailForm.perday_num" type="number" placeholder="请输入每日最多提现次数" size="small">
+                    <template slot="append">次</template>
+                </el-input>
+                <div class="form-item-tip">0为不限</div>
+            </el-form-item>
+        </div>
+        <div v-if="type=='order'">
+            <div v-if="detailForm.goods">
+                <div class="divider-title">商品配置</div>
+                <el-form-item label="库存预警阈值：">
+                    <el-input v-model="detailForm.goods.stock_warning" placeholder="请输入库存预警阈值" size="small">
+                        <template slot="append">个</template>
+                    </el-input>
+                </el-form-item>
+            </div>
+            <div>
+                <div class="divider-title">订单配置</div>
+                <el-form-item label="自动关闭时间：">
+                    <el-input v-model="detailForm.order_auto_close" placeholder="请输入订单自动关闭时间" size="small">
+                        <template slot="append">分钟</template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="自动收货时间：">
+                    <el-input v-model="detailForm.order_auto_confirm" placeholder="请输入订单自动收货时间" size="small">
+                        <template slot="append">天</template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="自动评价时间：">
+                    <el-input v-model="detailForm.order_auto_comment" placeholder="请输入订单自动评价时间" size="small">
+                        <template slot="append">天</template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="自动评价内容：">
+                    <el-input v-model="detailForm.order_comment_content" placeholder="请输入订单自动评价内容" size="small">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="客户评价内容：">
+                    <el-radio-group v-model="detailForm.user_reply">
+                        <el-radio label="0">管理员审核后发布</el-radio>
+                        <el-radio label="1">直接发布</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </div>
+            <div v-if="detailForm.invoice">
+                <div class="divider-title">发票配置</div>
+                <el-form-item label="可申请发票：">
+                    <el-switch v-model="detailForm.invoice.enable" active-color="#7438D5" inactive-color="#eee"
+                        active-value="1" inactive-value="0">
+                    </el-switch>
+                </el-form-item>
+                <el-form-item label="票面金额：">
+                    <el-radio-group v-model="detailForm.invoice.price_type">
+                        <el-radio label="goods_price">商品价格</el-radio>
+                        <el-radio label="pay_price">实际支付价格</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+            </div>
+        </div>
+        <div v-if="type=='services'">
+            <div style="margin-bottom: 40px;" v-if="detailForm.amap">
+                <div class="divider-title">高德地图配置</div>
+                <el-form-item label="申请的key值：">
+                    <el-input v-model="detailForm.amap.appkey" placeholder="请输入申请的key值" size="small">
+                    </el-input>
+                    <div class="form-item-tip">此处为申请的高德地图 web端(JS API) 的 key</div>
+                </el-form-item>
+                <el-form-item label="安全密钥：">
+                    <el-input v-model="detailForm.amap.jscode" placeholder="请输入安全密钥 jscode" size="small">
+                    </el-input>
+                    <div class="form-item-tip">2021-12-02 日之后申请的 web端(JS API) 的 key 会自动生成安全密钥 jscode</div>
+                </el-form-item>
+            </div>
+            <div class="divider-title">快递鸟配置</div>
+            <div v-if="detailForm.express">
+                <el-form-item label="用户ID：">
+                    <el-input v-model="detailForm.express.ebusiness_id" placeholder="请输入用户ID" size="small">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="类型：">
+                    <div class="display-flex">
+                        <el-radio-group v-model="detailForm.express.type">
+                            <el-radio label="free">免费版</el-radio>
+                            <el-radio label="vip">标准版</el-radio>
+                        </el-radio-group>
+                        <div class="detailForm-href">
+                            <a href="http://www.kdniao.com/reg?from=wzlxp" target="_Blank">申请快递鸟商户</a>
+                        </div>
+                    </div>
+                    <div v-if="detailForm.express.type=='free'" class="form-item-tip">免费版只支持 申通、圆通、百世、天天（请以快递鸟免费版说明为准）
+                    </div>
+                    <div v-if="detailForm.express.type=='vip'" class="form-item-tip">标准版本支持电子面单接口，自动生成运单号</div>
+                </el-form-item>
+                <el-form-item label="API Key：">
+                    <el-input v-model="detailForm.express.appkey" placeholder="请输入API Key" size="small">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="京东青龙配送编码：">
+                    <el-input v-model="detailForm.express.jd_code" placeholder="请输入京东青龙配送编码" size="small">
+                    </el-input>
+                    <div class="form-item-tip">使用京东时需要配置</div>
+                </el-form-item>
+                <el-form-item label="回调地址：">
+                    <el-input disabled v-model="expressAddress" placeholder="请输入回调地址" size="small">
+                    </el-input>
+                    <div class="form-item-tip">请在快递鸟后台配置此回调地址</div>
+                </el-form-item>
+                <template v-if="detailForm.express.type=='vip'">
+                    <el-form-item label="客户号：">
+                        <el-input v-model="detailForm.express.CustomerName" placeholder="请输入客户号" size="small">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="客户密码：">
+                        <el-input v-model="detailForm.express.CustomerPwd" placeholder="请输入客户密码" size="small">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="快递公司编码：">
+                        <el-select style="width: 100%;" v-model="detailForm.express.ShipperCode" filterable size="small"
+                            placeholder="请选择快递公司编码" :filter-method="deliverFilter">
+                            <el-option v-for="item in deliverCompany" :key="item.code" :label="item.code"
+                                :value="item.code">
+                                <div class="select-option-container display-flex">
+                                    <div class="option-item">{{ item.code }}</div>
+                                    <div class="option-item">{{ item.name }}</div>
+                                </div>
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <div class="divider-title">发货人信息</div>
+                    <div v-if="detailForm.express.Sender">
+                        <el-form-item label="发货人：">
+                            <el-input v-model="detailForm.express.Sender.Name" placeholder="请输入发货人姓名" size="small">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="联系电话：">
+                            <el-input v-model="detailForm.express.Sender.Mobile" placeholder="请输入联系电话" size="small">
+                        </el-form-item>
+                        <el-form-item label="省/市/区：">
+                            <el-cascader style="width: 100%;" v-model="detailForm.area_arr" :options="areaOptions"
+                                :props="{value:'name'}" size="small"></el-cascader>
+                        </el-form-item>
+                        <el-form-item label="详细地址：">
+                            <el-input v-model="detailForm.express.Sender.Address" placeholder="请输入详细地址" size="small">
+                            </el-input>
+                        </el-form-item>
+                    </div>
+                    <div class="divider-title">邮费支付方式</div>
+                    <div v-if="detailForm.express">
+                        <el-form-item label="支付方式：">
+                            <el-radio-group v-model="detailForm.express.PayType">
+                                <el-radio :label="1">现付</el-radio>
+                                <el-radio :label="2">到付</el-radio>
+                                <el-radio :label="3">月结</el-radio>
+                                <el-radio :label="4">第三方支付(仅SF支持)</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item label="快递类型：">
+                            <div class="display-flex">
+                                <el-input v-model="detailForm.express.ExpType" placeholder="请根据快递业务类型表-快递鸟接口参数填写"
+                                    size="small">
+                                </el-input>
+                                <div class="form-item-tip detailForm-href">详细快递类型请下载
+                                    <a href="http://www.kdniao.com/file/%E5%BF%AB%E9%80%92%E5%85%AC%E5%8F%B8%E5%BF%AB%E9%80%92%E4%B8%9A%E5%8A%A1%E7%B1%BB%E5%9E%8B.xlsx"
+                                        target="_Blank">快递业务类型</a>
+                                </div>
+                            </div>
+                        </el-form-item>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <div v-if="type=='chat'">
+            <el-form-item label="客服类型：">
+                <el-radio-group v-model="detailForm.type">
+                    <el-radio label="shopro">Shopro 客服</el-radio>
+                    <el-radio label="kefu">Workerman 在线客服</el-radio>
+                </el-radio-group>
+                <div class="form-item-tip">选用 workerman 在线客服，请先安装 Workerman 在线客服插件</div>
+            </el-form-item>
+            <div v-if="detailForm.type=='shopro'">
+                <div class="divider-title">基础配置</div>
+                <div v-if="detailForm.basic">
+                    <el-form-item label="默认上次客服：">
+                        <el-switch v-model="detailForm.basic.last_customer_service" active-color="#7438D5"
+                            inactive-color="#eee" :active-value="1" :inactive-value="0">
+                        </el-switch>
+                        <div class="form-item-tip">是否默认使用上次客服
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="客服分配方式：">
+                        <el-radio-group v-model="detailForm.basic.allocate">
+                            <el-radio label="busy">忙碌程度</el-radio>
+                            <el-radio label="turns">轮流</el-radio>
+                            <el-radio label="random">随机</el-radio>
+                        </el-radio-group>
+                        <div class="form-item-tip">
+                            <span v-if="detailForm.basic.allocate == 'busy'">按照客服忙碌度分配给最空闲的客服</span>
+                            <span v-if="detailForm.basic.allocate == 'turns'">轮流分配给最长时间没接入客户的客服</span>
+                            <span v-if="detailForm.basic.allocate == 'random'">随机分配给在线的客服</span>
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="公告：">
+                        <el-input v-model="detailForm.basic.notice" placeholder="请输入公告" size="small">
+                        </el-input>
+                        <div class="form-item-tip">
+                            将会显示在用户端聊天界面
+                        </div>
+                    </el-form-item>
+                </div>
+                <div class="divider-title">系统配置(修改完下面配置，请一定重启客服进程)</div>
+                <div v-if="detailForm.system">
+                    <el-form-item label="开启 wss 连接：">
+                        <el-switch v-model="detailForm.system.is_ssl" active-color="#7438D5" inactive-color="#eee"
+                            :active-value="1" :inactive-value="0">
+                        </el-switch>
+                    </el-form-item>
+                    <el-form-item v-if="detailForm.system.is_ssl==1" label="wss 连接方式：">
+                        <el-radio-group v-model="detailForm.system.ssl_type">
+                            <el-radio label="cert">证书</el-radio>
+                            <el-radio label="reverse_proxy">反向代理</el-radio>
+                        </el-radio-group>
+                        <div class="form-item-tip">反向代理：通过 nginx 反向代理实现 wss，证书：直接配置证书实现 wss</div>
+                    </el-form-item>
+                    <div v-if="detailForm.system.is_ssl==1 && detailForm.system.ssl_type=='cert'">
+                        <el-form-item label="wss 证书：">
+                            <el-input v-model="detailForm.system.ssl_cert" placeholder="wss 证书在服务器的绝对路径" size="small">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="wss key：">
+                            <el-input v-model="detailForm.system.ssl_key" placeholder="wss key在服务器的绝对路径" size="small">
+                            </el-input>
+                        </el-form-item>
+                    </div>
+                    <el-form-item label="gateway 端口：">
+                        <el-input v-model="detailForm.system.gateway_port" placeholder="请输入API Key" size="small">
+                        </el-input>
+                        <div class="form-item-tip"> gateway端口,需要放行服务器端口</div>
+                    </el-form-item>
+                    <el-form-item label="进程数量：">
+                        <el-input v-model="detailForm.system.gateway_num" placeholder="请输入进程数量" size="small">
+                        </el-input>
+                        <div class="form-item-tip"> gateway进程数量</div>
+                    </el-form-item>
+                    <el-form-item label="gateway 内部端口：">
+                        <el-input v-model="detailForm.system.gateway_start_port" placeholder="请输入内部通讯端口" size="small">
+                        </el-input>
+                        <div class="form-item-tip">假如gateway进程数量为 4，起始端口为2010，则一般会使用2010 2011 2012 2013 4个端口作为内部通讯端口
+                        </div>
+                    </el-form-item>
+                    <el-form-item label="worker 服务端口：">
+                        <el-input v-model="detailForm.system.business_worker_port"
+                            placeholder="请输入 business worker 服务注册端口" size="small">
+                        </el-input>
+                        <div class="form-item-tip">请输入 business worker 服务注册端口</div>
+                    </el-form-item>
+                    <el-form-item label="worker 进程数量：">
+                        <el-input v-model="detailForm.system.business_worker_num" placeholder="请输入 business worker 进程数量"
+                            size="small">
+                        </el-input>
+                        <div class="form-item-tip">business worker 进程数量</div>
+                    </el-form-item>
+                </div>
+            </div>
+        </div>
+        <div v-if="type=='store'">
+            <el-form-item label="门店协议：">
+                <el-input v-model="detailForm.protocol" placeholder="请选择门店协议" size="small">
+                    <template slot="append">
+                        <div class="theme-color cursor-pointer" @click="richtextSelect('protocol')">选择</div>
+                    </template>
+                </el-input>
+            </el-form-item>
+            <el-form-item label="到店自提协议：">
+                <el-input v-model="detailForm.selfetch_protocol" placeholder="请选择到店自提协议" size="small">
+                    <template slot="append">
+                        <div class="theme-color cursor-pointer" @click="richtextSelect('selfetch_protocol')">选择</div>
+                    </template>
+                </el-input>
+            </el-form-item>
+        </div>
+        <div v-if="type=='wxOfficialAccount'">
+            <el-form-item label="公众号名称：">
+                <el-input v-model="detailForm.name" placeholder="请输入公众号名称" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="公众号类型：">
+                <div class="wx-type">
+                    <el-radio-group v-model="detailForm.wx_type">
+                        <el-radio label="1">订阅号</el-radio>
+                        <el-radio label="2">认证订阅号</el-radio>
+                        <el-radio label="3">服务号</el-radio>
+                        <el-radio label="4">认证服务号/认证政府订阅号/认证媒体订阅号</el-radio>
+                    </el-radio-group>
+                </div>
+            </el-form-item>
+            <el-form-item label="公众号头像：">
+                <div class="display-flex">
+                    <div class="platform-images" v-if="detailForm.avatar">
+                        <el-image :src="Fast.api.cdnurl(detailForm.avatar)" fit="contain"
+                            :preview-src-list="detailForm.avatar_arr">
+                        </el-image>
+                        <div class="del-image-btn" @click="delImg('image','avatar')">
+                            <i class="el-icon-error"></i>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','avatar')"
+                        v-if="!detailForm.avatar">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+            <el-form-item label="公众号二维码：">
+                <div class="display-flex">
+                    <div class="goods-image-box display-flex" v-if="detailForm.qrcode">
+                        <div class="platform-images">
+                            <el-image :src="Fast.api.cdnurl(detailForm.qrcode)" fit="contain"
+                                :preview-src-list="detailForm.qrcode_arr">
+                            </el-image>
+                            <div class="del-image-btn" @click="delImg('image','qrcode')">
+                                <i class="el-icon-error"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','qrcode')"
+                        v-if="!detailForm.qrcode">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+            <el-form-item label="开发者ID：">
+                <el-input v-model="detailForm.app_id" placeholder="请输入开发者ID(AppID)" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="开发者密码：">
+                <el-input v-model="detailForm.secret" placeholder="请输入开发者密码(AppSecret)" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="服务器地址：">
+                <el-input v-model="detailForm.url" disabled placeholder="请输入服务器地址(URL)" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="令牌(Token)：">
+                <el-input v-model="detailForm.token" placeholder="请输入令牌(Token)" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="消息加解密密钥：">
+                <el-input v-model="detailForm.aes_key" placeholder="请输入消息加解密密钥(EncodingAESKey)" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="网页自动授权登录：">
+                <el-switch v-model="detailForm.auto_login" active-color="#7438D5" inactive-color="#eee" active-value="1"
+                    inactive-value="0">
+                </el-switch>
+            </el-form-item>
+            <el-form-item label="服务器配置状态：" prop="status">
+                <el-radio-group v-model="detailForm.status">
+                    <el-radio label="0">未对接</el-radio>
+                    <el-radio label="1">已对接</el-radio>
+                </el-radio-group>
+            </el-form-item>
+        </div>
+        <div v-if="type=='wxMiniProgram'">
+            <el-form-item label="小程序名称：">
+                <el-input v-model="detailForm.name" placeholder="请输入小程序名称" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="小程序头像：">
+                <div class="display-flex">
+                    <div class="goods-image-box display-flex" v-if="detailForm.avatar">
+                        <div class="platform-images">
+                            <el-image :src="Fast.api.cdnurl(detailForm.avatar)" fit="contain"
+                                :preview-src-list="detailForm.avatar_arr">
+                            </el-image>
+                            <div class="del-image-btn" @click="delImg('image','avatar')">
+                                <i class="el-icon-error"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','avatar')"
+                        v-if="!detailForm.avatar">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+            <el-form-item label="小程序码：">
+                <div class="display-flex">
+                    <div class="goods-image-box display-flex" v-if="detailForm.qrcode">
+                        <div class="platform-images">
+                            <el-image :src="Fast.api.cdnurl(detailForm.qrcode)" fit="contain"
+                                :preview-src-list="detailForm.qrcode_arr">
+                            </el-image>
+                            <div class="del-image-btn" @click="delImg('image','qrcode')">
+                                <i class="el-icon-error"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-img display-flex" @click="attachmentSelect('image','qrcode')"
+                        v-if="!detailForm.qrcode">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </div>
+            </el-form-item>
+            <el-form-item label="AppID：">
+                <el-input v-model="detailForm.app_id" placeholder="请输入AppID" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="AppSecret：">
+                <el-input v-model="detailForm.secret" placeholder="请输入AppSecret" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="小程序自动登录：">
+                <div class="display-flex">
+                    <el-switch v-model="detailForm.auto_login" active-color="#7438D5" inactive-color="#eee"
+                        active-value="1" inactive-value="0">
+                    </el-switch>
+                    <span style="margin-left: 10px;color: #999;">(建议开启)</span>
+                </div>
+            </el-form-item>
+        </div>
+        <div v-if="type=='H5'">
+            <el-form-item label="微信AppID：">
+                <el-input v-model="detailForm.app_id" placeholder="请输入微信AppID" size="small"></el-input>
+                <div class="form-item-tip">用于H5微信支付</div>
+            </el-form-item>
+            <el-form-item label="微信Secret：">
+                <el-input v-model="detailForm.secret" placeholder="请输入微信Secret" size="small"></el-input>
+            </el-form-item>
+        </div>
+        <div v-if="type=='App'">
+            <el-form-item label="AppID：">
+                <el-input v-model="detailForm.app_id" placeholder="请输入AppID" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="AppSecret：">
+                <el-input v-model="detailForm.secret" placeholder="请输入AppSecret" size="small"></el-input>
+            </el-form-item>
+        </div>
+        <div v-if="type=='wechat'">
+            <el-form-item label="应用平台：" v-if="detailForm.platform">
+                <el-checkbox-group v-model="detailForm.platform">
+                    <el-checkbox label="wxOfficialAccount">微信公众号</el-checkbox>
+                    <el-checkbox label="wxMiniProgram">小程序</el-checkbox>
+                    <el-checkbox label="H5">H5</el-checkbox>
+                    <el-checkbox label="App">App</el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="商户类型：">
+                <el-radio-group v-model="detailForm.mode" @change="changeWechatType">
+                    <el-radio label="normal">普通商户</el-radio>
+                    <el-radio label="service">服务商</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <div v-if="detailForm.mode=='normal'">
+                <el-form-item label="商户号：">
+                    <el-input v-model="detailForm.mch_id" placeholder="请输入商户号" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="支付密钥：">
+                    <el-input v-model="detailForm.key" placeholder="请输入支付密钥" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="商户证书：">
+                    <el-input class="local-ajax-upload-wrap" v-model="detailForm.cert_client" placeholder="请选择商户证书"
+                        size="small">
+                        <template slot="append">
+                            <label for="cert_client">上传</label>
+                            <input class="local-ajax-upload" id="cert_client" type="file"
+                                @change="ajaxUpload('cert_client')">
+                        </template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="商户Key证书：">
+                    <el-input class="local-ajax-upload-wrap" v-model="detailForm.cert_key" placeholder="请选择商户Key证书"
+                        size="small">
+                        <template slot="append">
+                            <label for="cert_key">上传</label>
+                            <input class="local-ajax-upload" id="cert_key" type="file" @change="ajaxUpload('cert_key')">
+                        </template>
+                    </el-input>
+                </el-form-item>
+            </div>
+            <div v-if="detailForm.mode=='service'">
+                <el-form-item label="主商户号：">
+                    <el-input v-model="detailForm.mch_id" placeholder="请输入主商户号" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="子商户号：">
+                    <el-input v-model="detailForm.sub_mch_id" placeholder="请输入子商户号" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="主商户支付秘钥：">
+                    <el-input v-model="detailForm.key" placeholder="请输入主商户支付秘钥" size="small"></el-input>
+                </el-form-item>
+                <el-form-item
+                    v-if="detailForm.platform.includes('wxOfficialAccount') || detailForm.platform.includes('H5')"
+                    label="主商户公众号AppId：">
+                    <el-input v-model="detailForm.app_id" placeholder="请输入主商户公众号AppId" size="small"></el-input>
+                </el-form-item>
+                <el-form-item v-if="detailForm.platform.includes('wxMiniProgram')" label="主商户小程序AppId：">
+                    <el-input v-model="detailForm.miniapp_id" placeholder="请输入主商户小程序AppId" size="small"></el-input>
+                </el-form-item>
+                <el-form-item v-if="detailForm.platform.includes('App')" label="主商户开放平台AppId：">
+                    <el-input v-model="detailForm.appid" placeholder="请输入主商户开放平台AppId" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="主商户证书：">
+                    <el-input class="local-ajax-upload-wrap" v-model="detailForm.cert_client" placeholder="请选择主商户证书"
+                        size="small">
+                        <template slot="append">
+                            <label for="cert_client">上传</label>
+                            <input class="local-ajax-upload" id="cert_client" type="file"
+                                @change="ajaxUpload('cert_client')">
+                        </template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="主商户Key证书：">
+                    <el-input class="local-ajax-upload-wrap" v-model="detailForm.cert_key" placeholder="请选择主商户Key证书"
+                        size="small">
+                        <template slot="append">
+                            <label for="cert_key">上传</label>
+                            <input class="local-ajax-upload" id="cert_key" type="file" @change="ajaxUpload('cert_key')">
+                        </template>
+                    </el-input>
+                </el-form-item>
+            </div>
+        </div>
+        <div v-if="type=='alipay'">
+            <el-form-item label="应用平台：" v-if="detailForm.platform">
+                <el-checkbox-group v-model="detailForm.platform">
+                    <el-checkbox label="wxOfficialAccount">微信公众号</el-checkbox>
+                    <el-checkbox label="wxMiniProgram">小程序</el-checkbox>
+                    <el-checkbox label="H5">H5</el-checkbox>
+                    <el-checkbox label="App">App</el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+            <el-form-item label="商户类型：">
+                <el-radio-group v-model="detailForm.mode" @change="changeWechatType">
+                    <el-radio label="normal">普通商户</el-radio>
+                    <el-radio label="service">服务商</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item v-if="detailForm.mode=='service'" label="主商户Pid：">
+                <el-input v-model="detailForm.pid" placeholder="请输入主商户Pid" size="small">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="AppId：">
+                <el-input v-model="detailForm.app_id" placeholder="请输入AppId" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="支付宝公钥证书：">
+                <el-input class="local-ajax-upload-wrap" v-model="detailForm.ali_public_key" placeholder="请选择支付宝公钥证书"
+                    size="small">
+                    <template slot="append">
+                        <label for="ali_public_key">上传</label>
+                        <input class="local-ajax-upload" id="ali_public_key" type="file"
+                            @change="ajaxUpload('ali_public_key')">
+                    </template>
+                </el-input>
+                <div class="form-item-tip">alipayCertPublicKey_RSA2.crt</div>
+            </el-form-item>
+            <el-form-item label="应用公钥证书：">
+                <el-input class="local-ajax-upload-wrap" v-model="detailForm.app_cert_public_key" placeholder="请选择商户证书"
+                    size="small">
+                    <template slot="append">
+                        <label for="app_cert_public_key">上传</label>
+                        <input class="local-ajax-upload" id="app_cert_public_key" type="file"
+                            @change="ajaxUpload('app_cert_public_key')">
+                    </template>
+                </el-input>
+                <div class="form-item-tip">appCertPublicKey_*.crt</div>
+            </el-form-item>
+            <el-form-item label="支付宝根证书：">
+                <el-input class="local-ajax-upload-wrap" v-model="detailForm.alipay_root_cert" placeholder="请选择商户Key证书"
+                    size="small">
+                    <template slot="append">
+                        <label for="alipay_root_cert">上传</label>
+                        <input class="local-ajax-upload" id="alipay_root_cert" type="file"
+                            @change="ajaxUpload('alipay_root_cert')">
+                    </template>
+                </el-input>
+                <div class="form-item-tip">alipayRootCert.crt</div>
+            </el-form-item>
+            <el-form-item label="private_key：">
+                <el-input v-model="detailForm.private_key" placeholder="请输入private_key" size="small">
+                </el-input>
+            </el-form-item>
+        </div>
+        <div v-if="type=='wallet'">
+            <el-form-item label="应用平台：">
+                <el-checkbox-group v-model="detailForm.platform" v-if="detailForm.platform">
+                    <el-checkbox label="wxOfficialAccount">微信公众号</el-checkbox>
+                    <el-checkbox label="wxMiniProgram">小程序</el-checkbox>
+                    <el-checkbox label="H5">H5</el-checkbox>
+                    <el-checkbox label="App">App</el-checkbox>
+                </el-checkbox-group>
+            </el-form-item>
+        </div>
+    </el-form>
+    <div class="dialog-footer">
+        <div @click="submitFrom" class="dialog-cancel-btn display-flex-c cursor-pointer">取消</div>
+        <div @click="submitFrom('yes')" class="dialog-define-btn display-flex-c cursor-pointer">确定
+        </div>
+    </div>
+</div>

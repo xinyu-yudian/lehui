@@ -1,0 +1,359 @@
+<meta name="referrer" content="never">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #materialIndex {
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        color: #444;
+        font-weight: 500;
+        padding-top: 20px;
+    }
+
+    .el-tabs__nav {
+        margin-left: 20px;
+    }
+
+    .el-tabs__header {
+        margin-bottom: 0;
+    }
+
+    .el-tabs__item {
+        height: 50px;
+        line-height: 50px;
+        width: 120px;
+    }
+
+    .el-tabs__active-bar {
+        width: 80px !important;
+        left: 10px;
+        height: 3px;
+        border-radius: 1px;
+    }
+
+    .el-tabs--top .el-tabs__item.is-top:last-child {
+        padding-right: 20px;
+    }
+
+    .custom-tabs {
+        padding-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .custom-body {
+        padding: 0 20px 30px;
+    }
+
+    .v-waterfall-content {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+
+    .v-waterfall-item {
+        float: left;
+        position: absolute;
+    }
+
+    .v-waterfall-item>div {
+        width: auto;
+        height: auto;
+    }
+
+    .news-container {
+        position: relative;
+        height: calc(100vh - 270px);
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .news-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .news-container::-webkit-scrollbar-thumb {
+        width: 6px;
+        background: #e6e6e6;
+        height: 20px;
+        border-radius: 3px;
+    }
+
+    .news-container .news-item {
+        position: absolute;
+        width: 230px;
+        margin: 0 30px 30px 0;
+        transition: all 1s;
+        /* border: 1px solid #E6E6E6; */
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .index-item {
+        background: #fff;
+        box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        margin-bottom: 30px;
+        display: block;
+    }
+
+    .frist-item {
+        position: relative;
+        height: 136px;
+    }
+
+    .frist-item .el-image {
+        width: 100%;
+        height: 100%;
+    }
+
+    .frist-item .frist-title {
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        line-height: 16px;
+        color: #fff;
+        z-index: 100;
+        background: linear-gradient(360deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 100%);
+        height: 42px;
+        padding: 5px 10px;
+    }
+
+    .other-items {
+        height: 50px;
+        display: flex;
+        padding: 0 10px 0 12px;
+        align-items: center;
+    }
+
+    .other-items .frist-title {
+        width: 160px;
+        line-height: 16px;
+        margin-right: 18px;
+        border-top: 1px solid #E6E6E6;
+        height: 50px;
+        padding: 11px 0;
+        color: #444;
+    }
+
+    .other-items .el-image {
+        width: 30px;
+        height: 30px;
+    }
+
+    .custom-button-container {
+        padding: 0 20px;
+    }
+
+    img {
+        transition: all 0.6s;
+        -ms-transition: all 0.8s;
+    }
+
+    img:hover {
+        transform: scale(1.2);
+        -ms-transform: scale(1.2);
+    }
+
+    a {
+        display: block;
+        color: #444;
+    }
+
+    a:focus,
+    a:hover {
+        color: #444;
+    }
+
+    .image-video-item .image-video-img {
+        height: 136px;
+        width: 100%;
+    }
+
+    .image-video-item .el-image {
+        height: 100%;
+        width: 100%;
+    }
+
+    .image-title {
+        height: 36px;
+        line-height: 36px;
+        padding: 0 10px;
+    }
+
+    .material-tip {
+        margin: 0 20px;
+    }
+
+    .tip-container {
+        padding: 16px;
+        border-radius: 5px;
+        background-color: #F1EBFA;
+        position: relative;
+        font-size: 12px;
+    align-items: center;
+    }
+
+    .tip-href,
+    .tip-href:hover,
+    .tip-href:focus {
+        color: #7438D5;
+    }
+    .el-image{
+        border: 1px solid #e6e6e6;
+        border-radius: 4px 4px 0 0;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<div id="materialIndex" v-cloak>
+    <div class="material-tip">
+        <div class="tip-container">
+            <p><strong>素材说明</strong></p>
+            <p class="display-flex">素材管理中图文消息、图片、视频、音频、需要您在公众号平台进行上传。 <a class="tip-href"
+                    href="https://mp.weixin.qq.com" target="_blank">微信公众号管理</a>
+            </p>
+        </div>
+    </div>
+    <div class="custom-tabs">
+        <el-tabs v-model="activeName">
+            <el-tab-pane label="图文消息" name="news"></el-tab-pane>
+            <el-tab-pane label="图片" name="image"></el-tab-pane>
+            <el-tab-pane label="视频" name="video"></el-tab-pane>
+            <el-tab-pane label="音频" name="voice"></el-tab-pane>
+            <el-tab-pane label="文本" name="text"></el-tab-pane>
+            <el-tab-pane label="链接" name="link"></el-tab-pane>
+        </el-tabs>
+    </div>
+    <div class="custom-button-container">
+        <div class="display-flex">
+            <div class="custom-refresh" @click="getlistData">
+                <i class="el-icon-refresh"></i>
+            </div>
+            {if condition = "$auth->check('shopro/wechat/material/add')"}
+            <div v-if="activeName=='text' || activeName=='link'" class="create-btn" @click="operation('create',null)"><i
+                    class="el-icon-plus"></i>新建素材</div>
+            {/if}
+        </div>
+    </div>
+    <div class="custom-body">
+        <div class="news-container" v-if="activeName=='news'">
+            <div class="news-item" v-for="item in listData">
+                <a v-for="(it,index) in item.content.news_item" :class="index==0?'frist-item':'other-items'"
+                    :href="it.url" target="_blank" rel="noopener noreferrer">
+                    <div class="frist-title ellipsis-item-2">{{it.title}}</div>
+                    <el-image v-if="it.thumb_url" :src="Fast.api.cdnurl(it.thumb_url)"></el-image>
+                </a>
+            </div>
+        </div>
+        <div v-if="activeName=='image' || activeName=='video'">
+            <el-row :gutter="30">
+                <el-col :xs="12" :sm="8" :md="6" :lg="4" :xl="4" v-for="item in listData">
+                    <div class="index-item image-video-item">
+                        <template v-if="activeName=='image'">
+                            <div class="image-video-img">
+                                <el-image v-if="item.url" :src="Fast.api.cdnurl(item.url)" :preview-src-list="item.arr" fit="contain">
+                                </el-image>
+                            </div>
+                            <div class="image-title ellipsis-item">{{item.name}}</div>
+                        </template>
+                        <template v-if="activeName=='video'">
+                            <a :href="'https://mp.weixin.qq.com/mp/readtemplate?t=pages/video_player_tmpl&action=mpvideo&vid='+item.vid+'&auto=1'"
+                                target="_blank" rel="noopener noreferrer">
+                                <div class="image-video-img">
+                                    <el-image v-if="item.cover_url" :src="Fast.api.cdnurl(item.cover_url)" fit="contain">
+                                    </el-image>
+                                </div>
+                                <div class="display-flex-b">
+                                    <div class="pic-title ellipsis-item"
+                                        style="height:36px;line-height: 36px;padding: 0 10px;">
+                                        {{item.name}}</div>
+                                    <div class="pic-title ellipsis-item" v-if="activeName=='video'"
+                                        style="height:36px;line-height: 36px;padding: 0 10px;">
+                                        {{item.newcat}}-{{item.newsubcat}}</div>
+                                </div>
+                                <div class="pic-title ellipsis-item" v-if="activeName=='video'"
+                                    style="height:36px;line-height: 36px;padding: 0 10px;">
+                                    {{item.content}}</div>
+                            </a>
+                        </template>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+        <div v-if="activeName=='voice'">
+            <el-row :gutter="30">
+                <el-col :xs="12" :sm="8" :md="6" :lg="4" :xl="4" v-for="item in listData">
+                    <a class="index-item btn-dialog" :href="'shopro/wechat/material/detail?media_id='+item.media_id">
+                        <div class="display-flex-b" style="padding: 14px 10px;">
+                            <div class="pic-title ellipsis-item" style="line-height: 28px;">
+                                {{item.name}}</div>
+                            <div class="theme-color" style="height: 28px;font-size: 20px;"><i
+                                    class="el-icon-video-play"></i></div>
+                        </div>
+                    </a>
+                </el-col>
+            </el-row>
+        </div>
+        <div v-if="activeName=='text'">
+            <el-row :gutter="30">
+                <el-col :xs="12" :sm="8" :md="6" :lg="4" :xl="4" v-for="item in listData">
+                    <div class="index-item" style="padding: 14px 0;">
+                        <div style="padding: 10px 10px;">
+                            <div class="pic-title ellipsis-item-2" style="line-height: 24px;height: 48px;">
+                                {{item.name}}</div>
+                        </div>
+                        <div class="display-flex" style="justify-content: flex-end;padding: 0 10px;">
+                            {if condition = "$auth->check('shopro/wechat/material/edit')"}
+                            <span class="table-edit-text" @click="operation('edit',item.id)">编辑</span>
+                            {/if}
+                            {if condition = "$auth->check('shopro/wechat/material/del')"}
+                            <span class="table-delete-text" @click="operation('delete',item.id)">删除</span>
+                            {/if}
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+        <div v-if="activeName=='link'">
+            <el-row :gutter="30">
+                <el-col :xs="12" :sm="8" :md="6" :lg="4" :xl="4" v-for="item in listData">
+                    <div class="index-item" style="padding-top: 10px;">
+                        <a class="link-item" :href="JSON.parse(item.content).url" target="_blank">
+                            <div class="pic-title ellipsis-item" style="height:36px;line-height: 36px;padding: 0 10px;">
+                                {{item.name}}
+                            </div>
+                            <div class="display-flex" style="padding: 0 10px;">
+                                <div class="pic-title ellipsis-item-2 flex-1"
+                                    style="line-height: 16px;padding-right: 10px;color:#666">
+                                    {{JSON.parse(item.content).description}}</div>
+                                <el-image style="width: 32px;
+                    height: 32px;" v-if="item.content" :src="Fast.api.cdnurl(JSON.parse(item.content).image)"
+                                    :preview-src-list="item.arr" fit="contain">
+                                </el-image>
+                            </div>
+                        </a>
+                        <div class="display-flex" style="justify-content: flex-end;padding: 10px 10px;">
+                            {if condition = "$auth->check('shopro/wechat/material/edit')"}
+                            <span class="table-edit-text" @click="operation('edit',item.id)">编辑</span>
+                            {/if}
+                            {if condition = "$auth->check('shopro/wechat/material/del')"}
+                            <span class="table-delete-text" @click="operation('delete',item.id)">删除</span>
+                            {/if}
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+        <div class="pagination-container">
+            <el-pagination @current-change="pageCurrentChange" :current-page="currentPage" :page-size="20"
+                layout="total, prev, pager, next, jumper" :total="totalPage">
+            </el-pagination>
+        </div>
+    </div>
+</div>

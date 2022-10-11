@@ -1,0 +1,132 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #categorySelect {
+        color: #444;
+        background: #fff;
+        padding: 0 5px 20px;
+    }
+
+    .category-body {
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 1px;
+    }
+
+    .category-item {
+        width: 340px;
+        height: 40px;
+
+        background: #FFFFFF;
+        box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        margin-right: 30px;
+        margin-bottom: 20px;
+    }
+
+    .category-item:hover {
+        cursor: pointer;
+    }
+
+    .selected-item {
+        color: #f00;
+    }
+
+    .title-item {
+        color: #444;
+        font-size: 14px;
+        margin-left: 14px;
+    }
+
+    .style-item {
+        color: #999;
+        font-size: 12px;
+    }
+    .el-cascader-node.in-active-path, .el-cascader-node.is-active, .el-cascader-node.is-selectable.in-checked-path{
+        color: #7536D0;
+    }
+    .el-cascader .el-input .el-input__inner,.el-cascader .el-input .el-input__inner:focus, .el-cascader .el-input.is-focus .el-input__inner{
+        width: 300px;
+        border: none !important;
+        color: rgba(0,0,0,0);
+    }
+    .category-style-tip{
+        color: #DDDDDD;
+        margin-left: 6px;
+    }
+    .el-cascader__tags{
+        display: none;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="categorySelect" v-cloak>
+    <div style="height: calc(100vh - 100px);overflow: auto;">
+        <div class="category-body">
+            <div v-if="form=='link'" class="category-item" v-for="(item,index) in selectedData"
+                @click="select(item.id,index)">
+                <div class="disply-flex">
+                    <el-checkbox v-model="item.id==selectedids"></el-checkbox>
+                    <span class="title-item">{{item.name}} </span>
+                </div>
+                <div class="display-flex">
+                <div class="style-item">样式{{filterStyle(item.type)}}</div>
+                <el-popover placement="right" title="" width="130" trigger="hover">
+                    <div class="popover-img">
+                        <img :src="'/assets/addons/shopro/img/category/img-'+item.type+'.png'">
+                    </div>
+                    <i class="category-style-tip el-icon-question" slot="reference"></i>
+                </el-popover>
+            </div>
+            </div>
+            <div v-if="form=='group'" class="display-flex" style="flex-wrap: wrap;">
+                <div class="category-item" v-for="(item,index) in selectedData">
+                    <div class="display-flex"  style="    position: absolute;width: 260px;justify-content: space-between;z-index: 1000;">
+                      <div class="disply-flex" @click="select(item.id,index)">
+                        <el-checkbox v-model="item.id==selectedids"></el-checkbox>
+                        <span class="title-item">{{item.name}} </span>
+                    </div>
+                    <div class="style-item">样式{{filterStyle(item.type)}}</div>  
+                    </div>
+                    <!-- <el-cascader
+    :options="options"
+    :props="{ checkStrictly: true }"
+    clearable></el-cascader> -->
+                    <el-cascader placeholder="" :options="item.children" :props="defaultProps" clearable @change="cascaderChange"></el-cascader>
+                    <!-- <el-popover placement="bottom-start" trigger="click">
+                            
+                            <div style="width: 300px;text-align: right;" slot="reference">
+                              <i class="el-icon-arrow-up"></i>   
+                            </div>
+                       
+                    </el-popover> -->
+                </div>
+            </div>
+            <div v-if="form=='category-tabs'" class="display-flex" style="flex-wrap: wrap;">
+                <div class="category-item" v-for="(item,index) in selectedData">
+                    <div class="display-flex"  style="position: absolute;width: 260px;justify-content: space-between;z-index: 1000;">
+                      <div class="disply-flex" @click="select(item.id,index)">
+                        <!-- <el-checkbox v-model="item.id==selectedids"></el-checkbox> -->
+                        <span class="title-item">{{item.name}} </span>
+                    </div>
+                    <!-- <div class="style-item">样式{{filterStyle(item.type)}}</div>   -->
+                    </div>
+                    <el-cascader placeholder="" :options="item.children" :props="defaultProps2" @change="categoryTabsCascader(index,$event)"></el-cascader>
+                </div>
+            </div>
+            <div v-if="!form && selectedData[0].children.length==0">暂无分类,请去添加</div>
+        </div>
+    </div>
+    <div class="dialog-footer display-flex">
+        <div @click="close()" class="dialog-define-btn display-flex-c cursor-pointer">确定</div>
+    </div>
+</div>

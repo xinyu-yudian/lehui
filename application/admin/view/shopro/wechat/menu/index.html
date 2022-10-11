@@ -1,0 +1,133 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #listsIndex {
+        padding: 0 20px 30px;
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        color: #444;
+        font-weight: 500;
+    }
+
+    .current-menu {
+        /* border: 1px solid #e6e6e6; */
+        padding: 10px;
+        border-radius: 8px;
+        /* margin-bottom: 10px; */
+        margin-left: 70px;
+        flex: 1;
+    }
+
+    .current-menu-title {
+        margin-right: 20px;
+    }
+
+    .el-tag {
+        margin-right: 10px;
+    }
+
+    .table-edit-publish,
+    .table-edit-copy {
+        margin-right: 20px;
+        cursor: pointer;
+    }
+
+    .table-edit-publish {
+        color: #18d3a9
+    }
+
+    .span-item {
+        padding: 5px 10px;
+        background: rgba(157, 96, 255, 0.1);
+        border: 1px solid rgba(157, 96, 255, 0.5);
+        box-sizing: border-box;
+        border-radius: 2px;
+        font-size: 12px;
+        margin-right: 6px;
+        line-height: 12px;
+        color: #A268FF;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="listsIndex" v-cloak>
+    <div class="custom-header">
+        <div class="custom-header-title">
+            菜单管理
+        </div>
+    </div>
+    <div class="custom-button-container">
+        <div class="display-flex">
+            <div class="custom-refresh" @click="getList">
+                <i class="el-icon-refresh"></i>
+            </div>
+            {if condition = "$auth->check('shopro/wechat/menu/add')"}
+            <div class="create-btn" @click="operation('create',null)"><i class="el-icon-plus"></i>新建菜单</div>
+            {/if}
+        </div>
+        <div class="current-menu display-flex-b" v-if="currentMenu.length>0">
+            <div class="current-menu-title">当前菜单</div>
+            <div style="border: 1px solid #e6e6e6;height: 32px;flex: 1;border-radius: 4px;" class="display-flex">
+                <div class="display-flex" style="flex: 1;padding: 5px;">
+                    <div class="span-item" v-for="item in currentMenu">{{item.name}}</div>
+                </div>
+                {if condition = "$auth->check('shopro/wechat/menu/copy')"}
+                <el-button type="primary" size="small" @click="operation('copy',0)">复制</el-button>
+                {/if}
+            </div>
+        </div>
+    </div>
+    <div class="custom-table-body">
+        <el-table :data="listData" border style="width: 100%" :row-class-name="tableRowClassName"
+            :cell-class-name="tableCellClassName" :header-cell-class-name="tableCellClassName"
+            @row-dblclick="operation">
+            <el-table-column prop="id" label="ID" width="60">
+            </el-table-column>
+            <el-table-column label="菜单名称" min-width="500">
+                <template slot-scope="scope">
+                    <div class="display-flex">
+                        <div class="ellipsis-item" style="margin-right: 40px;width: 200px;">{{scope.row.name}}</div>
+                        <div class="display-flex">
+                            <div class="span-item" v-for="item in JSON.parse(scope.row.content)">{{item.name}}</div>
+                        </div>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="200">
+                <template slot-scope="scope">
+                    <div class="opt-container display-flex">
+                        {if condition = "$auth->check('shopro/wechat/menu/publish')"}
+                        <div class="table-edit-publish" @click="operation('status',scope.row.id)">
+                            发布
+                        </div>
+                        {/if}
+                        {if condition = "$auth->check('shopro/wechat/menu/edit')"}
+                        <div class="table-edit-text" @click="operation('edit',scope.row.id)">
+                            编辑
+                        </div>
+                        {/if}
+                        {if condition = "$auth->check('shopro/wechat/menu/copy')"}
+                        <div class="table-edit-copy" @click="operation('copy',scope.row.id)">复制</div>
+                        {/if}
+                        {if condition = "$auth->check('shopro/wechat/menu/del')"}
+                        <div class="table-delete-text" @click="operation('delete',scope.row.id)">
+                            删除
+                        </div>
+                        {/if}
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div class="pagination-container">
+        <el-pagination @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
+            :total="totalPage">
+        </el-pagination>
+    </div>
+</div>

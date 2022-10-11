@@ -1,0 +1,274 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    .shopro-screen-container {
+        background: #fff;
+        padding-top: 20px;
+        margin-bottom: 10px;
+        border-radius: 4px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .shopro-screen-container-left {
+        display: flex;
+        flex-wrap: wrap;
+        flex: 1;
+    }
+
+    .shopro-screen-container-right {
+        flex-shrink: 0;
+    }
+
+    .shopro-refresh-button {
+        margin-bottom: 20px;
+    }
+
+    .shopro-reset-button {
+        margin-right: 14px;
+    }
+
+    .shopro-table-container {
+        background: #fff;
+        padding: 20px 20px 30px;
+        border-radius: 4px;
+    }
+
+    .el-table .is-left .cell,
+    .el-table .is-left .cell>div {
+        justify-content: left;
+    }
+
+    .goods-image {
+        width: 34px;
+        height: 34px;
+        margin-right: 10px;
+        border: 1px solid #e6e6e6;
+        flex-shrink: 0;
+    }
+
+    .goods-title {
+        cursor: pointer;
+        color: #8644F2;
+    }
+
+    .add-stock {
+        cursor: pointer;
+    }
+
+    .el-dialog {
+        width: 300px;
+    }
+
+    .el-dialog__body {
+        padding: 10px 20px;
+    }
+
+    .el-dialog__footer {
+        padding: 10px;
+    }
+
+    .table-dashboard-item {
+        min-height: 46px;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 2px;
+        margin: 0 5px 14px;
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        color: #58575A;
+        line-height: 16px;
+        flex-wrap: wrap;
+    }
+
+    .table-dashboard-item-tip {
+        padding-left: 20px;
+        height: 46px;
+        line-height: 46px;
+        flex-shrink: 0;
+        margin-right: 10px;
+    }
+
+    .table-dashboard-item-form {
+        display: flex;
+        justify-content: left;
+        align-items: flex-end;
+        flex: 1;
+        height: 46px;
+        line-height: 46px;
+    }
+
+    .table-dashboard-item-unit {
+        margin-left: 4px;
+        line-height: 40px;
+    }
+
+    .table-dashboard-item-num {
+        font-size: 20px;
+    }
+
+    .table-dashboard-item-dot {
+        width: 8px;
+        height: 8px;
+        background: #8644F2;
+        border-radius: 50%;
+        margin-right: 10px;
+        display: inline-block;
+    }
+
+    .dot-2 {
+        background: #E6A93C;
+    }
+
+    .recycle-btn-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .el-row--flex {
+        flex-wrap: wrap;
+    }
+
+    .add-stock-tip {
+        margin-bottom: 8px;
+        color: #E6A93C;
+        font-size: 12px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="stockIndex" v-cloak v-loading="allAjax">
+    <div class="shopro-screen-container">
+        <div class="shopro-screen-container-left">
+            <div class="shopro-button shopro-refresh-button" @click="getListData">
+                <i class="el-icon-refresh"></i>
+            </div>
+            <div class="display-flex shopro-screen-item">
+                <div class="shopro-screen-tip">商品名称</div>
+                <div class="shopro-screen-condition">
+                    <el-input placeholder="请输入商品名称" v-model="searchForm.goods_title" class="screen-item-input"
+                        size="small">
+                    </el-input>
+                </div>
+            </div>
+            <div class="display-flex shopro-screen-item">
+                <div class="shopro-screen-tip">预警类型</div>
+                <div class="shopro-screen-condition">
+                    <el-select v-model="searchForm.stock_type" placeholder="请选择" size="small">
+                        <el-option v-for="sitem in stock_warning_list" :label="sitem.label" :value="sitem.value">
+                        </el-option>
+                    </el-select>
+                </div>
+            </div>
+            <div class="display-flex shopro-screen-item-button">
+                <div class="shopro-button shopro-reset-button" @click="screenEmpty">重置</div>
+                <div class="shopro-button shopro-screen-button" @click="handleCurrentChange(1)">筛选</div>
+            </div>
+        </div>
+        <div class="shopro-screen-container-right">
+            <div class="recycle-btn" @click="operation('recycle')">
+                <i class="fa fa-recycle"></i>
+                回收站
+            </div>
+        </div>
+    </div>
+    <div class="shopro-table-container" v-loading="tableAjax">
+        <el-row :gutter="10" type="flex">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                <div class="table-dashboard-item">
+                    <div class="table-dashboard-item-tip">
+                        <span class="table-dashboard-item-dot"></span>
+                        预警数量:
+                    </div>
+                    <div class="table-dashboard-item-form">
+                        <div class="table-dashboard-item-num">{{warning_total}}</div>
+                        <div class="table-dashboard-item-unit">个</div>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                <div class="table-dashboard-item">
+                    <div class="table-dashboard-item-tip">
+                        <span class="table-dashboard-item-dot dot-2"></span>
+                        售罄数量:
+                    </div>
+                    <div class="table-dashboard-item-form">
+                        <div class="table-dashboard-item-num">{{over_total}}</div>
+                        <div class="table-dashboard-item-unit">个</div>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+        <el-table :data="stockList" border>
+            <el-table-column label="ID" prop="id" min-width="70">
+            </el-table-column>
+            <el-table-column label="商品" min-width="220" align="left">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.goods" class="displsy-flex">
+                        <img class="goods-image" :src="Fast.api.cdnurl(scope.row.goods.image)">
+                        <div class="ellipsis-item goods-title" @click="operation('openGoods',scope.row.goods_id)">
+                            {{scope.row.goods.title}}
+                        </div>
+                    </div>
+                    <div v-else>
+                        {{scope.row.goods_id}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="goods_sku_text" label="商品规格" min-width="200">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.goods_sku_text" class="displsy-flex ellipsis-item">
+                        {{scope.row.goods_sku_text}}
+                    </div>
+                    <div v-else>-</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="stock" label="库存" min-width="100">
+            </el-table-column>
+            <el-table-column prop="stock_warning" label="预警库存" min-width="100">
+            </el-table-column>
+            <el-table-column prop="stock" label="更新时间" min-width="148">
+                <template slot-scope="scope">
+                    <div>
+                        {{moment(scope.row.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" min-width="170">
+                <template slot-scope="scope">
+                    <span class="theme-color add-stock" @click="operation('addStock',scope.row.id)">补货</span>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div class="shopro-pagination-container">
+            <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :current-page="currentPage" :page-size="limit" :page-sizes="[10, 20, 30, 40]"
+                layout="total, sizes, prev, pager, next, jumper" :total="totalPage">
+            </el-pagination>
+        </div>
+    </div>
+    <el-dialog title="补货" :visible.sync="stockDialogVisible" :before-close="closeStock">
+        <div>
+            <div class="add-stock-tip">在当前库存基础上增加库存</div>
+            <el-form :model="stockForm" ref="stock" :rules="stockRules" label-width="0px">
+                <el-form-item prop="stockNum">
+                    <el-input v-model="stockForm.stockNum" type="number" placeholder="请输入补货数量">
+                </el-form-item>
+            </el-form>
+            </el-input>
+        </div>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="closeStock" size="small">取 消</el-button>
+            <el-button type="primary" size="small" @click="closeStock(1)">确 定</el-button>
+        </span>
+    </el-dialog>
+</div>

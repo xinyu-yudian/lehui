@@ -1,0 +1,408 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<style>
+    #aftersaleIndex {
+        font-size: 13px;
+    }
+
+    .display-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .display-flex-b {
+        justify-content: space-between;
+    }
+
+    .color-FF5959 {
+        color: #FF5959;
+    }
+
+    .color-999 {
+        color: #999;
+    }
+
+    .color-7536D0 {
+        color: #7536D0;
+        cursor: pointer;
+    }
+
+    .one-ellipsis {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 298px;
+    }
+
+    .label-auto {
+        width: 100%;
+        height: 100%;
+    }
+
+    .el-input__inner,
+    .el-input__icon {
+        line-height: 32px;
+        height: 32px;
+    }
+
+    .el-radio-button__inner,
+    .el-radio-button__inner:hover {
+        height: 32px;
+        line-height: 32px;
+        width: 80px;
+        text-align: center;
+        padding: 0;
+        color: #666;
+    }
+
+    label {
+        margin-bottom: 0;
+    }
+
+    .el-table {
+        font-size: 13px;
+    }
+
+    .el-table thead {
+        color: #444;
+        font-weight: 400 !important;
+    }
+
+    .el-table--border td,
+    .el-table--border th,
+    .el-table__body-wrapper .el-table--border.is-scrolling-left~.el-table__fixed {
+        border-right: none;
+    }
+
+    .el-table--border th {
+        background: #F9F9F9;
+    }
+
+    .el-table td,
+    .el-table th {
+        padding: 7px 0 8px;
+    }
+
+    .el-table th.is-leaf .cell {
+        font-weight: 500;
+    }
+
+    .custom-header {
+        font-size: 14px;
+        color: #666;
+        height: 50px;
+        border-radius: 6px;
+        background: #fff;
+        padding: 0 20px;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .header-search {
+        width: 236px;
+    }
+
+    .custom-table {
+        padding: 20px 20px 30px;
+        background: #fff;
+    }
+
+    .custom-refresh {
+        width: 34px;
+        height: 32px;
+        border: 1px solid #E6E6E6;
+        font-size: 16px;
+        justify-content: center;
+        margin-right: 14px;
+        border-radius: 4px;
+    }
+
+    .custom-table-container {
+        margin-top: 14px;
+    }
+
+    .custom-goods-image {
+        width: 60px;
+        height: 60px;
+        margin-right: 12px;
+        border: 1px solid #e6e6ee;
+        flex-shrink: 0;
+    }
+
+    .custom-goods-msg {
+        width: 198px;
+    }
+
+    .custom-goods-sku {
+        width: 298px;
+        line-height: 1;
+        margin-top: 16px;
+    }
+
+    .custom-goods-sku>div {
+        margin-right: 14px;
+        font-size: 12px;
+    }
+
+    .page-container {
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+
+    .el-table_1_column_9.is-leaf,
+    .el-table__row.expanded .el-table_1_column_7 {
+        border-right: 1px solid #e6e6e6 !important;
+    }
+    .el-table__row.expanded .el-table_1_column_2 {
+        border-left: 1px solid #e6e6e6 !important;
+    }
+    .list-item{
+        height: 80px;
+    border-bottom: 1px solid #e6e6e6;
+    border-left: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
+    }
+
+    .item-column {
+        width: 100px;
+        padding: 0 10px;
+    }
+
+    .item-column-1 {
+        width: 448px;
+    }
+    .item-column-2{
+        width: 160px;
+    }
+
+    .item-column-4 {
+        width: 220px;
+    }
+
+    .item-column-5 {
+        width: 138px;
+    }
+
+    .item-column-6 {
+        width: 80px;
+    }
+    .item-column-7{
+        justify-content: center;
+    }
+    .item-column-8 {
+        width: 180px;
+    }
+
+    .item-column-9 {
+        flex: 1;
+        /* border-right: 1px solid #e6e6e6; */
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .el-table__expanded-cell[class*=cell] {
+        padding: 0;
+        height: 60px;
+    }
+    .el-table__expanded-cell{
+        border-right: 1px solid #e6e6ee;
+        border-bottom: none !important;
+        border-right: none;
+    }
+    .el-table__row.expanded{
+        border: 1px solid #e6e6e6;
+        border-bottom: none;
+    }
+    .el-table__row.expanded td{
+        padding: 3px 8px 4px;
+        background: #F9F9F9;
+        border-top: 1px solid #e6e6e6;
+    }
+    .el-table__fixed-right::before, .el-table__fixed::before,.el-table::before{
+        height: 0;
+    }
+    .el-table__expand-column{
+        border-left: 1px solid #e6e6e6;
+    }
+    .el-table th{
+        /* border-top: 1px solid #e6e6e6; */
+        border-bottom: none !important;
+    }
+    .goods-item-order_paytime{
+        margin: 0 20px;
+    }
+    .el-table__empty-block{
+        border: 1px solid #e6e6e6;
+    }
+    .el-pager li.active{
+        color: #7536D0;
+    }
+    .el-table--border, .el-table--group{
+        border-left: none;
+    }
+    .custom-goods-title{
+        line-height: 1;
+        margin-top: 8px;
+    }
+    .custom-goods-sku .activity-tags{
+        padding: 4px 8px;
+        font-size: 12px;
+        line-height: 12px;
+        color: #fff;
+        border-radius: 2px;
+        margin-right: 4px;
+        width: fit-content;
+    }
+    .custom-goods-sku .activity-tags:last-child{
+        margin: 0;
+    }
+    .groupon-activity-tag{
+        background: #9B7DD9;
+    }
+    .seckill-activity-tag{
+        background: #F0988B;
+    }
+    .full-activity-tag{
+        background: #F5AE6B;
+    }
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="aftersaleIndex" v-cloak>
+    <div class="custom-header display-flex">
+        <div class="header-title">
+            售后订单
+        </div>
+        <div class="header-search">
+            <el-input placeholder="请输入关键字" suffix-icon="el-icon-search" v-model="searchKey">
+            </el-input>
+        </div>
+    </div>
+    <div class="custom-table">
+        <div class="display-flex">
+            <div class="custom-refresh display-flex" @click="getData">
+                <i class="el-icon-refresh"></i>
+            </div>
+            <el-radio-group v-model="statusType" fill="#7536D0">
+                <el-radio-button label="all">全部</el-radio-button>
+                <el-radio-button label="nooper">未处理</el-radio-button>
+                <el-radio-button label="ing">处理中</el-radio-button>
+                <el-radio-button label="finish">已完成</el-radio-button>
+                <el-radio-button label="cancel">已取消</el-radio-button>
+                <el-radio-button label="refuse">已拒绝</el-radio-button>
+            </el-radio-group>
+        </div>
+        <div class="custom-table-container">
+            <el-table :data="pageData" style="width: 100%" default-expand-all="true" border :span-method="arraySpanMethod">
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <div style="margin-bottom: 10px;">
+                           <div class="list-item display-flex" v-for="after in props.row.aftersale">
+                            <div class="display-flex">
+                                <div class="item-column item-column-1 display-flex">
+                                    <div class="custom-goods-image">
+                                        <img class="label-auto" :src="Fast.api.cdnurl(after.goods_image)">
+                                    </div>
+                                    <div class="custom-goods-msg">
+                                        <div class="custom-goods-title one-ellipsis">
+                                            {{after.goods_title}}
+                                        </div>
+                                        <div class="custom-goods-sku display-flex color-999">
+                                            <div v-if="after.goods_sku_text">
+                                                规格：{{after.goods_sku_text}}
+                                            </div>
+                                            <template v-for="(b,a) in after.activity_type_text_arr">
+                                                <template v-if="a=='groupon'">
+                                                    <div v-if="props.row.btns && props.row.btns.indexOf('groupon')!='-1'"
+                                                        class="activity-tags groupon-activity-tag">
+                                                        拼团
+                                                    </div>
+                                                    <div v-if="props.row.btns && props.row.btns.indexOf('groupon_alone')!='-1'"
+                                                        class="activity-tags groupon-activity-tag">
+                                                        拼团-单独购买
+                                                    </div>
+                                                </template>
+                                                <div v-if="a=='seckill'" class="activity-tags seckill-activity-tag">{{b}}</div>
+                                                <div v-if="a=='full_reduce' || a=='full_discount' || a=='free_shipping'" class="activity-tags full-activity-tag">{{b}}</div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="item-column item-column-2">
+                                </div> -->
+                                <div class="item-column item-column-3">
+                                    <div class="one-ellipsis" style="width: 80px;">
+                                        {{after.user_nickname?after.user_nickname:""}}</div>
+                                    <div>{{after.user_mobile}}</div>
+                                </div>
+                                <div class="item-column item-column-4">
+                                    {{after.aftersale_sn}}
+                                </div>
+                                <div class="item-column item-column-5">
+                                    {{after.refund_fee}}元
+                                </div>
+                                <div class="item-column item-column-6"
+                                    :style="{color: colorFilters(after.aftersale_status)}">
+                                    {{after.aftersale_status_text}}
+                                </div>
+                                <div class="item-column item-column-7">
+                                    {{after.type_text}}
+                                </div>
+                                <div class="item-column item-column-8">
+                                    {{moment(after.createtime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                                </div>
+                            </div>
+                            <div class="item-column item-column-9 color-7536D0" @click="viewDetail(after.id)">
+                                查看详情
+                            </div>
+                        </div> 
+                        </div>
+                    </template>
+                </el-table-column>
+                <el-table-column label="商品信息" width="398">
+                    <template slot-scope="scope">
+                        <div class="display-flex" style="font-size:12px">
+                            <span class="goods-item-order_sn color-999">
+                                订单号:{{scope.row.order_sn}}
+                                <span
+                                    class="goods-item-order_paytime"
+                                    v-if="scope.row.paytime_text">下单时间:{{scope.row.paytime_text}}
+                                </span>
+                            </span>
+                            <span class="color-7536D0">
+                                <span v-if="scope.row.platform_text">{{scope.row.platform_text}}-</span>
+                                {{scope.row.type_text}}
+                            </span>
+                        </div>
+                    </template>
+                </el-table-column>
+                <!-- <el-table-column label="订单来源" width="160">
+                </el-table-column> -->
+                <el-table-column label="用户信息" width="100">
+                </el-table-column>
+                <el-table-column label="售后单号" width="220">
+                </el-table-column>
+                <el-table-column label="退款金额" width="138">
+                </el-table-column>
+                <el-table-column label="处理状态" width="80">
+                </el-table-column>
+                <el-table-column label="售后类型" width="100">
+                </el-table-column>
+                <el-table-column label="申请时间" width="180">
+                </el-table-column>
+                <el-table-column label="操作" fixed="right">
+                </el-table-column>
+            </el-table>
+        </div>
+        <div class="page-container display-flex">
+            <el-pagination @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page="currentPage"
+                :page-sizes="[10, 20, 30, 40]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
+                :total="totalPage">
+            </el-pagination>
+        </div>
+    </div>
+</div>

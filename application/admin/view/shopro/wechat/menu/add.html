@@ -1,0 +1,464 @@
+<meta name="referrer" content="never">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<style>
+    #wechat-menu {
+        height: 640px;
+        background: #fff;
+        border-radius: 6px;
+        font-size: 14px;
+        padding: 0 20px 20px;
+        color: #444;
+    }
+
+    .menu-title {
+        height: 50px;
+        line-height: 50px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .menu-body {
+        height: 570px;
+        background: #F2F2F6;
+        border-radius: 6px;
+        padding: 26px 20px;
+        display: flex;
+    }
+
+    .body-left {
+        width: 284px;
+        height: 494px;
+        background: #fff;
+        border: 1px solid #E7E7EB;
+        margin-right: 30px;
+        padding-top: 444px;
+
+    }
+
+    .left-bottom {
+        position: relative;
+        height: 48px;
+        display: flex;
+        border-top: 1px solid #E7E7EB;
+    }
+
+    .left-tip {
+        color: #999;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+    }
+
+    .menu-icon {
+        width: 40px;
+        border-right: 1px solid #E7E7EB;
+    }
+
+    .menu-item {
+        flex: 1;
+        display: flex;
+    }
+
+    .menu-item-add {
+        flex: 1;
+    }
+
+    .menu-add-body {
+        display: none;
+        position: absolute;
+        bottom: 60px;
+    }
+
+    .menu-item-add-2 {
+        width: 82px;
+        height: 44px;
+        border: 1px solid #E7E7EB;
+        border-bottom: none;
+        line-height: 42px;
+        text-align: center;
+        color: #666;
+    }
+
+    .menu-item-add-2s {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        background: url('/assets/addons/shopro/img/wechat/add-btn.png');
+    }
+
+    .body-right {
+        flex: 1;
+        border-radius: 6px;
+    }
+
+    .body-right-content {
+        background: #fff;
+        height: 494px;
+    }
+
+    .right-title {
+        height: 50px;
+        line-height: 50px;
+        border-bottom: #E7E7EB 1px solid;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .frist-show {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        height: 494px;
+    }
+
+    .delete-btn {
+        color: #E74C3C;
+    }
+
+    .select-body {
+        padding: 20px 26px;
+    }
+
+    .display-flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .draggable-item {
+        width: 82px;
+        border-right: #E7E7EB 1px solid;
+    }
+
+    .menu-active {
+        border: 1px solid #7438D5;
+        color: #7438D5;
+    }
+
+    .menu-add-show {
+        display: block;
+    }
+
+    i {
+        font-size: 18px;
+    }
+
+    .el-form-item {
+        margin-bottom: 20px;
+    }
+
+    .el-form-item__content {
+        line-height: 34px;
+    }
+
+    .el-form-item__label {
+        color: #444;
+        padding-right: 30px;
+        line-height: 34px;
+        font-weight: 500;
+    }
+
+    .el-input__inner {
+        height: 34px;
+        line-height: 34px;
+        flex: 1;
+    }
+
+    /* radio */
+    .el-radio__inner:hover,
+    .el-input__inner:hover,
+    .el-radio__inner:focus,
+    .el-input__inner:focus {
+        border-color: #7438D5;
+    }
+
+    .el-radio__input.is-checked+.el-radio__label {
+        color: #7438D5;
+    }
+
+    .el-radio__input.is-checked .el-radio__inner {
+        border-color: #7438D5;
+        background: #7438D5;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .save-item {
+        display: flex;
+        justify-content: flex-end;
+        height: 50px;
+        align-items: center;
+    }
+
+    .public-btn {
+        width: 88px;
+        height: 36px;
+        line-height: 36px;
+        text-align: center;
+        color: #fff;
+        background: #7438D5;
+        border-radius: 18px;
+    }
+
+    .seve-btn {
+        border: 1px solid #7438D5;
+        margin-right: 30px;
+        background: #F2F2F6;
+        color: #7438D5;
+    }
+
+    .el-input {
+        /* width: 400px; */
+        flex: 1;
+    }
+
+    .select-tip {
+        display: flex;
+        align-items: center;
+    }
+
+    .tip {
+        color: #999;
+        font-size: 12px;
+    }
+
+    .select-url {
+        width: 98px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        background: #EAE4F5;
+        border: 1px solid #B092E1;
+        border-radius: 4px;
+        margin-right: 30px;
+        color: #7438D5;
+    }
+
+    .left-tip i {
+        font-size: 8px !important;
+    }
+
+    .one-ellipsis {
+        display: block;
+        /* width: 130px; */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding: 0 5px;
+    }
+
+    .el-select {
+        width: 100%;
+    }
+
+    .el-select-dropdown__item.selected {
+        color: #7438D5;
+    }
+
+    .ellipsis-item {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/Sortable.min.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/vuedraggable.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="wechatMenu" v-cloak @click.stop="menuHide">
+    <div class="menu-title">
+        <div style="margin-right: 20px;">菜单名称</div>
+        <el-input v-model="menuTitle" size="small" placeholder="请输入菜单名称"></el-input>
+    </div>
+    <div class="menu-body">
+        <div class="body-left">
+            <div class="left-bottom">
+                <div class="menu-icon display-flex">
+                    <img src="/assets/addons/shopro/img/wechat/code.png">
+                </div>
+                <!-- 拖动组件 -->
+                <draggable :list="menuData" v-bind="$attrs" class="menu-item" :options="{animation:100}">
+                    <div v-for="(item,index) in menuData" :key="index"
+                        class="draggable-item display-flex cursor-pointer" @click.stop="menuSelect(index,null)"
+                        :class="item.selected?'menu-active':''">
+                        <span v-if="item.sub_button.length>0" style="margin-right: 6px;">≡</span>{{item.name}}
+                        <div v-if="item.sub_button" class="menu-add-body" :class="item.show?'menu-add-show':''"
+                            :style="{'border-bottom':item.sub_button.length>=5?'1px solid #E7E7EB':'none'}">
+                            <div>
+                                <draggable :list="item.sub_button" v-bind="$attrs" :options="{animation:500}">
+                                    <div class="menu-item-add-2 one-ellipsis" v-for="(it,idx) in item.sub_button"
+                                        :key="idx" @click.stop="menuSelect(index,idx)"
+                                        :class="it.selected?'menu-active':''">
+                                        {{it.name}}
+                                    </div>
+                                </draggable>
+                                <div class="menu-item-add-2 menu-item-add-2s cursor-pointer"
+                                    v-if="item.sub_button.length<5" @click.stop="addMenu(index,2)">
+                                    <i class="el-icon-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="menu-item-add display-flex cursor-pointer" v-if="menuData.length<3"
+                        @click.stop="addMenu(null,1)">
+                        <i class="el-icon-plus"></i>
+                    </div>
+                </draggable>
+            </div>
+            <div class="left-tip">
+                <i class="el-icon-rank margin-right-5" style="font-size: 8px;"></i>
+                可直接拖动菜单排序
+            </div>
+        </div>
+        <div class="body-right">
+            <div class="body-right-content" v-if="rightShow" @click.stop="menuShow">
+                <div class="right-title">
+                    <div class="cursor-pointer">添加<span v-if="selectLevel==2">子</span>菜单</div>
+                    <div class="delete-btn cursor-pointer" @click.stop="delMenu()">
+                        删除菜单
+                    </div>
+                </div>
+                <div class="select-body">
+                    <el-form ref="rightData" :model="rightData" label-width="106px">
+                        <el-form-item :label="selectLevel==2?'子菜单名称':'菜单名称'">
+                            <div class="select-tip">
+                                <el-input v-model="rightData.name" @keyup="limitLength()"></el-input>
+                            </div>
+                        </el-form-item>
+                        <el-form-item style="margin-top:-20px">
+                            <div class="select-tip">
+                                <div class="tip" v-if="selectLevel==1">菜单名称字数不多于4个汉字或8个字母</div>
+                                <div class="tip" v-if="selectLevel==2">菜单名称字数不多于8个汉字或16个字母</div>
+                            </div>
+                        </el-form-item>
+                        <div v-if="(selectLevel==1 && rightData.sub_button==0) || selectLevel==2">
+                            <el-form-item :label="selectLevel==2?'子页面内容':'页面内容'">
+                                <el-radio-group v-model="rightData.type" @change="changeRadio()">
+                                    <el-radio label="view">跳转网页</el-radio>
+                                    <el-radio label="miniprogram">跳转小程序</el-radio>
+                                    <el-radio label="click">回复素材</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <div v-if="rightData.type=='click'">
+                                <el-form-item label="消息类型">
+                                    <el-radio-group v-model="rightData.media_type" @change="typeChange">
+                                        <el-radio label="news">图文消息</el-radio>
+                                        <el-radio label="image">图片</el-radio>
+                                        <el-radio label="video">视频</el-radio>
+                                        <el-radio label="voice">音频</el-radio>
+                                        <el-radio label="text">文本</el-radio>
+                                        <el-radio label="link">链接</el-radio>
+                                    </el-radio-group>
+                                </el-form-item>
+                                <el-form-item label="消息内容：" prop="media_id" v-if="rightData.media_type">
+                                    <div class="display-flex">
+                                        <div style="flex: 1;">
+                                            <el-select style="position: relative;" v-model="rightData.media_id"
+                                                @change="selectChange">
+                                                <el-option v-for="item in options" :key="item.media_id"
+                                                    :label="item.title" :value="item.media_id+''">
+                                                    <div class="display-flex">
+                                                        <img style="width: 30px;
+                                                    height: 30px;margin-right:20px"
+                                                            :src="Fast.api.cdnurl(item.thumb_url)"
+                                                            v-if="rightData.media_type!='voice' && rightData.media_type!='text' && rightData.media_type!='link'">
+                                                        <img style="width: 30px;
+                                                    height: 30px;margin-right:20px" :src="Fast.api.cdnurl(item.image)"
+                                                            v-if="rightData.media_type=='link'">
+                                                        <div class="ellipsis-item" style="width: 60px;"
+                                                            v-if="rightData.media_type=='text' || rightData.media_type=='link'">
+                                                            {{ item.media_id }}</div>
+                                                        <div class="ellipsis-item" style="width: 100px;">
+                                                            {{ item.title }}
+                                                        </div>
+                                                        <div class="ellipsis-item" style="flex: 1;"
+                                                            v-if="rightData.media_type!='text' && rightData.media_type!='link'">
+                                                            {{ item.media_id }}</div>
+                                                        <div class="ellipsis-item" style="flex: 1;"
+                                                            v-if="rightData.media_type=='text'">
+                                                            {{ item.thumb_url }}</div>
+                                                    </div>
+                                                </el-option>
+                                                <div class="text-center display-flex"
+                                                    style="position: sticky;background: #fff;height:32px;top:0;z-index:1;justify-content: center;">
+                                                    <el-pagination class="pagination" :page-sizes="[20]"
+                                                        :current-page="selectCurrentPage" :total="selectTotalPage"
+                                                        layout="total, prev, pager,next, jumper" pager-count="20"
+                                                        @size-change.stop="selectSizeChange"
+                                                        @current-change="selectCurrentChange" />
+                                                    </el-pagination>
+                                                    <div class="theme-color cursor-pointer" style="margin-left: 8px;"
+                                                        @click="getoptions">
+                                                        跳转
+                                                    </div>
+                                                </div>
+                                            </el-select>
+                                        </div>
+                                        <div style="margin-left: 10px;cursor: pointer;color: #7438D5;"
+                                            @click="createTemplate"
+                                            v-if="rightData.media_type=='text' || rightData.media_type=='link'">创建</div>
+                                    </div>
+                                </el-form-item>
+                                <el-form-item label=""
+                                    v-if="rightData.media_type && rightData.media_type!='text' && rightData.media_type!='link'">
+                                    <div style="color: #666;">如果没有数据，请去公众号添加</div>
+                                </el-form-item>
+                            </div>
+                            <el-form-item label="AppId" v-if="rightData.type=='miniprogram'">
+                                <el-input v-model="rightData.appid"></el-input>
+                            </el-form-item>
+                            <el-form-item label="小程序路径" v-if="rightData.type=='miniprogram'">
+                                <div class="select-tip">
+                                    <el-input v-model="rightData.pagepath"></el-input>
+                                </div>
+                            </el-form-item>
+                            <el-form-item style="margin-top:-20px" v-if="rightData.type=='miniprogram'">
+                                <div class="select-tip">
+                                    <div class="tip" v-if="rightData.type=='view'">点击该菜单会跳到页面链接</div>
+                                    <div class="tip" v-if="rightData.type=='miniprogram'">小程序路径不可用时跳转页面链接</div>
+                                </div>
+                            </el-form-item>
+                            <el-form-item style="margin-top:-20px" v-if="rightData.type=='view'">
+                                <div class="select-tip">
+                                    <div class="tip" v-if="rightData.type=='view'">点击该菜单会跳到页面链接</div>
+                                    <div class="tip" v-if="rightData.type=='miniprogram'">小程序路径不可用时跳转页面链接</div>
+                                </div>
+                            </el-form-item>
+                            <el-form-item label="页面链接" v-if="rightData.type=='view' || rightData.type=='miniprogram'">
+                                <div class="select-tip">
+                                    <el-input v-model="rightData.url"></el-input>
+                                </div>
+                            </el-form-item>
+                            <el-form-item v-if="rightData.type=='view' || rightData.type=='miniprogram'">
+                                <div class="select-tip">
+                                    <div class="select-url cursor-pointer" @click.stop="choosePath">选择路径</div>
+                                    <div>{{rightData.url_name}}</div>
+                                </div>
+                            </el-form-item>
+                        </div>
+                    </el-form>
+                </div>
+            </div>
+            <div v-else class="frist-show">
+                点击左侧菜单进行编辑操作
+            </div>
+            <div class="save-item">
+                <div class="public-btn seve-btn cursor-pointer" @click.stop="subData('save')">保存</div>
+                <div class="public-btn cursor-pointer" @click.stop="subData('publish')">保存&发布</div>
+            </div>
+        </div>
+    </div>
+</div>

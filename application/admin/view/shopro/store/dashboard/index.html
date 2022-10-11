@@ -1,0 +1,267 @@
+<style type="text/css">
+    #dashboardIndex {
+        background: #fff;
+        padding: 0 0 20px 20px;
+        font-size: 12px;
+        color: #595959;
+    }
+
+    .displf-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .el-date-editor--datetimerange.el-input,
+    .el-date-editor--datetimerange.el-input__inner {
+        width: 330px !important;
+    }
+
+    .el-dropdown {
+        width: 78px;
+        height: 30px;
+        border: 1px solid #e6e6e6;
+        border-radius: 4px;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+        color: #595959 !important;
+        margin-right: 14px;
+    }
+
+    .fa-angle-down {
+        margin-left: 8px;
+    }
+
+    /* .el-icon-arrow-right,
+    .el-range__icon {
+        display: none !important;
+    } */
+
+    .dashboard-header {
+        justify-content: space-between;
+        height: 50px;
+        padding-right: 20px;
+    }
+
+    .chart-container {
+        margin: 0 20px 0 0;
+        padding-top: 16px;
+        width: auto;
+        box-shadow: 0px 2px 10px rgba(29, 3, 72, 0.1);
+        border-radius: 6px;
+    }
+
+    .chart-title-position {
+        position: relative;
+        justify-content: space-between;
+        width: auto;
+        padding: 0 40px;
+        margin-bottom: 10px;
+    }
+
+    .chart-title-tip-image {
+        width: 16px;
+        height: 8px;
+    }
+
+    .dashboard-header-title {
+        color: #666;
+        font-size: 16px;
+    }
+
+    .condition-show-container {
+        padding-top: 20px;
+    }
+
+    .condition-show-row {
+        padding: 20px 20px 0 0;
+    }
+
+    .condition-show-item {
+        background: #fff;
+        padding: 24px 24px 28px;
+        border-radius: 10px;
+        position: relative;
+        height: 120px;
+        color: #626066;
+        border: 3px solid;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+
+    }
+
+    .chart-title-tip-item {
+        margin-right: 16px;
+    }
+
+    .condition-show-tip {
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    .condition-show-dot {
+        width: 12px;
+        height: 12px;
+        margin-right: 8px;
+        border-radius: 50%;
+    }
+
+    .condition-show-title {
+        font-weight: 500;
+        font-size: 16px;
+    }
+
+    .condition-show-msg {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .condition-show-msg-num {
+        font-weight: 500;
+        font-size: 36px;
+        line-height: 36px;
+    }
+
+    .condition-show-msg-unit {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        margin-left: 8px;
+    }
+
+    .chart-refresh-button {
+        margin-right: 20px;
+        cursor: pointer;
+        font-size: 16px;
+        color: #8C8C8C;
+    }
+
+    #antvContainer {
+        padding: 10px 20px 20px 20px;
+    }
+
+    .dashboard-header-select {
+        width: 156px;
+    }
+
+    .dashboard-header-select .el-input__inner {
+        font-size: 12px;
+        color: #595959;
+    }
+
+    .el-select-dropdown__item.selected {
+        color: #753ECD !important;
+    }
+
+    .main-chart-tip-con {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 120px;
+        height: 40px;
+        margin-top: -20px;
+        margin-left: -60px;
+    }
+
+    .condition-show-detail {
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .condition-show-detail-icon {
+        margin-left: 8px;
+    }
+
+    @media screen and (max-width: 750px) {
+        .el-dropdown {
+            margin: 0;
+        }
+
+        .chart-title-position {
+            padding: 0 10px;
+        }
+
+        .picker-hide {
+            display: none !important;
+        }
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="dashboardIndex" v-cloak v-loading="allAjax">
+    <div class="dashboard-header displf-flex">
+        <div class="dashboard-header-title">门店统计</div>
+        <div class="dashboard-header-select" v-if="storeSelectList.length>0">
+            <el-select v-model="storeSelected" size="small" filterable
+            placeholder="请选择门店" :filter-method="dataFilter" @change="getDataInfo">
+                <el-option v-for="item in storeSelectList" :key="item.id" :label="item.name" :value="item.id">
+                </el-option>
+            </el-select>
+        </div>
+    </div>
+    <div class="chart-container">
+        <div class="chart-title-position displf-flex">
+            <div class="chart-title-refresh displf-flex">
+                <div class="chart-refresh-button" @click="getDataInfo">
+                    <i class="el-icon-refresh-right"></i>
+                </div>
+                <div class="chart-title-tip displf-flex">
+                    <div class="chart-title-tip-item" v-for="item in selectInputs" v-if="item.checked" @change="getDataInfo">
+                        <img class="chart-title-tip-image"
+                            :src="'/assets/addons/shopro/img/store/dashboard/'+item.id+'.png'">
+                        <span class="main-chart-tip-msg">{{item.title}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="main-position-right">
+                <el-dropdown size="small">
+                    <span class="el-dropdown-link">
+                        {{dropdownName}}<i class="fa fa-angle-down"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item v-for="(item,index) in dropdownList" @click.native="changeTime(index)">
+                            {{item.name}}</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+                <el-date-picker class="picker-hide" v-model="searchTime" type="datetimerange" value-format="yyyy-MM-dd HH:mm:ss" size="small" format="yyyy-MM-dd HH:mm:ss"
+                    range-separator="-" start-placeholder="开始日期" align="center" @change="getDataInfo"
+                    end-placeholder="结束日期">
+                </el-date-picker>
+            </div>
+        </div>
+        <el-row>
+            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24" class="main-1">
+                <div id="antvContainer"></div>
+                <div v-if="selectInputs.length==0" class="main-chart-tip-con">请选择查看数据</div>
+            </el-col>
+        </el-row>
+    </div>
+    <div class="condition-show-container">
+        <el-row>
+            <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="8" class="condition-show-row"
+                v-for="(item,index) in dataList">
+                <div class="condition-show-item" @click="selectLine(index)"
+                    :style="{'borderColor': item.checked?item.color:'#fff',background:item.checked?item.back:''}">
+                    <div class="condition-show-tip displf-flex">
+                        <div class="condition-show-tip-left displf-flex">
+                            <div class="condition-show-dot" :style="{background:item.color}"></div>
+                            <div class="condition-show-title">{{item.title}}</div>
+                        </div>
+                        <div v-if="item.id=='payed' || item.id=='nosend' || item.id=='noget'|| item.id=='aftersale' || item.id=='refund'" class="condition-show-detail" :style="{color:item.color}" @click.stop="goDetail(item.id)">
+                            详情<i class="el-icon-arrow-right condition-show-detail-icon"></i>
+                        </div>
+                    </div>
+                    <div class="condition-show-msg">
+                        <span class="condition-show-msg-num">{{item.num}}</span>
+                        <span class="condition-show-msg-unit">{{item.unit}}</span>
+                    </div>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+</div>

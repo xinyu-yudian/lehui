@@ -1,0 +1,75 @@
+
+<div class="panel panel-default panel-intro">
+    {:build_heading()}
+
+
+
+    {if ($_GET['a'] == 0)  }
+    <div class="panel-body">
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="one">
+                <div class="widget-body no-padding">
+                    <div id="toolbar" class="toolbar">
+                        {:build_toolbar('refresh')}
+                        <a class="btn btn-info btn-multi btn-disabled disabled {:$auth->check('lottery/restore')?'':'hide'}" href="javascript:;" data-url="lottery/restore" data-action="restore"><i class="fa fa-rotate-left"></i> {:__('Restore')}</a>
+                        <a class="btn btn-danger btn-multi btn-disabled disabled {:$auth->check('lottery/destroy')?'':'hide'}" href="javascript:;" data-url="lottery/destroy" data-action="destroy"><i class="fa fa-times"></i> {:__('Destroy')}</a>
+                        <a class="btn btn-success btn-restoreall {:$auth->check('lottery/restore')?'':'hide'}" href="javascript:;" data-url="lottery/restore" title="{:__('Restore all')}"><i class="fa fa-rotate-left"></i> {:__('Restore all')}</a>
+                        <a class="btn btn-danger btn-destroyall {:$auth->check('lottery/destroy')?'':'hide'}" href="javascript:;" data-url="lottery/destroy" title="{:__('Destroy all')}"><i class="fa fa-times"></i> {:__('Destroy all')}</a>
+                    </div>
+                    <table id="table" class="table table-striped table-bordered table-hover"
+                           data-operate-restore="{:$auth->check('lottery/restore')}"
+                           data-operate-destroy="{:$auth->check('lottery/destroy')}"
+                           width="100%">
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+   {/if}
+
+   {if ($_GET['a'] == 1)  }
+    <div class="panel-body">
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="one">
+                <div class="widget-body no-padding">
+                    <div class="box">
+                      <form action="" method="post">
+                        <div class="list">活动名称：<input type="text" required="required"/></div>
+                        <div class="list">开奖结果：<input type="text" required="required" autocomplete/></div>
+                        <div class="list">奖品名称：<input type="text" required="required"/></div>
+                        <div class="list">温馨提示：<input type="text" required="required"/></div>
+                        <div class="lists">
+                            <input type="submit" value="提交" style="color:azure; background-color:rgb(10, 28, 81); width:55px; border:5% solid rgb(10, 28, 81); border-radius:5%;"/>
+                            <input type="reset" value="重置" style="color:white; width:55px; background-color:rgb(66, 14, 75); border-radius:5% solid rgb(66, 14, 75);"/>
+                        </div>
+                      </form>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {/if}
+</div>
+<style>
+  .box{
+    margin-top: 100px;
+    text-align: center;
+  }
+
+  .box input{
+    margin-left: 30px;
+  }
+
+  .list{
+    margin-top: 15px;
+    line-height: 30px;
+    text-align: center;
+  }
+
+  .lists{
+    margin-top: 20px;
+  }
+</style>

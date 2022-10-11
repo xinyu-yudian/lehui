@@ -1,0 +1,334 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #dispatchIndex {
+        padding: 16px 20px 30px;
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        color: #444;
+        font-weight: 500;
+    }
+
+    .el-tabs__item {
+        padding: 0;
+        text-align: center;
+        width: 90px;
+        height: 48px;
+        line-height: 44px;
+        padding-right: 10px;
+        color: #666;
+    }
+
+    .table-item {
+        margin-bottom: 10px;
+        border: 1px solid #E6E6E6;
+    }
+
+    .table-item-header {
+        height: 40px;
+        background: #F9F9F9;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 30px 0 14px;
+        /* border: 1px solid #E6E6E6;
+        border-bottom: none; */
+    }
+
+    .express-width {
+        width: 100px;
+        text-align: center;
+    }
+
+    .header-btn {
+        margin-left: 24px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="dispatchIndex" v-cloak>
+    <div class="tabs-custom">
+        <el-tabs v-model="activeName" @tab-click="tabClick">
+            {if condition = "$auth->check('shopro/dispatch/express/index')"}<el-tab-pane label="物流快递" name="express">
+                <div class="display-flex-b">
+                    <div class="display-flex">
+                        <div class="custom-refresh display-flex-c" @click="getData">
+                            <i class="el-icon-refresh"></i>
+                        </div>
+                        {if condition = "$auth->check('shopro/dispatch/express/add')"}<div
+                            class="create-btn display-flex-c" @click="operation('create',null,null,'express')"><i
+                                class="el-icon-plus"></i>新建模板</div>{/if}
+                    </div>
+                    {if condition = "$auth->check('shopro/dispatch/express/recyclebin')"}
+                    <div class="recycle-btn display-flex-c" @click="operation('recycle',null,null,'express')">
+                        <i class="fa fa-recycle"></i>
+                        回收站
+                    </div>
+                    {/if}
+                </div>
+            </el-tab-pane>{/if}
+            {if condition = "$auth->check('shopro/dispatch/store/index')"}<el-tab-pane label="商家配送" name="store">
+                <div class="display-flex-b">
+                    <div class="display-flex">
+                        <div class="custom-refresh display-flex-c" @click="getData">
+                            <i class="el-icon-refresh"></i>
+                        </div>
+                        {if condition = "$auth->check('shopro/dispatch/store/add')"}<div
+                            class="create-btn display-flex-c" @click="operation('create',null,null,'store')"><i
+                                class="el-icon-plus"></i>新建模板</div>{/if}
+                    </div>
+                    {if condition = "$auth->check('shopro/dispatch/store/recyclebin')"}
+                    <div class="recycle-btn display-flex-c" @click="operation('recycle',null,null,'store')">
+                        <i class="fa fa-recycle"></i>
+                        回收站
+                    </div>
+                    {/if}
+                </div>
+            </el-tab-pane>{/if}
+            {if condition = "$auth->check('shopro/dispatch/selfetch/index')"}
+            <el-tab-pane label="到店/自提" name="selfetch">
+                <div class="display-flex-b">
+                    <div class="display-flex">
+                        <div class="custom-refresh display-flex-c" @click="getData">
+                            <i class="el-icon-refresh"></i>
+                        </div>
+                        {if condition = "$auth->check('shopro/dispatch/selfetch/add')"}<div
+                            class="create-btn display-flex-c" @click="operation('create',null,null,'selfetch')"><i
+                                class="el-icon-plus"></i>新建模板</div>{/if}
+                    </div>
+                    {if condition = "$auth->check('shopro/dispatch/selfetch/recyclebin')"}
+                    <div class="recycle-btn display-flex-c" @click="operation('recycle',null,null,'selfetch')">
+                        <i class="fa fa-recycle"></i>
+                        回收站
+                    </div>
+                    {/if}
+                </div>
+            </el-tab-pane>{/if}
+            {if condition = "$auth->check('shopro/dispatch/autosend/index')"}
+            <el-tab-pane label="自动发货" name="autosend">
+                <div class="display-flex-b">
+                    <div class="display-flex">
+                        <div class="custom-refresh display-flex-c" @click="getData">
+                            <i class="el-icon-refresh"></i>
+                        </div>
+                        {if condition = "$auth->check('shopro/dispatch/autosend/add')"}<div
+                            class="create-btn display-flex-c" @click="operation('create',null,null,'autosend')"><i
+                                class="el-icon-plus"></i>新建模板</div>{/if}
+                    </div>
+                    {if condition = "$auth->check('shopro/dispatch/autosend/recyclebin')"}
+                    <div class="recycle-btn display-flex-c" @click="operation('recycle',null,null,'autosend')">
+                        <i class="fa fa-recycle"></i>
+                        回收站
+                    </div>
+                    {/if}
+                </div>
+            </el-tab-pane>{/if}
+        </el-tabs>
+    </div>
+    <div v-if="activeName=='express'">
+        <div class="table-item" v-for="(item,index) in dispatchData" v-if="dispatchData.length>0">
+            <div class="table-item-header">
+                <div class="header-name">{{item.name}}</div>
+                <div class="display-flex">
+                    <div class="header-time">
+                        <span class="tip">最后编辑时间：</span>
+                        <span>{{moment(item.createtime*1000).format("YYYY-MM-DD HH:mm:ss")}}</span>
+                    </div>
+                    {if condition = "$auth->check('shopro/dispatch/express/edit')"}
+                    <div class="header-btn theme-color cursor-pointer"
+                        @click.stop="operation('edit',item.id,index,'express')">编辑</div>
+                    {/if}
+                    {if condition = "$auth->check('shopro/dispatch/express/del')"}
+                    <div class="header-btn theme-delete-color cursor-pointer"
+                        @click.stop="operation('delete',item.id,index,'express')">删除</div>
+                    {/if}
+                </div>
+            </div>
+            <div class="display-flex" style="height: 40px;padding-left: 14px;border-top: 1px solid #F9F9F9;">
+                <div class="flex-1">可配送区域</div>
+                <div class="express-width">
+                    <div v-if="item.express[0].type=='weight'">首重</div>
+                    <div v-else>首件</div>
+                </div>
+                <div class="express-width">运费(元)</div>
+                <div class="express-width">
+                    <div v-if="item.express[0].type=='weight'">续重</div>
+                    <div v-else>续件</div>
+                </div>
+                <div class="express-width">续费(元)</div>
+            </div>
+            <div class="display-flex" v-for="it in item.express"
+                style="height: 50px;padding-left: 14px;border-top: 1px solid #F9F9F9;">
+                <div class="flex-1 ellipsis-item-2">{{it.area_text}}</div>
+                <div class="express-width">
+                    {{it.first_num}}
+                </div>
+                <div class="express-width">{{it.first_price}}</div>
+                <div class="express-width">
+                    {{it.additional_num}}
+                </div>
+                <div class="express-width">{{it.additional_price}}</div>
+            </div>
+        </div>
+    </div>
+    <div v-if="activeName=='store'">
+        <el-table :data="dispatchData" border style="width: 100%" :cell-class-name="tableCellClassName2"
+            :header-cell-class-name="tableCellClassName2" :row-class-name="tableRowClassName"
+            v-if="dispatchData.length>0">
+            <el-table-column prop="id" label="ID" min-width="60">
+            </el-table-column>
+            <el-table-column label="模板名称" min-width="140">
+                <template slot-scope="scope">
+                    <div class="ellipsis-item">
+                        {{scope.row.name}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="可配送门店" min-width="500">
+                <template slot-scope="scope">
+                    <div class="ellipsis-item">
+                        <span v-if="scope.row.store">
+                            <span v-if="scope.row.store.store_ids.length>0">
+                                部分门店<span class="shopro-status-other">({{scope.row.store.store_ids_text}})</span>
+                            </span>
+                            <span v-else>全部门店</span>
+                        </span>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="最后编辑时间" min-width="160">
+                <template slot-scope="scope">
+                    <div>
+                        {{moment(scope.row.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="120">
+                <template slot-scope="scope">
+                    <div class="display-flex opt-display-flex-b">
+                        {if condition = "$auth->check('shopro/dispatch/store/edit')"}
+                        <div class="table-edit-text" @click.stop="operation('edit',scope.row.id,null,'store')">编辑</div>
+                        {/if}
+                        {if condition = "$auth->check('shopro/dispatch/store/del')"}
+                        <div class="table-delete-text" @click.stop="operation('delete',scope.row.id,null,'store')">删除
+                        </div>
+                        {/if}
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div v-if="activeName=='selfetch'">
+        <el-table :data="dispatchData" border style="width: 100%" :cell-class-name="tableCellClassName2"
+            :header-cell-class-name="tableCellClassName2" :row-class-name="tableRowClassName"
+            v-if="dispatchData.length>0">
+            <el-table-column prop="id" label="ID" min-width="60">
+            </el-table-column>
+            <el-table-column label="模板名称" min-width="140">
+                <template slot-scope="scope">
+                    <div class="ellipsis-item">
+                        {{scope.row.name}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="可自提门店" min-width="500">
+                <template slot-scope="scope">
+                    <div class="ellipsis-item">
+                        <span v-if="scope.row.selfetch">
+                            <span v-if="scope.row.selfetch.store_ids.length>0">
+                                部分门店<span class="shopro-status-other">({{scope.row.selfetch.store_ids_text}})</span>
+                            </span>
+                            <span v-else>全部门店</span>
+                        </span>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="最后编辑时间" min-width="160">
+                <template slot-scope="scope">
+                    <div>
+                        {{moment(scope.row.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="120">
+                <template slot-scope="scope">
+                    <div class="display-flex opt-display-flex-b">
+                        {if condition = "$auth->check('shopro/dispatch/selfetch/edit')"}
+                        <div class="table-edit-text" @click.stop="operation('edit',scope.row.id,null,'selfetch')">编辑
+                        </div>
+                        {/if}
+                        {if condition = "$auth->check('shopro/dispatch/selfetch/del')"}
+                        <div class="table-delete-text" @click.stop="operation('delete',scope.row.id,null,'selfetch')">删除
+                        </div>
+                        {/if}
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div v-if="activeName=='autosend'">
+        <el-table :data="dispatchData" border style="width: 100%" :cell-class-name="tableCellClassName2"
+            :header-cell-class-name="tableCellClassName2" :row-class-name="tableRowClassName"
+            v-if="dispatchData.length>0">
+            <el-table-column prop="id" label="ID" min-width="60">
+            </el-table-column>
+            <el-table-column label="模板名称" min-width="140">
+                <template slot-scope="scope">
+                    <div class="ellipsis-item">
+                        {{scope.row.name}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="自动发货内容" min-width="500">
+                <template slot-scope="scope">
+                    <div class="ellipsis-item display-flex">
+                        <div class="ellipsis-item" v-if="scope.row.autosend.type=='text'">
+                            {{scope.row.autosend.content}}</div>
+                        <div v-else class="ellipsis-item">
+                            <template v-for="(item,index) in scope.row.autosend.content">
+                                {{Object.keys(item)[0]}}:{{Object.values(item)[0]}}
+                                <span style="margin-right: 6px;"
+                                    v-if="index!=scope.row.autosend.content.length-1">;</span>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="最后编辑时间" min-width="160">
+                <template slot-scope="scope">
+                    <div>
+                        {{moment(scope.row.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="120">
+                <template slot-scope="scope">
+                    <div class="display-flex opt-display-flex-b">
+                        {if condition = "$auth->check('shopro/dispatch/autosend/edit')"}
+                        <div class="table-edit-text" @click.stop="operation('edit',scope.row.id,null,'autosend')">编辑
+                        </div>
+                        {/if}
+                        {if condition = "$auth->check('shopro/dispatch/autosend/del')"}
+                        <div class="table-delete-text" @click.stop="operation('delete',scope.row.id,null,'autosend')">删除
+                        </div>
+                        {/if}
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div v-if="isData" class="display-flex-c" style="height: 200px;">
+        暂无数据
+    </div>
+    <div class="pagination-container display-flex" v-if="dispatchData.length>0">
+        <el-pagination @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
+            :total="totalPage">
+        </el-pagination>
+    </div>
+</div>

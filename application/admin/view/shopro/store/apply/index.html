@@ -1,0 +1,292 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #applyIndex {
+        color: #444;
+        background: #fff;
+        padding-bottom: 30px;
+        font-size: 12px;
+    }
+
+    .shopro-reset-button {
+        margin-right: 20px;
+    }
+
+    .reject-reason-item {
+        width: 140px;
+        margin-right: 14px;
+    }
+
+    .shopro-edit-cancel {
+        color: #848089;
+        cursor: pointer;
+    }
+
+
+
+    body .table-image {
+        border-radius: 15px;
+        width: 30px;
+        height: 30px;
+        overflow: hidden;
+        border: 1px solid #e6e6e6;
+    }
+
+    .shopro-refresh-button {
+        margin-right: 20px;
+        margin-bottom: 20px;
+    }
+
+    .agent-apply-item-tip {
+        font-size: 12px;
+        line-height: 12px;
+        color: #58575A;
+        margin-bottom: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .agent-apply-item {
+        margin-bottom: 20px;
+    }
+
+    .color-999 {
+        color: #999;
+    }
+
+    .popover-container .table-image-identity {
+        width: 100px;
+        height: 60px;
+        border-radius: 4px;
+    }
+
+    .theme-cursor,
+    .reject-cursor,
+    .agree-cursor {
+        color: #6E3DC8;
+        cursor: pointer;
+    }
+    .reject-cursor{
+        margin-right: 14px;
+    }
+
+    .apply-status--1,
+    .reject-cursor {
+        color: #ED655F;
+    }
+    .apply-status-0{
+        color: #999;
+    }
+
+    .agree-cursor {
+        color: #0ACE97;
+        margin-right: 14px;
+    }
+
+    .popover-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .reject-reason-input {
+        width: 140px;
+        margin-right: 14px;
+    }
+
+    .reject-reason-define,
+    .reject-reason-cancel {
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .reject-reason-define {
+        color: #7438D5;
+        margin-right: 10px;
+    }
+
+    .reject-reason-cancel {
+        color: #999;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="applyIndex" v-cloak v-loading="isAjax">
+    <div class="shopro-tabs-container">
+        <el-tabs v-model="searchForm.status" @tab-click="tabshandleClick">
+            <el-tab-pane v-for="tabs in tabsList" :label="tabs.label" :name="tabs.name"></el-tab-pane>
+        </el-tabs>
+    </div>
+    <div class="shopro-screen-container">
+        <div class="shopro-button shopro-refresh-button" @click="getListData">
+            <i class="el-icon-refresh"></i>
+        </div>
+        <div class="display-flex shopro-screen-item shopro-screen-item-vague">
+            <div class="shopro-screen-tip">门店名称</div>
+            <div class="shopro-screen-condition">
+                <el-input placeholder="请输入门店名称" v-model="searchForm.name" size="small">
+                </el-input>
+            </div>
+        </div>
+        <div class="display-flex shopro-screen-item shopro-screen-item-vague">
+            <div class="shopro-screen-tip">联系人</div>
+            <div class="shopro-screen-condition">
+                <el-input placeholder="请输入联系人" v-model="searchForm.realname" size="small">
+                </el-input>
+            </div>
+        </div>
+        <div class="display-flex shopro-screen-item shopro-screen-item-vague">
+            <div class="shopro-screen-tip">联系电话</div>
+            <div class="shopro-screen-condition">
+                <el-input placeholder="请输入联系电话" v-model="searchForm.phone" size="small">
+                </el-input>
+            </div>
+        </div>
+        <div class="display-flex shopro-screen-item-button">
+            <div class="shopro-button shopro-reset-button" @click="screenEmpty">重置</div>
+            <div class="shopro-button shopro-screen-button" @click="getListData">筛选</div>
+        </div>
+    </div>
+    <div class="shopro-table-container" v-loading="isAjaxtable">
+        <el-table :data="listData" border stripe :cell-class-name="tableCellClassName"
+            :header-cell-class-name="tableCellClassName">
+            <!-- <el-table-column label="ID" prop="id" width="70">
+            </el-table-column> -->
+            <el-table-column label="门店信息" width="360">
+                <template slot-scope="scope">
+                    <div class="display-flex">
+                        <div class="table-image">
+                            <el-image :src="Fast.api.cdnurl(scope.row.images)" fit="contain">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                        </div>
+                        <div class="ellipsis-item">{{scope.row.name?scope.row.name:'-'}}</div>
+                    </div>
+                    <div v-else>-</div>
+                </template>
+            </el-table-column>
+            <el-table-column label="联系人" width="80">
+                <template slot-scope="scope">
+                    <div>
+                        <div class="ellipsis-item" v-if="scope.row.realname">{{scope.row.realname}}</div>
+                        <div v-else>-</div>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="联系电话" width="120">
+                <template slot-scope="scope">
+                    <div v-if="scope.row.phone">{{scope.row.phone}}</div>
+                    <div v-else>-</div>
+                </template>
+            </el-table-column>
+            <el-table-column label="详细地址" min-width="300">
+                <template slot-scope="scope">
+                    <div class="display-flex">
+                        <div class="ellipsis-item">
+                            {{scope.row.province_name}}{{scope.row.city_name}}{{scope.row.area_name}}{{scope.row.address}}
+                        </div>
+                    </div>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column label="营业时间" width="120">
+                <template slot-scope="scope">
+                    <div>{{scope.row.openhours}}</div>
+                </template>
+            </el-table-column>
+            <el-table-column label="营业天数" width="100">
+                <template slot-scope="scope">
+                    <div>{{scope.row.openweeks}}</div>
+                </template>
+            </el-table-column> -->
+            <el-table-column label="提交次数" width="80">
+                <template slot-scope="scope">
+                    <div class="display-flex">
+                        {{scope.row.apply_num}}次
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="状态" width="80">
+                <template slot-scope="scope">
+                    <div class="display-flex">
+                        <span v-if="scope.row.status==1" class="display-flex">
+                            <span class="shopro-status-dot shopro-status-normal-dot"></span>
+                            <span class="shopro-status-normal">{{scope.row.status_text}}</span>
+                        </span>
+                        <span v-else-if="scope.row.status==-1" class="display-flex">
+                            <span class="shopro-status-dot shopro-status-nonormal-dot"></span>
+                            <span class="shopro-status-nonormal">{{scope.row.status_text}}</span>
+                        </span>
+                        <span v-else-if="scope.row.status==0" class="display-flex">
+                            <span class="shopro-status-dot shopro-status-default-dot"></span>
+                            <span class="shopro-status-default">{{scope.row.status_text}}</span>
+                        </span>
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="申请用户" width="160">
+                <template slot-scope="scope">
+                    <div class="display-flex" v-if="scope.row.user">
+                        <div class="table-image" v-if="scope.row.user.avatar">
+                            <el-image :src="Fast.api.cdnurl(scope.row.user.avatar)" fit="contain">
+                                <div slot="error" class="image-slot">
+                                    <i class="el-icon-picture-outline"></i>
+                                </div>
+                            </el-image>
+                        </div>
+                        <div class="ellipsis-item">{{scope.row.user.nickname?scope.row.user.nickname:'-'}}</div>
+                    </div>
+                    <div v-else>-</div>
+                </template>
+            </el-table-column>
+            <el-table-column label="申请时间" width="160">
+                <template slot-scope="scope">
+                    <div>
+                        {{moment(scope.row.createtime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                    </div>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column label="更新时间" width="160">
+                <template slot-scope="scope">
+                    <div>
+                        {{moment(scope.row.updatetime*1000).format("YYYY-MM-DD HH:mm:ss")}}
+                    </div>
+                </template>
+            </el-table-column> -->
+            <el-table-column fixed="right" label="操作" min-width="140">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.status==0" class="agree-cursor" @click="operation('agree',scope.row.id)">
+                        同意
+                    </span>
+                    <el-popover placement="bottom" trigger="hover" :ref="'refNamePopover'+scope.$index">
+                        <div class="popover-container">
+                            <div class="reject-reason-input">
+                                <el-input v-model="rejectReason" placeholder="请输入拒绝理由" size="small"></el-input>
+                            </div>
+                            <div class="reject-reason-define" @click="operation('reject',scope.row.id,scope.$index)">确定</div>
+                            <div class="reject-reason-cancel" @click="operation('cancel',scope.row.id,scope.$index)">取消</div>
+                        </div>
+                        <span slot="reference" v-if="scope.row.status==0" class="reject-cursor">
+                            拒绝
+                        </span>
+                    </el-popover>
+                    <span class="theme-cursor" @click="operation('view',scope.row.id)">
+                        查看
+                    </span>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div class="shopro-pagination-container">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper"
+            :total="totalPage">
+        </el-pagination>
+    </div>
+</div>

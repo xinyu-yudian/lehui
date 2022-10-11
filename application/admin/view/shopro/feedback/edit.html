@@ -1,0 +1,68 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #feedbackDetail {
+        color: #444;
+        padding: 0 20px 30px;
+        background-color: #fff;
+    }
+
+    .el-input__inner,
+    .el-input__icon {
+        height: 34px;
+        line-height: 34px;
+    }
+
+    .el-form-item {
+        margin-bottom: 10px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="feedbackDetail" v-cloak>
+    <el-form :model="detailForm" ref="detailForm" label-width="100px" class="demo-detailForm">
+        <el-form-item label="反馈用户：">
+            <div v-if="detailForm.user && detailForm.user.nickname" class="theme-color cursor-pointer" @click="goUserDetail(detailForm.user.id)">
+                {{detailForm.user.nickname}}</div>
+                <span v-else>-</span>
+        </el-form-item>
+        <el-form-item label="反馈类型：">
+            <div>{{detailForm.type_text}}</div>
+        </el-form-item>
+        <el-form-item label="反馈内容：">
+            <div class="ellipsis-item">{{detailForm.content}}</div>
+        </el-form-item>
+        <el-form-item label="图片：">
+            <div class="display-flex">
+                <el-image v-if="detailForm.images" class="label-auto" v-for="ing in detailForm.images.split(',')" :src="Fast.api.cdnurl(ing)" :preview-src-list="detailForm.images_arr"
+                    style="border-radius: 4px;margin-right: 5px;">
+                </el-image>
+                <spanv-else>-</span>
+            </div>
+        </el-form-item>
+        <el-form-item label="联系电话：">
+            <div v-if="detailForm.phone">{{detailForm.phone}}</div>
+            <div v-else>-</div>
+        </el-form-item>
+        <el-form-item label="是否处理：" prop="status">
+            <el-radio-group v-model="detailForm.status">
+                <el-radio :label="0">未处理</el-radio>
+                <el-radio :label="1">已处理</el-radio>
+            </el-radio-group>
+        </el-form-item>
+
+        <el-form-item label="处理备注：" prop="remark">
+            <el-input v-model="detailForm.remark" placeholder="请输入处理备注" size="small"></el-input>
+        </el-form-item>
+    </el-form>
+    <div class="dialog-footer">
+        <div @click="submitFrom" class="dialog-cancel-btn display-flex-c cursor-pointer">取消</div>
+        <div @click="submitFrom('yes')" class="dialog-define-btn display-flex-c cursor-pointer">确定
+        </div>
+    </div>
+</div>

@@ -1,0 +1,327 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #storeIndex {
+        padding: 0 20px 30px;
+        background: #fff;
+        border-radius: 10px 10px 0px 0px;
+        color: #444;
+        font-weight: 500;
+    }
+
+    .display-flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .el-pagination,
+    .el-pagination__total,
+    .el-input__inner,
+    .el-pagination__jump {
+        color: #444;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .btn-common {
+        width: 88px;
+        height: 32px;
+        line-height: 32px;
+        border-radius: 4px;
+        font-size: 12px;
+        text-align: center;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .el-input__inner,
+    .el-input__icon {
+        height: 32px;
+        line-height: 32px;
+    }
+
+    .btn-container {
+        margin-bottom: 14px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .create-btn {
+        background: #7536D0;
+        color: #fff;
+        width: 100px;
+        height: 32px;
+        line-height: 32px;
+    }
+
+    .create-btn i {
+        font-size: 14px;
+        margin-right: 8px;
+    }
+
+    .store-title {
+        height: 50px;
+        line-height: 50px;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .store-titles {
+        font-size: 14px;
+    }
+
+    .search-container {
+        width: 236px;
+    }
+
+    .el-table {
+        font-size: 13px;
+    }
+
+    .el-table th {
+        background: #F9F9F9;
+        padding: 7px 0;
+    }
+
+    .el-table th>.cell,
+    .el-table .cell {
+        color: #444;
+        font-weight: 500;
+    }
+
+    .close-status,
+    .open-status {
+        text-align: center;
+    }
+
+    .close-status {
+        color: #666;
+    }
+
+    .open-status,
+    .edit-btn-text {
+        color: #7438D5;
+    }
+
+    .close-status,
+    .delete-btn-text {
+        color: #FF5959;
+    }
+
+    .close-btn-text {
+        margin: 0 20px;
+    }
+
+    .pagination-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-top: 30px;
+    }
+
+    .el-pager li.active,
+    .el-pager li:hover,
+    .el-select-dropdown__item.selected {
+        color: #7438D5;
+    }
+
+    .el-table__fixed-right::before,
+    .el-table__fixed::before {
+        height: 0;
+    }
+
+    .el-table td,
+    .el-table th {
+        padding: 0;
+    }
+
+    .el-table th .cell,
+    .el-table td .cell {
+        height: 44px;
+        display: flex;
+        align-items: center;
+        line-height: 20px;
+        justify-content: center;
+    }
+
+    .el-table th .cell {
+        height: 40px;
+    }
+
+    .el-table .bg-color {
+        background: #f9f9f9;
+    }
+
+    .cell-left .cell {
+        justify-content: flex-start !important;
+    }
+
+    .cell>div {
+        width: 100%;
+    }
+
+    .cell>.ellipsis-item-1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .el-button--primary,
+    .el-button--primary:focus,
+    .el-button--primary:hover {
+        background: #7536D0;
+        border-color: #7536D0;
+        color: #FFF;
+    }
+
+    .recycle-btn {
+        width: 88px;
+        color: #444;
+        border: #444 1px solid;
+        height: 32px;
+        border-radius: 4px;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .recycle-btn i {
+        margin-right: 6px;
+        font-size: 14px;
+    }
+
+    .opt-container>div {
+        margin-right: 14px;
+    }
+
+    .store-type {
+        width: 80px;
+        height: 30px;
+        background: #F1EBFB;
+        border: 1px solid #D5C3F2;
+        border-radius: 4px;
+        color: #7438D5;
+        justify-content: center;
+    }
+
+    .selfetch-type {
+        width: 80px;
+        height: 30px;
+        background: #E1F7F2;
+        border: 1px solid #A2E3D4;
+        color: #0AB58F;
+        border-radius: 4px;
+        justify-content: center;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/moment.js"></script>
+<div id="storeIndex" v-cloak v-loading="allAjax">
+    <div class="store-title display-flex">
+        <div class="store-titles">
+            门店管理
+        </div>
+        <div class="search-container">
+            <el-input v-model="searchKey" placeholder="请输入门店名称" suffix-icon="el-icon-search"></el-input>
+        </div>
+    </div>
+    <div class="btn-container">
+        <div class="display-flex">
+            <div class="custom-refresh display-flex-c" @click="getData">
+                <i class="el-icon-refresh"></i>
+            </div>{if condition = "$auth->check('shopro/store/store/add')"}
+            <div class="btn-common create-btn" @click="operation('create',null)"><i class="el-icon-plus"></i>创建门店</div>
+            {/if}
+        </div>
+        {if condition = "$auth->check('shopro/store/store/recyclebin')"}
+        <div class="common-btn recycle-btn display-flex" @click="operation('recycle',null)">
+            <i class="fa fa-recycle"></i>
+            回收站
+        </div>
+        {/if}
+    </div>
+    <div v-loading="tableAjax">
+        <el-table :data="storeData" border style="width: 100%" :row-class-name="tableRowClassName"
+            :cell-class-name="tableCellClassName" :header-cell-class-name="tableCellClassName"
+            @row-dblclick="operation">
+            <el-table-column prop="id" label="ID" width="60">
+            </el-table-column>
+            <el-table-column label="门店名称" min-width="180">
+                <template slot-scope="scope">
+                    <div class="ellipsis-item-1">
+                        {{scope.row.name}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column label="门店地址" min-width="320">
+                <template slot-scope="scope">
+                    <div class="ellipsis-item-1">
+                        {{scope.row.province_name}}{{scope.row.city_name}}{{scope.row.area_name}}{{scope.row.address}}
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="realname" label="联系人" width="100">
+            </el-table-column>
+            <el-table-column prop="phone" label="联系电话" width="120">
+            </el-table-column>
+            <el-table-column prop="openhours" label="营业时间" width="100">
+            </el-table-column>
+            <el-table-column prop="express_type" label="配送方式" width="200">
+                <template slot-scope="scope">
+                    <div class="display-flex" style="justify-content: space-around;">
+                        <div v-if="scope.row.store==1" class="store-type display-flex">{{scope.row.store==1?'商家配送':''}}
+                        </div>
+                        <div v-if="scope.row.selfetch==1" class="selfetch-type display-flex">
+                            {{scope.row.selfetch==1?'到店/自提':''}}</div>
+                    </div>
+                </template>
+            </el-table-column>
+            <!-- <el-table-column label="状态" width="80">
+                <template slot-scope="scope">
+                    <div :class="scope.row.status==1?'open-status':'close-status'">
+                        {{scope.row.status_text}}
+                    </div>
+                </template>
+            </el-table-column> -->
+            <el-table-column label="操作" min-width="160" fixed="right">
+                <template slot-scope="scope">
+                    <div class="opt-container display-flex">
+                        <div class="cursor-pointer" :class="scope.row.status==1?'open-status':'close-status'"
+                            @click="operation('status',scope.row.id,scope.row.status)">
+                            {{scope.row.status_text}}
+                        </div>
+                        {if condition = "$auth->check('shopro/store/store/edit')"}
+                        <div class="edit-btn-text cursor-pointer" @click="operation('edit',scope.row.id)">
+                            编辑
+                        </div>
+                        {/if}
+                        <!-- {if condition = "$auth->check('shopro/store/store/add')"}
+                        <span class="close-btn-text cursor-pointer" @click="operation('close',scope.row.id)">
+                            关闭
+                        </span>
+                        {/if} -->
+                        {if condition = "$auth->check('shopro/store/store/del')"}
+                        <div class="delete-btn-text cursor-pointer" @click="operation('delete',scope.row.id)">
+                            删除
+                        </div>
+                        {/if}
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div class="pagination-container">
+        <el-pagination @size-change="pageSizeChange" @current-change="pageCurrentChange" :current-page="currentPage"
+            :page-sizes="[10, 20, 30, 40]" :page-size="10" layout="total, sizes, prev, pager, next, jumper"
+            :total="totalPage">
+        </el-pagination>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #fastReplyDetail {
+        color: #444;
+        background: #fff;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<div id="fastReplyDetail" v-cloak>
+    <el-form :model="detailForm" role="form" ref="detailForm" :rules="rules" label-width="100px">
+        <el-form-item label="名称：" prop="name">
+            <el-input v-model="detailForm.name" placeholder="请输入名称" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="内容：" prop="content">
+            <textarea id="c-content" class="form-control editor" rows="5" name="row[content]" cols="50"></textarea>
+        </el-form-item>
+        <el-form-item label="状态：" prop="status">
+            <el-radio-group v-model="detailForm.status">
+                <el-radio label="normal">启用</el-radio>
+                <el-radio label="hidden">隐藏</el-radio>
+            </el-radio-group>
+        </el-form-item>
+        <el-form-item label="权重：" prop="weigh">
+            <el-input v-model="detailForm.weigh" placeholder="请输入权重" size="small"></el-input>
+        </el-form-item>
+    </el-form>
+    <div class="dialog-footer">
+        <div @click="submitForm('detailForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定</div>
+    </div>
+</div>

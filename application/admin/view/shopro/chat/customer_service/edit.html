@@ -1,0 +1,124 @@
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/element/element.css">
+<link rel="stylesheet" href="__CDN__/assets/addons/shopro/libs/common.css">
+<style>
+    #customerServiceDetail {
+        color: #444;
+        background: #fff;
+    }
+
+    .shopro-add-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 4px;
+        border: 1px solid #e6e6e6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+    }
+
+    .shopro-select-item {
+        position: relative;
+    }
+
+    .shopro-select-item-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .shopro-select-item-id {
+        width: 70px;
+    }
+
+    .shopro-select-item-image {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        margin: 0 30px;
+    }
+
+    .shopro-select-item-name {
+        width: 80px;
+    }
+
+    .shopro-select-item-page {
+        position: sticky;
+        background: #fff;
+        height: 28px;
+        top: 0;
+        z-index: 1
+    }
+
+    .shopro-select-item-page .pagination {
+        margin: 0;
+    }
+
+    .title-tip {
+        color: #999;
+        line-height: 13px;
+        font-size: 13px;
+        font-weight: 400;
+        margin-top: 14px;
+    }
+
+    [v-cloak] {
+        display: none
+    }
+</style>
+<script src="__CDN__/assets/addons/shopro/libs/vue.js"></script>
+<script src="__CDN__/assets/addons/shopro/libs/element/element.js"></script>
+<div id="customerServiceDetail" v-cloak>
+    <el-form :model="detailForm" role="form" ref="detailForm" :rules="rules" label-width="138px">
+        <el-form-item label="客服昵称：" prop="name">
+            <el-input v-model="detailForm.name" placeholder="请输入客服昵称" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="客服头像：" prop="avatar">
+            <div class="shopro-add-image" @click="addAvatar">
+                <div v-if="!detailForm.avatar">
+                    <i class="el-icon-plus"></i>
+                </div>
+                <el-image v-if="detailForm.avatar" :src="Fast.api.cdnurl(detailForm.avatar)" fit="contain">
+                    <div slot="error" class="image-slot">
+                        <i class="el-icon-picture-outline"></i>
+                    </div>
+                </el-image>
+            </div>
+        </el-form-item>
+        <el-form-item label="绑定管理员：" prop="admin_id">
+            <div class="shopro-select-container">
+                <el-select class="shopro-select-item" v-model="detailForm.admin_id" filterable placeholder="请选择管理员"
+                    :filter-method="dataFilter" size="small">
+                    <el-option v-for="item in adminList" :key="item.nickname" :label="item.nickname" :value="item.id">
+                        <div class="shopro-select-item-container">
+                            <div class="shopro-select-item-id">{{ item.id }}</div>
+                            <img class="shopro-select-item-image" :src="Fast.api.cdnurl(item.avatar)">
+                            <div class="shopro-select-item-name ellipsis-item">{{ item.nickname }}</div>
+                        </div>
+                    </el-option>
+                    <div class="shopro-select-item-page">
+                        <div class="text-normal display-flex" style="justify-content: center;">
+                            <el-pagination class="pagination" :current-page="currentPage" :total="totalPage" :page-size="limit"
+                                layout="total, prev, pager,next" pager-count="5" @current-change="pageCurrentChange" />
+                            </el-pagination>
+                        </div>
+                    </div>
+                </el-select>
+            </div>
+        </el-form-item>
+        <el-form-item label="最佳接待人数：" prop="max_num">
+            <el-input v-model="detailForm.max_num" placeholder="请输入最佳接待人数" size="small"></el-input>
+            <div class="title-tip">
+                根据实际接待人数/最佳接待人数计算客服当前忙碌度，当按忙碌度进行分配客服时，优先分配给最空闲的客服
+            </div>
+        </el-form-item>
+        <el-form-item label="状态：" prop="status">
+            <el-radio-group v-model="detailForm.status">
+                <el-radio label="online">在线</el-radio>
+                <el-radio label="offline">离线</el-radio>
+            </el-radio-group>
+        </el-form-item>
+    </el-form>
+    <div class="dialog-footer">
+        <div @click="submitForm('detailForm')" class="dialog-define-btn display-flex-c cursor-pointer">确定</div>
+    </div>
+</div>
